@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.project.MainMenu;
 import com.example.project.R;
 
 import java.util.regex.Pattern;
@@ -49,7 +50,8 @@ public class Register extends AppCompatActivity {
             if(checkEnteredData()) {
                 // TODO save user to database
 
-                // TODO redirect to new activity
+                Intent in = new Intent(view.getContext(), MainMenu.class);
+                view.getContext().startActivity(in);
             }
 
         });

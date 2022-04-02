@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.project.MainMenu;
 import com.example.project.R;
 
 public class Login extends AppCompatActivity {
@@ -39,10 +40,8 @@ public class Login extends AppCompatActivity {
 
                 // TODO check login info from database
 
-                // TODO redirect to new activity
-                /*
-                Intent in = new Intent(view.getContext(),);
-                view.getContext().startActivity(in);*/
+                Intent in = new Intent(view.getContext(), MainMenu.class);
+                view.getContext().startActivity(in);
 
             }
         });
