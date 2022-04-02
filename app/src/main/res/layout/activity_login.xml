@@ -1,9 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".user_profile.Login">
+    tools:context=".user_profile.Login"
+    android:layout_margin="70dp"
+    android:gravity="center">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editTextUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="@string/username"
+                android:autofillHints="@string/username"/>
+
+            <EditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextUsername"
+                android:layout_marginTop="50dp"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:hint="@string/password"
+                android:autofillHints="@string/password"/>
+
+            <Button
+                android:id="@+id/buttonConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextPassword"
+                android:layout_alignEnd="@+id/editTextPassword"
+                android:layout_marginTop="50dp"
+                android:text="@string/sign_in"
+                android:layout_alignRight="@+id/editTextPassword" />
+
+            <Button
+                android:id="@+id/buttonRedirectToRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/buttonConfirm"
+                android:text="@string/not_a_member_sign_up"
+                android:textColor="#878383"
+                app:backgroundTint="#FFFFFF" />
+
+        </RelativeLayout>
+
+</LinearLayout>
