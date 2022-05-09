@@ -13,10 +13,14 @@ import android.widget.Toast;
 import com.example.project.MainActivity;
 import com.example.project.MainMenu;
 import com.example.project.R;
+import com.example.project.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.regex.Pattern;
 
@@ -41,6 +45,7 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         auth = FirebaseAuth.getInstance();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
         redirectToLogin = findViewById(R.id.buttonRedirectToLogin);
         register = findViewById(R.id.buttonConfirm);
@@ -59,7 +64,6 @@ public class Register extends AppCompatActivity {
         register.setOnClickListener(view -> {
 
             if(checkEnteredData()) {
-                // TODO save aditional user info to database
                 // firebase auth - registers user only with email and password
                 auth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                         .addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
@@ -70,6 +74,13 @@ public class Register extends AppCompatActivity {
                                     Toast.makeText(Register.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
+
+                                    // save aditional user info to database
+                                    User user = new User(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString());
+                                    FirebaseUser loggedInUser = FirebaseAuth.getInstance().getCurrentUser();
+                                    mDatabase.child("users").child(loggedInUser.getUid()).setValue(user);
+
+                                    // redirect to mainmenu
                                     Intent in = new Intent(view.getContext(), MainMenu.class);
                                     view.getContext().startActivity(in);
                                 }
