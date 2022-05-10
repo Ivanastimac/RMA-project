@@ -76,7 +76,7 @@ public class Register extends AppCompatActivity {
                                 } else {
 
                                     // save aditional user info to database
-                                    User user = new User(firstName.getText().toString(), lastName.getText().toString(), email.getText().toString());
+                                    User user = new User(firstName.getText().toString(), lastName.getText().toString());
                                     FirebaseUser loggedInUser = FirebaseAuth.getInstance().getCurrentUser();
                                     mDatabase.child("users").child(loggedInUser.getUid()).setValue(user);
 
