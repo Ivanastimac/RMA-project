@@ -20,6 +20,7 @@ public class Login extends AppCompatActivity {
 
     Button redirectToRegister;
     Button signin;
+    Button passwordReset;
     EditText username;
     EditText password;
     FirebaseAuth auth;
@@ -35,9 +36,15 @@ public class Login extends AppCompatActivity {
         username = findViewById(R.id.editTextUsername);
         password = findViewById(R.id.editTextPassword);
         signin = findViewById(R.id.buttonConfirm);
+        passwordReset = findViewById(R.id.buttonPasswordReset);
 
         redirectToRegister.setOnClickListener(view -> {
             Intent in = new Intent(view.getContext(), Register.class);
+            view.getContext().startActivity(in);
+        });
+
+        passwordReset.setOnClickListener(view -> {
+            Intent in = new Intent(view.getContext(), PasswordReset.class);
             view.getContext().startActivity(in);
         });
 

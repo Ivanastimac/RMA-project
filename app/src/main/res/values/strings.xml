@@ -12,4 +12,7 @@
     <string name="newSlikovnica">New</string>
     <string name="archive">Archive</string>
     <string name="explore">Explore</string>
+    <string name="forgot_your_password">Forgot your password?</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="back_to_login">Back to login</string>
 </resources>
