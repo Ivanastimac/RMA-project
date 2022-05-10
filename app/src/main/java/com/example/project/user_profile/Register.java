@@ -45,7 +45,7 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         auth = FirebaseAuth.getInstance();
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
         redirectToLogin = findViewById(R.id.buttonRedirectToLogin);
         register = findViewById(R.id.buttonConfirm);
@@ -78,7 +78,7 @@ public class Register extends AppCompatActivity {
                                     // save aditional user info to database
                                     User user = new User(firstName.getText().toString(), lastName.getText().toString());
                                     FirebaseUser loggedInUser = FirebaseAuth.getInstance().getCurrentUser();
-                                    mDatabase.child("users").child(loggedInUser.getUid()).setValue(user);
+                                    database.child("users").child(loggedInUser.getUid()).setValue(user);
 
                                     // redirect to mainmenu
                                     Intent in = new Intent(view.getContext(), MainMenu.class);
