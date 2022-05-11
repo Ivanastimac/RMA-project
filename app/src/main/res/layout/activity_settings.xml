@@ -7,11 +7,19 @@
     tools:context=".user_profile.Settings"
     android:gravity="center">
 
+    <ImageView
+        android:id="@+id/imageButtonProfileInfo"
+        android:layout_width="78dp"
+        android:layout_height="83dp"
+        android:clickable="true"
+        android:src="@drawable/googleg_standard_color_18" />
+
     <TextView
         android:id="@+id/textViewFirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="" />
+        android:text=""
+        android:layout_below="@+id/imageButtonProfileInfo"/>
 
     <TextView
         android:id="@+id/textViewLastName"
@@ -26,5 +34,33 @@
         android:layout_height="wrap_content"
         android:text=""
         android:layout_below="@+id/textViewLastName"/>
+
+    <Button
+        android:id="@+id/buttonChangePassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/change_password"
+        android:layout_below="@id/textViewEmail"/>
+
+    <Button
+        android:id="@+id/buttonChangeEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/change_email"
+        android:layout_below="@id/buttonChangePassword"/>
+
+    <Button
+        android:id="@+id/buttonDeleteAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_account"
+        android:layout_below="@id/buttonChangeEmail"/>
+
+    <Button
+        android:id="@+id/buttonSignOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_out"
+        android:layout_below="@id/buttonDeleteAccount"/>
 
 </RelativeLayout>
