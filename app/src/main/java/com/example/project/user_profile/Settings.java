@@ -3,6 +3,8 @@ package com.example.project.user_profile;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -86,6 +88,13 @@ public class Settings extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         loggedInUser = auth.getCurrentUser();
+
+        // if user is not logged in, redirect to login page
+        if (loggedInUser == null) {
+            Intent in = new Intent(this, Login.class);
+            startActivity(in);
+        }
+
         email.setText(loggedInUser.getEmail());
 
         // get logged in user info and display it on screen
@@ -153,27 +162,57 @@ public class Settings extends AppCompatActivity {
         });
 
         deleteAccountBtn.setOnClickListener(view -> {
-            String uid = loggedInUser.getUid();
-            loggedInUser.delete()
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(Settings.this, "Your profile is deleted:( Create a account now!", Toast.LENGTH_SHORT).show();
-                                database.child(uid).removeValue();
-                                Intent in = new Intent(view.getContext(), Login.class);
-                                view.getContext().startActivity(in);
-                            } else {
-                                Toast.makeText(Settings.this, "Failed to delete your account!", Toast.LENGTH_SHORT).show();
-                            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.delete_account_dialog)
+                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            String uid = loggedInUser.getUid();
+                            loggedInUser.delete()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                database.child(uid).removeValue();
+                                                Intent in = new Intent(view.getContext(), Login.class);
+                                                view.getContext().startActivity(in);
+                                                Toast.makeText(Settings.this, "Your profile is deleted:( Create a account now!", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(Settings.this, "Failed to delete your account!", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // do nothing
                         }
                     });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
         });
 
         signOutBtn.setOnClickListener(view -> {
-            auth.signOut();
-            Intent in = new Intent(view.getContext(), Login.class);
-            view.getContext().startActivity(in);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.sign_out_dialog)
+                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            auth.signOut();
+                            Intent in = new Intent(view.getContext(), Login.class);
+                            view.getContext().startActivity(in);
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // do nothing
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
         });
 
     }

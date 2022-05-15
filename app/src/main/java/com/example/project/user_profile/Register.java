@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.project.MainActivity;
 import com.example.project.MainMenu;
 import com.example.project.R;
 import com.example.project.model.User;
