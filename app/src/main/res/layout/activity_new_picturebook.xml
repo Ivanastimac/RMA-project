@@ -30,11 +30,18 @@
             android:layout_below="@+id/editTextTitle"/>
 
         <Button
+            android:id="@+id/buttonAddPage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_page"
+            android:layout_below="@id/editTextSummary"/>
+
+        <Button
             android:id="@+id/buttonSavePicturebook"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/save"
-            android:layout_below="@id/editTextSummary"/>
+            android:layout_below="@id/buttonAddPage"/>
 
         <Button
             android:id="@+id/buttonDiscardPicturebook"
