@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.project.MainActivity;
 import com.example.project.MainMenu;
 import com.example.project.R;
 import com.example.project.model.User;
@@ -26,8 +25,8 @@ import java.util.regex.Pattern;
 
 public class Register extends AppCompatActivity {
 
-    Button redirectToLogin;
-    Button register;
+    Button redirectToLoginBtn;
+    Button registerBtn;
     EditText firstName;
     EditText lastName;
     EditText email;
@@ -45,10 +44,10 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         auth = FirebaseAuth.getInstance();
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
-        redirectToLogin = findViewById(R.id.buttonRedirectToLogin);
-        register = findViewById(R.id.buttonConfirm);
+        redirectToLoginBtn = findViewById(R.id.buttonRedirectToLogin);
+        registerBtn = findViewById(R.id.buttonConfirm);
         firstName = findViewById(R.id.editTextFirstName);
         lastName = findViewById(R.id.editTextLastName);
         email = findViewById(R.id.editTextEmail);
@@ -56,12 +55,12 @@ public class Register extends AppCompatActivity {
         passwordConfirm = findViewById(R.id.editTextPassword2);
 
 
-        redirectToLogin.setOnClickListener(view -> {
+        redirectToLoginBtn.setOnClickListener(view -> {
             Intent in = new Intent(view.getContext(), Login.class);
             view.getContext().startActivity(in);
         });
 
-        register.setOnClickListener(view -> {
+        registerBtn.setOnClickListener(view -> {
 
             if(checkEnteredData()) {
                 // firebase auth - registers user only with email and password
@@ -78,7 +77,7 @@ public class Register extends AppCompatActivity {
                                     // save aditional user info to database
                                     User user = new User(firstName.getText().toString(), lastName.getText().toString());
                                     FirebaseUser loggedInUser = FirebaseAuth.getInstance().getCurrentUser();
-                                    mDatabase.child("users").child(loggedInUser.getUid()).setValue(user);
+                                    database.child("users").child(loggedInUser.getUid()).setValue(user);
 
                                     // redirect to mainmenu
                                     Intent in = new Intent(view.getContext(), MainMenu.class);

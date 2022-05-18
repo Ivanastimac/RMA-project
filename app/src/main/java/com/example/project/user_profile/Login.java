@@ -18,8 +18,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Login extends AppCompatActivity {
 
-    Button redirectToRegister;
-    Button signin;
+    Button redirectToRegisterBtn;
+    Button signinBtn;
+    Button passwordResetBtn;
     EditText username;
     EditText password;
     FirebaseAuth auth;
@@ -31,17 +32,23 @@ public class Login extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        redirectToRegister = findViewById(R.id.buttonRedirectToRegister);
+        redirectToRegisterBtn = findViewById(R.id.buttonRedirectToRegister);
         username = findViewById(R.id.editTextUsername);
         password = findViewById(R.id.editTextPassword);
-        signin = findViewById(R.id.buttonConfirm);
+        signinBtn = findViewById(R.id.buttonConfirm);
+        passwordResetBtn = findViewById(R.id.buttonPasswordReset);
 
-        redirectToRegister.setOnClickListener(view -> {
+        redirectToRegisterBtn.setOnClickListener(view -> {
             Intent in = new Intent(view.getContext(), Register.class);
             view.getContext().startActivity(in);
         });
 
-        signin.setOnClickListener(view -> {
+        passwordResetBtn.setOnClickListener(view -> {
+            Intent in = new Intent(view.getContext(), PasswordReset.class);
+            view.getContext().startActivity(in);
+        });
+
+        signinBtn.setOnClickListener(view -> {
 
             if(checkEnteredData()) {
                 // firebase auth - checks if email and password are valid
