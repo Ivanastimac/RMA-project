@@ -55,8 +55,8 @@ public class Settings extends AppCompatActivity {
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
+                FirebaseUser loggedInUser = firebaseAuth.getCurrentUser();
+                if (loggedInUser == null) {
                     // user auth state is changed - user is null
                     // launch login activity
                     startActivity(new Intent(Settings.this, Login.class));
