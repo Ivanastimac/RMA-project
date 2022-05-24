@@ -40,6 +40,7 @@ public class Settings extends AppCompatActivity {
     Button signOutBtn;
     Button saveEditedBtn;
     ImageView editBtn;
+    ImageView profilePictureBtn;
     User user;
 
     FirebaseAuth auth;
@@ -72,6 +73,7 @@ public class Settings extends AppCompatActivity {
         deleteAccountBtn = findViewById(R.id.buttonDeleteAccount);
         signOutBtn = findViewById(R.id.buttonSignOut);
         editBtn = findViewById(R.id.imageButtonEditInfo);
+        profilePictureBtn = findViewById(R.id.imageButtonProfileInfo);
 
         firstNameEdit = findViewById(R.id.editTextFirstName);
         lastNameEdit = findViewById(R.id.editTextLastName);
@@ -110,6 +112,11 @@ public class Settings extends AppCompatActivity {
             public void onCancelled(DatabaseError error) {
                 Toast.makeText(Settings.this, "Failed to read value." + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
+        });
+
+        profilePictureBtn.setOnClickListener(view -> {
+            Intent in = new Intent(this, ChangeProfilePicture.class);
+            startActivity(in);
         });
 
         editBtn.setOnClickListener(view -> {

@@ -3,10 +3,6 @@ Y
 )app/src/main/res/layout/activity_main.xml,7\6\76b07e40f24cce093536731477540f12e7da3cb6
 H
 app/google-services.json,f\d\fd8d34b142d02ec743a8efefefd2c097961666e9
-<
-build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
-@
-app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 e
 5app/src/main/java/com/example/project/model/User.java,5\8\58f5c2af121041d321a4d723355dbec8e4524cc5
 m

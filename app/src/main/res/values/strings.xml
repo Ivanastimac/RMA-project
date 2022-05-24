@@ -32,4 +32,6 @@
     <string name="confirm">Yes</string>
     <string name="cancel">Cancel</string>
     <string name="sign_out_dialog">Are you sure you want to sign out?</string>
+    <string name="choose_picture">Choose picture</string>
+    <string name="save_picture">Save picture</string>
 </resources>
