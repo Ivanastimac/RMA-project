@@ -12,8 +12,7 @@
         android:id="@+id/imageButtonProfileInfo"
         android:layout_width="96dp"
         android:layout_height="94dp"
-        android:clickable="true"
-        android:src="@drawable/profile" />
+        android:clickable="true" />
 
     <ImageView
         android:id="@+id/imageButtonEditInfo"

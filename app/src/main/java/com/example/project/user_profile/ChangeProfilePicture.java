@@ -7,7 +7,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,8 +23,10 @@ import android.widget.Toast;
 
 import com.example.project.MainActivity;
 import com.example.project.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
@@ -37,6 +41,7 @@ public class ChangeProfilePicture extends AppCompatActivity {
 
     Button choosePictureBtn;
     Button savePictureBtn;
+    Button deletePictureBtn;
     ImageView profilePicture;
     Bitmap image;
 
@@ -55,6 +60,7 @@ public class ChangeProfilePicture extends AppCompatActivity {
 
         choosePictureBtn = findViewById(R.id.buttonChoosePicture);
         savePictureBtn = findViewById(R.id.buttonSavePicture);
+        deletePictureBtn = findViewById(R.id.buttonDeletePicture);
         profilePicture = findViewById(R.id.imageProfilePicture);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -68,6 +74,8 @@ public class ChangeProfilePicture extends AppCompatActivity {
             startActivity(in);
         }
 
+        storage = FirebaseStorage.getInstance();
+
         checkProfilePicture();
 
         choosePictureBtn.setOnClickListener(view -> {
@@ -80,6 +88,24 @@ public class ChangeProfilePicture extends AppCompatActivity {
             } else {
                 uploadProfilePicture();
             }
+        });
+
+        deletePictureBtn.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.delete_profile_picture)
+                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            deleteProfilePicture();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // do nothing
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
         });
     }
 
@@ -115,7 +141,6 @@ public class ChangeProfilePicture extends AppCompatActivity {
 
     // save profile picture in storage
     void uploadProfilePicture() {
-        storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -149,7 +174,6 @@ public class ChangeProfilePicture extends AppCompatActivity {
     }
 
     void checkProfilePicture() {
-        storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference().child("images/" + loggedInUser.getUid());
         //Toast.makeText(MainMenu.this, storageRef.toString(), Toast.LENGTH_LONG).show();
 
@@ -166,6 +190,22 @@ public class ChangeProfilePicture extends AppCompatActivity {
                 profilePicture.setImageDrawable(getResources().getDrawable(R.drawable.profile));
             }
         });
+    }
 
+    void deleteProfilePicture() {
+        storageRef = storage.getReference().child("images/" + loggedInUser.getUid());
+
+        storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // refresh page
+                recreate();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(ChangeProfilePicture.this, "Unsuccessful!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

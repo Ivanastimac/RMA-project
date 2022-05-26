@@ -34,4 +34,5 @@
     <string name="sign_out_dialog">Are you sure you want to sign out?</string>
     <string name="choose_picture">Choose picture</string>
     <string name="save_picture">Save picture</string>
+    <string name="delete_profile_picture">Are you sure you want to delete profile picture?</string>
 </resources>

@@ -269,7 +269,6 @@ public class Settings extends AppCompatActivity {
     void checkProfilePicture() {
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference().child("images/" + loggedInUser.getUid());
-        //Toast.makeText(MainMenu.this, storageRef.toString(), Toast.LENGTH_LONG).show();
 
         final long ONE_MEGABYTE = 1024 * 1024;
         storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -281,7 +280,7 @@ public class Settings extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
+                profileBtn.setImageDrawable(getResources().getDrawable(R.drawable.profile));
             }
         });
     }
