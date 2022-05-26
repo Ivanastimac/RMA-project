@@ -1,6 +1,7 @@
 package com.example.project.user_profile;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -89,6 +90,8 @@ public class Settings extends AppCompatActivity {
         lastNameEdit = findViewById(R.id.editTextLastName);
         emailEdit = findViewById(R.id.editTextEmail);
         saveEditedBtn = findViewById(R.id.buttonSaveEdited);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // editviews for updating info, visible after clicking edit button
         firstNameEdit.setVisibility(View.GONE);

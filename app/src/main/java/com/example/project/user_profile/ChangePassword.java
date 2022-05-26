@@ -36,6 +36,8 @@ public class ChangePassword extends AppCompatActivity {
         newPasswordConfirm = findViewById(R.id.inputNewPasswordConfirm);
         confirmBtn = findViewById(R.id.buttonChangePasswordConfirm);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         auth = FirebaseAuth.getInstance();
         loggedInUser = auth.getCurrentUser();
 

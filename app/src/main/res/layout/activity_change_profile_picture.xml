@@ -18,8 +18,7 @@
         <ImageView
             android:id="@+id/imageProfilePicture"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/googleg_standard_color_18" />
+            android:layout_height="match_parent" />
 
     </RelativeLayout>
 

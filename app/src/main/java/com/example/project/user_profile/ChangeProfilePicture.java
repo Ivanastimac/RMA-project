@@ -57,6 +57,8 @@ public class ChangeProfilePicture extends AppCompatActivity {
         savePictureBtn = findViewById(R.id.buttonSavePicture);
         profilePicture = findViewById(R.id.imageProfilePicture);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         auth = FirebaseAuth.getInstance();
         loggedInUser = auth.getCurrentUser();
 
