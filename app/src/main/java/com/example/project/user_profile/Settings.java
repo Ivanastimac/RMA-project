@@ -1,7 +1,6 @@
 package com.example.project.user_profile;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -51,12 +50,12 @@ public class Settings extends AppCompatActivity {
     Bitmap image;
     User user;
 
-
     FirebaseAuth auth;
     FirebaseUser loggedInUser;
     FirebaseAuth.AuthStateListener authListener;
     FirebaseStorage storage;
     StorageReference storageRef;
+    DatabaseReference database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +98,7 @@ public class Settings extends AppCompatActivity {
         emailEdit.setVisibility(View.GONE);
         saveEditedBtn.setVisibility(View.GONE);
 
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
+        database = FirebaseDatabase.getInstance().getReference("users");
 
         auth = FirebaseAuth.getInstance();
         loggedInUser = auth.getCurrentUser();
@@ -110,41 +109,14 @@ public class Settings extends AppCompatActivity {
             startActivity(in);
         }
 
-        email.setText(loggedInUser.getEmail());
-        checkProfilePicture();
-
-        // get logged in user info and display it on screen
-        database.child(loggedInUser.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                user = dataSnapshot.getValue(User.class);
-                firstName.setText(user.getFirstName());
-                lastName.setText(user.getLastName());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Toast.makeText(Settings.this, "Failed to read value." + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        init();
 
         profileBtn.setOnClickListener(view -> {
             Intent in = new Intent(this, ChangeProfilePicture.class);
             startActivity(in);
         });
 
-        editBtn.setOnClickListener(view -> {
-                firstName.setVisibility(View.GONE);
-                lastName.setVisibility(View.GONE);
-                email.setVisibility((View.GONE));
-                firstNameEdit.setVisibility(View.VISIBLE);
-                lastNameEdit.setVisibility(View.VISIBLE);
-                emailEdit.setVisibility(View.VISIBLE);
-                saveEditedBtn.setVisibility(View.VISIBLE);
-                firstNameEdit.setText(user.getFirstName());
-                lastNameEdit.setText(user.getLastName());
-                emailEdit.setText(loggedInUser.getEmail());
-        });
+        editBtn.setOnClickListener(view -> changeToEditMode());
 
         saveEditedBtn.setOnClickListener(view -> {
 
@@ -165,14 +137,7 @@ public class Settings extends AppCompatActivity {
                 database.child(loggedInUser.getUid()).child("firstName").setValue(firstNameEdit.getText().toString());
                 database.child(loggedInUser.getUid()).child("lastName").setValue(lastNameEdit.getText().toString());
 
-                // return to user info display, without edit functionality
-                firstNameEdit.setVisibility(View.GONE);
-                lastNameEdit.setVisibility(View.GONE);
-                emailEdit.setVisibility(View.GONE);
-                saveEditedBtn.setVisibility(View.GONE);
-                firstName.setVisibility(View.VISIBLE);
-                lastName.setVisibility(View.VISIBLE);
-                email.setVisibility(View.VISIBLE);
+                returnFromEditMode();
             }
 
         });
@@ -264,6 +229,56 @@ public class Settings extends AppCompatActivity {
 
         return valid;
 
+    }
+
+    void init() {
+        email.setText(loggedInUser.getEmail());
+        checkProfilePicture();
+
+        // get logged in user info and display it on screen
+        database.child(loggedInUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+                firstName.setText(user.getFirstName());
+                lastName.setText(user.getLastName());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(Settings.this, "Failed to read value." + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    void changeToEditMode() {
+        firstName.setVisibility(View.GONE);
+        lastName.setVisibility(View.GONE);
+        email.setVisibility((View.GONE));
+        firstNameEdit.setVisibility(View.VISIBLE);
+        lastNameEdit.setVisibility(View.VISIBLE);
+        emailEdit.setVisibility(View.VISIBLE);
+        saveEditedBtn.setVisibility(View.VISIBLE);
+        changePasswordBtn.setVisibility(View.GONE);
+        deleteAccountBtn.setVisibility(View.GONE);
+        signOutBtn.setVisibility(View.GONE);
+        firstNameEdit.setText(user.getFirstName());
+        lastNameEdit.setText(user.getLastName());
+        emailEdit.setText(loggedInUser.getEmail());
+    }
+
+    // return to user info display, without edit functionality
+    void returnFromEditMode() {
+        firstNameEdit.setVisibility(View.GONE);
+        lastNameEdit.setVisibility(View.GONE);
+        emailEdit.setVisibility(View.GONE);
+        saveEditedBtn.setVisibility(View.GONE);
+        firstName.setVisibility(View.VISIBLE);
+        lastName.setVisibility(View.VISIBLE);
+        email.setVisibility(View.VISIBLE);
+        changePasswordBtn.setVisibility(View.VISIBLE);
+        deleteAccountBtn.setVisibility(View.VISIBLE);
+        signOutBtn.setVisibility(View.VISIBLE);
     }
 
     void checkProfilePicture() {

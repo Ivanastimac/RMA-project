@@ -10,9 +10,10 @@
 
     <ImageView
         android:id="@+id/imageButtonProfileInfo"
-        android:layout_width="96dp"
-        android:layout_height="94dp"
-        android:clickable="true" />
+        android:layout_width="78dp"
+        android:layout_height="83dp"
+        android:clickable="true"
+        android:foreground="@drawable/rounded_frame" />
 
     <ImageView
         android:id="@+id/imageButtonEditInfo"

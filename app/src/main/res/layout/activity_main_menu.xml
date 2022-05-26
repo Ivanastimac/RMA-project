@@ -20,7 +20,8 @@
         android:layout_height="83dp"
         android:clickable="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:foreground="@drawable/rounded_frame"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
