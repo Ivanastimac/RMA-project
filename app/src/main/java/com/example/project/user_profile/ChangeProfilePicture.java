@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class ChangeProfilePicture extends AppCompatActivity {
     Button choosePictureBtn;
     Button savePictureBtn;
     ImageView profilePicture;
+    Bitmap image;
 
     Uri filePath;
     Bitmap selectedImageBitmap;
@@ -44,7 +46,7 @@ public class ChangeProfilePicture extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser loggedInUser;
     FirebaseStorage storage;
-    StorageReference storageReference;
+    StorageReference storageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,8 @@ public class ChangeProfilePicture extends AppCompatActivity {
             Intent in = new Intent(this, Login.class);
             startActivity(in);
         }
+
+        checkProfilePicture();
 
         choosePictureBtn.setOnClickListener(view -> {
             chooseProfilePicture();
@@ -110,14 +114,14 @@ public class ChangeProfilePicture extends AppCompatActivity {
     // save profile picture in storage
     void uploadProfilePicture() {
         storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+        storageRef = storage.getReference();
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading...");
         progressDialog.show();
 
-        storageReference = storageReference.child("images/"+ loggedInUser.getUid());
-        storageReference.putFile(filePath)
+        storageRef = storageRef.child("images/"+ loggedInUser.getUid());
+        storageRef.putFile(filePath)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -140,5 +144,26 @@ public class ChangeProfilePicture extends AppCompatActivity {
                         progressDialog.setMessage("Uploaded "+(int)progress+"%");
                     }
                 });
+    }
+
+    void checkProfilePicture() {
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference().child("images/" + loggedInUser.getUid());
+        //Toast.makeText(MainMenu.this, storageRef.toString(), Toast.LENGTH_LONG).show();
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                image = BitmapFactory.decodeByteArray(bytes,0, bytes.length);
+                profilePicture.setImageBitmap(image);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                profilePicture.setImageDrawable(getResources().getDrawable(R.drawable.profile));
+            }
+        });
+
     }
 }

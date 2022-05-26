@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -18,6 +20,8 @@ import android.widget.Toast;
 import com.example.project.R;
 import com.example.project.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,6 +30,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class Settings extends AppCompatActivity {
 
@@ -40,12 +46,16 @@ public class Settings extends AppCompatActivity {
     Button signOutBtn;
     Button saveEditedBtn;
     ImageView editBtn;
-    ImageView profilePictureBtn;
+    ImageView profileBtn;
+    Bitmap image;
     User user;
+
 
     FirebaseAuth auth;
     FirebaseUser loggedInUser;
     FirebaseAuth.AuthStateListener authListener;
+    FirebaseStorage storage;
+    StorageReference storageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +83,7 @@ public class Settings extends AppCompatActivity {
         deleteAccountBtn = findViewById(R.id.buttonDeleteAccount);
         signOutBtn = findViewById(R.id.buttonSignOut);
         editBtn = findViewById(R.id.imageButtonEditInfo);
-        profilePictureBtn = findViewById(R.id.imageButtonProfileInfo);
+        profileBtn = findViewById(R.id.imageButtonProfileInfo);
 
         firstNameEdit = findViewById(R.id.editTextFirstName);
         lastNameEdit = findViewById(R.id.editTextLastName);
@@ -98,6 +108,7 @@ public class Settings extends AppCompatActivity {
         }
 
         email.setText(loggedInUser.getEmail());
+        checkProfilePicture();
 
         // get logged in user info and display it on screen
         database.child(loggedInUser.getUid()).addValueEventListener(new ValueEventListener() {
@@ -114,7 +125,7 @@ public class Settings extends AppCompatActivity {
             }
         });
 
-        profilePictureBtn.setOnClickListener(view -> {
+        profileBtn.setOnClickListener(view -> {
             Intent in = new Intent(this, ChangeProfilePicture.class);
             startActivity(in);
         });
@@ -252,7 +263,28 @@ public class Settings extends AppCompatActivity {
 
     }
 
-    @Override
+    void checkProfilePicture() {
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference().child("images/" + loggedInUser.getUid());
+        //Toast.makeText(MainMenu.this, storageRef.toString(), Toast.LENGTH_LONG).show();
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                profileBtn.setImageBitmap(image);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+    }
+
+
+        @Override
     public void onStart() {
         super.onStart();
         auth.addAuthStateListener(authListener);

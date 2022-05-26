@@ -10,10 +10,10 @@
 
     <ImageView
         android:id="@+id/imageButtonProfileInfo"
-        android:layout_width="78dp"
-        android:layout_height="83dp"
+        android:layout_width="96dp"
+        android:layout_height="94dp"
         android:clickable="true"
-        android:src="@drawable/googleg_standard_color_18" />
+        android:src="@drawable/profile" />
 
     <ImageView
         android:id="@+id/imageButtonEditInfo"
