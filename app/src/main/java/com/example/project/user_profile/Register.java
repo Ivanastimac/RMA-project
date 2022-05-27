@@ -33,6 +33,7 @@ public class Register extends AppCompatActivity {
     EditText password;
     EditText passwordConfirm;
     FirebaseAuth auth;
+    DatabaseReference database;
 
     // No whitespaces, minimum eight characters, at least one uppercase letter, one lowercase letter and one number
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
@@ -44,7 +45,7 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         auth = FirebaseAuth.getInstance();
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        database = FirebaseDatabase.getInstance().getReference();
 
         redirectToLoginBtn = findViewById(R.id.buttonRedirectToLogin);
         registerBtn = findViewById(R.id.buttonConfirm);

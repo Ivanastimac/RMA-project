@@ -35,4 +35,12 @@
     <string name="choose_picture">Choose picture</string>
     <string name="save_picture">Save picture</string>
     <string name="delete_profile_picture">Are you sure you want to delete profile picture?</string>
+  
+    <!-- New Picturebook -->
+    <string name="discard">Discard</string>
+    <string name="title">Title</string>
+    <string name="summary">Summary</string>
+    <string name="discard_picturebook_dialog">Are you sure you want to discard this picturebook?</string>
+    <string name="add_page">Add page</string>
+
 </resources>

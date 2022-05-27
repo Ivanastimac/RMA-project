@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.project.picturebook.NewPicturebook;
 import com.example.project.user_profile.Login;
 import com.example.project.user_profile.Settings;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -20,6 +22,8 @@ import com.google.firebase.storage.StorageReference;
 
 public class MainMenu extends AppCompatActivity {
 
+
+    Button newPicturebook;
     ImageView profileBtn;
     Bitmap image;
 
@@ -42,12 +46,19 @@ public class MainMenu extends AppCompatActivity {
             startActivity(in);
         }
 
+        newPicturebook = findViewById(R.id.buttonNew);
         profileBtn = findViewById(R.id.imageButtonProfile);
 
         checkProfilePicture();
 
+
         profileBtn.setOnClickListener(view -> {
             Intent in = new Intent(view.getContext(), Settings.class);
+            view.getContext().startActivity(in);
+        });
+
+        newPicturebook.setOnClickListener(view -> {
+            Intent in = new Intent(view.getContext(), NewPicturebook.class);
             view.getContext().startActivity(in);
         });
     }
