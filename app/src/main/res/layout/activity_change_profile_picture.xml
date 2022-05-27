@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".user_profile.ChangeProfilePicture"
+    android:weightSum="1"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:layout_margin="20dp">
+
+        <ImageView
+            android:id="@+id/imageProfilePicture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:foreground="@drawable/rounded_frame"/>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/buttonChoosePicture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_picture" />
+
+    <Button
+        android:id="@+id/buttonSavePicture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save_picture" />
+
+    <Button
+        android:id="@+id/buttonDeletePicture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete picture" />
+
+
+</LinearLayout>
