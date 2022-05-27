@@ -65,7 +65,7 @@ public class MainMenu extends AppCompatActivity {
 
     void checkProfilePicture() {
         storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReference().child("images/" + loggedInUser.getUid());
+        storageRef = storage.getReference().child("images/profile_pictures/" + loggedInUser.getUid());
         //Toast.makeText(MainMenu.this, storageRef.toString(), Toast.LENGTH_LONG).show();
 
         final long ONE_MEGABYTE = 1024 * 1024;

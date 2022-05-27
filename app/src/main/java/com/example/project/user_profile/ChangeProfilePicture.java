@@ -141,7 +141,7 @@ public class ChangeProfilePicture extends AppCompatActivity {
         progressDialog.setTitle("Uploading...");
         progressDialog.show();
 
-        storageRef = storageRef.child("images/"+ loggedInUser.getUid());
+        storageRef = storageRef.child("images/profile_pictures/"+ loggedInUser.getUid());
         storageRef.putFile(filePath)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -168,8 +168,7 @@ public class ChangeProfilePicture extends AppCompatActivity {
     }
 
     void checkProfilePicture() {
-        storageRef = storage.getReference().child("images/" + loggedInUser.getUid());
-        //Toast.makeText(MainMenu.this, storageRef.toString(), Toast.LENGTH_LONG).show();
+        storageRef = storage.getReference().child("images/profile_pictures/" + loggedInUser.getUid());
 
         final long ONE_MEGABYTE = 1024 * 1024;
         storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -187,7 +186,7 @@ public class ChangeProfilePicture extends AppCompatActivity {
     }
 
     void deleteProfilePicture() {
-        storageRef = storage.getReference().child("images/" + loggedInUser.getUid());
+        storageRef = storage.getReference().child("images/profile_pictures/" + loggedInUser.getUid());
 
         storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

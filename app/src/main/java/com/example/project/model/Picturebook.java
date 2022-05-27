@@ -6,8 +6,6 @@ public class Picturebook {
     private String title;
     private String summary;
     private Status status;
-    // array of pages ids
-    private String[] pages;
 
     public Picturebook() {
         // Default constructor required for calls to DataSnapshot.getValue(Picturebook.class)
@@ -18,8 +16,6 @@ public class Picturebook {
         this.title = title;
         this.summary = summary;
         status = Status.PRIVATE;
-        // TODO
-        // pages = new String[];
     }
 
     public String getUserId() {

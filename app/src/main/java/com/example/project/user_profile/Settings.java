@@ -283,7 +283,7 @@ public class Settings extends AppCompatActivity {
 
     void checkProfilePicture() {
         storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReference().child("images/" + loggedInUser.getUid());
+        storageRef = storage.getReference().child("images/profile_pictures/" + loggedInUser.getUid());
 
         final long ONE_MEGABYTE = 1024 * 1024;
         storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
