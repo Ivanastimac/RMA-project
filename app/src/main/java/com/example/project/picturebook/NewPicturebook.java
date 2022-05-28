@@ -3,7 +3,12 @@ package com.example.project.picturebook;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,8 +17,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -33,7 +42,9 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class NewPicturebook extends AppCompatActivity {
 
@@ -56,6 +67,11 @@ public class NewPicturebook extends AppCompatActivity {
     FirebaseStorage storage;
     StorageReference storageRef;
 
+    RecyclerView rv;
+    ArrayList<Bitmap> images;
+    PagesAdapter pAdapter;
+    PagesViewModel pagesModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +83,7 @@ public class NewPicturebook extends AppCompatActivity {
         discardPicturebookBtn = findViewById(R.id.buttonDiscardPicturebook);
         addPageBtn = findViewById(R.id.buttonAddPage);
         filePaths = new ArrayList<Uri>();
+        //pagesModel = new ViewModelProvider(this).get(PagesViewModel.class);
 
         auth = FirebaseAuth.getInstance();
         loggedInUser = auth.getCurrentUser();
@@ -79,6 +96,35 @@ public class NewPicturebook extends AppCompatActivity {
         }
 
         init();
+
+        rv = findViewById(R.id.recyclerViewPages);
+        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        pAdapter = new PagesAdapter(this);
+        rv.setAdapter(pAdapter);
+
+        // **************
+        // hardcoded images from drawable
+        // TODO load images from gallery
+        images = new ArrayList<Bitmap>();
+        images.add(BitmapFactory.decodeResource(getResources(),
+                R.drawable.profile));
+        images.add(BitmapFactory.decodeResource(getResources(),
+                R.drawable.edit));
+        Log.i("FILE", images.toString());
+        // **********
+
+        /*
+        final Observer<ArrayList<Uri>> pagesObserver = new Observer<ArrayList<Uri>>() {
+            @Override
+            public void onChanged(@Nullable final ArrayList<Uri> uris) {
+                AddItemsToRecyclerViewArrayList();
+                pAdapter.setImages(images);
+            }
+        };
+
+        pagesModel.getFilePaths().observe(this, pagesObserver);*/
+
+        pAdapter.setImages(images);
 
         addPageBtn.setOnClickListener(view -> {
             // save title and summary to shared preferences
@@ -98,9 +144,14 @@ public class NewPicturebook extends AppCompatActivity {
                 if (picturebookId != null) {
                     savePages();
                     Toast.makeText(NewPicturebook.this, "Picture Book successfully saved!", Toast.LENGTH_SHORT).show();
+                    editor.remove(getString(R.string.title));
+                    editor.remove(getString(R.string.summary));
+                    editor.apply();
                     Intent in = new Intent(this, MainMenu.class);
                     startActivity(in);
                 }
+            } else {
+                Toast.makeText(NewPicturebook.this, "You have to provide title, summary and at least one page for picture book!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -139,11 +190,28 @@ public class NewPicturebook extends AppCompatActivity {
         }
     }
 
+    public void AddItemsToRecyclerViewArrayList()
+    {
+        Toast.makeText(NewPicturebook.this, filePaths.toString(), Toast.LENGTH_SHORT).show();
+        for (Uri filePath : filePaths) {
+            try {
+                images.add(MediaStore.Images.Media.getBitmap(
+                        this.getContentResolver(), filePath
+                ));
+                Toast.makeText(NewPicturebook.this, "Add", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     boolean checkData() {
         boolean valid = true;
         if (title == null || title.getText().toString().isEmpty()) {
             valid = false;
         } else if (summary == null || summary.getText().toString().isEmpty()) {
+            valid = false;
+        } else if (filePaths == null || filePaths.isEmpty()) {
             valid = false;
         }
 
@@ -165,6 +233,8 @@ public class NewPicturebook extends AppCompatActivity {
                     Intent data = result.getData();
                     if (data != null && data.getData() != null) {
                         filePaths.add(data.getData());
+                        Log.i("FILE", "***************** " + filePaths);
+                        //pagesModel.insert(filePaths);
                     }
                 }
             });

@@ -29,12 +29,20 @@
             android:autofillHints="@string/summary"
             android:layout_below="@+id/editTextTitle"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewPages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/editTextSummary"
+            android:scrollbars="horizontal"
+            tools:listitem="@layout/picturebook_row_item"/>
+
         <Button
             android:id="@+id/buttonAddPage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_page"
-            android:layout_below="@id/editTextSummary"/>
+            android:layout_below="@id/recyclerViewPages"/>
 
         <Button
             android:id="@+id/buttonSavePicturebook"
