@@ -5,8 +5,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,7 +16,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -35,6 +32,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -44,7 +44,6 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class NewPicturebook extends AppCompatActivity {
 
@@ -70,7 +69,6 @@ public class NewPicturebook extends AppCompatActivity {
     RecyclerView rv;
     ArrayList<Bitmap> images;
     PagesAdapter pAdapter;
-    PagesViewModel pagesModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +80,11 @@ public class NewPicturebook extends AppCompatActivity {
         savePicturebookBtn = findViewById(R.id.buttonSavePicturebook);
         discardPicturebookBtn = findViewById(R.id.buttonDiscardPicturebook);
         addPageBtn = findViewById(R.id.buttonAddPage);
-        filePaths = new ArrayList<Uri>();
-        //pagesModel = new ViewModelProvider(this).get(PagesViewModel.class);
+        rv = findViewById(R.id.recyclerViewPages);
+        filePaths = new ArrayList<>();
+        images = new ArrayList<>();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         auth = FirebaseAuth.getInstance();
         loggedInUser = auth.getCurrentUser();
@@ -97,59 +98,15 @@ public class NewPicturebook extends AppCompatActivity {
 
         init();
 
-        rv = findViewById(R.id.recyclerViewPages);
-        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        pAdapter = new PagesAdapter(this);
-        rv.setAdapter(pAdapter);
-
-        // **************
-        // hardcoded images from drawable
-        // TODO load images from gallery
-        images = new ArrayList<Bitmap>();
-        images.add(BitmapFactory.decodeResource(getResources(),
-                R.drawable.profile));
-        images.add(BitmapFactory.decodeResource(getResources(),
-                R.drawable.edit));
-        Log.i("FILE", images.toString());
-        // **********
-
-        /*
-        final Observer<ArrayList<Uri>> pagesObserver = new Observer<ArrayList<Uri>>() {
-            @Override
-            public void onChanged(@Nullable final ArrayList<Uri> uris) {
-                AddItemsToRecyclerViewArrayList();
-                pAdapter.setImages(images);
-            }
-        };
-
-        pagesModel.getFilePaths().observe(this, pagesObserver);*/
-
-        pAdapter.setImages(images);
-
         addPageBtn.setOnClickListener(view -> {
-            // save title and summary to shared preferences
-            editor = sharedPref.edit();
-            editor.putString(getString(R.string.title), title.getText().toString());
-            editor.putString(getString(R.string.summary), summary.getText().toString());
-            editor.apply();
-
             choosePages();
         });
 
         savePicturebookBtn.setOnClickListener(view -> {
             if (checkData()) {
-                Picturebook picturebook = new Picturebook(loggedInUser.getUid(), title.getText().toString(), summary.getText().toString());
-                database.push().setValue(picturebook);
-                picturebookId = database.getKey();
-                if (picturebookId != null) {
-                    savePages();
-                    Toast.makeText(NewPicturebook.this, "Picture Book successfully saved!", Toast.LENGTH_SHORT).show();
-                    editor.remove(getString(R.string.title));
-                    editor.remove(getString(R.string.summary));
-                    editor.apply();
-                    Intent in = new Intent(this, MainMenu.class);
-                    startActivity(in);
-                }
+                savePicturebook();
+                // TODO
+                // deleteFromSP();
             } else {
                 Toast.makeText(NewPicturebook.this, "You have to provide title, summary and at least one page for picture book!", Toast.LENGTH_SHORT).show();
             }
@@ -160,7 +117,8 @@ public class NewPicturebook extends AppCompatActivity {
             builder.setMessage(R.string.discard_picturebook_dialog)
                     .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            discardPicturebook();
+                            // TODO
+                            //deleteFromSP();
                             Intent in = new Intent(view.getContext(), MainMenu.class);
                             view.getContext().startActivity(in);
                         }
@@ -177,6 +135,7 @@ public class NewPicturebook extends AppCompatActivity {
     }
 
     void init() {
+        // TODO save to SF on back button
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         titleSF = sharedPref.getString(getString(R.string.title), null);
         summarySF = sharedPref.getString(getString(R.string.summary), null);
@@ -188,21 +147,25 @@ public class NewPicturebook extends AppCompatActivity {
         if (summarySF != null) {
             summary.setText(summarySF);
         }
+
+        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        pAdapter = new PagesAdapter(this);
+        rv.setAdapter(pAdapter);
+        pAdapter.setImages(images);
     }
 
+    // last image chosen from gallery add to array of bitmaps
     public void AddItemsToRecyclerViewArrayList()
     {
-        Toast.makeText(NewPicturebook.this, filePaths.toString(), Toast.LENGTH_SHORT).show();
-        for (Uri filePath : filePaths) {
-            try {
-                images.add(MediaStore.Images.Media.getBitmap(
-                        this.getContentResolver(), filePath
-                ));
-                Toast.makeText(NewPicturebook.this, "Add", Toast.LENGTH_SHORT).show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            images.add(MediaStore.Images.Media.getBitmap(
+                    this.getContentResolver(), filePaths.get(filePaths.size() - 1)
+            ));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        // refresh recyclerview
+        pAdapter.notifyDataSetChanged();
     }
 
     boolean checkData() {
@@ -218,6 +181,7 @@ public class NewPicturebook extends AppCompatActivity {
         return valid;
     }
 
+    // choose image from gallery
     void choosePages() {
         Intent i = new Intent();
         i.setType("image/*");
@@ -233,52 +197,79 @@ public class NewPicturebook extends AppCompatActivity {
                     Intent data = result.getData();
                     if (data != null && data.getData() != null) {
                         filePaths.add(data.getData());
-                        Log.i("FILE", "***************** " + filePaths);
-                        //pagesModel.insert(filePaths);
-                    }
                 }
+                }
+                AddItemsToRecyclerViewArrayList();
             });
 
-    void savePages() {
-        storage = FirebaseStorage.getInstance();
+    void savePicturebook() {
 
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Uploading...");
-        progressDialog.show();
+        Picturebook picturebook = new Picturebook(loggedInUser.getUid(), title.getText().toString(), summary.getText().toString());
+        database.push().setValue(picturebook);
 
-        int i = 0;
-        for (Uri filePath : filePaths) {
-            storageRef = storage.getReference().child("images/pages/" + loggedInUser.getUid() + "/" + i);
-            i++;
-            storageRef.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //progressDialog.dismiss();
-                            Toast.makeText(NewPicturebook.this, "Page successfully uploaded!", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            //progressDialog.dismiss();
-                            Toast.makeText(NewPicturebook.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                    .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                        }
-                    });
-        }
-        progressDialog.dismiss();
+        // wait for creating new picturebook in database and than save pages to storage
+        database.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                picturebookId = dataSnapshot.getKey();
+                if (picturebookId != null) {
+                    savePages();
+                    // remove event listener so it wouldn't be called again after adding each page to storage
+                    database.removeEventListener(this);
+                }
+            }
+
+            void savePages() {
+                storage = FirebaseStorage.getInstance();
+                int i = 0;
+                for (Uri filePath : filePaths) {
+                    storageRef = storage.getReference().child("images/pages/" + picturebookId + "/" + i);
+                    i++;
+                    storageRef.putFile(filePath)
+                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    // when all pages are stored, redirect to main menu
+                                    if (filePath.toString().equals(filePaths.get(filePaths.size() - 1).toString())) {
+                                        Toast.makeText(NewPicturebook.this, "Picture Book successfully saved!", Toast.LENGTH_SHORT).show();
+                                        Intent in = new Intent(getApplicationContext(), MainMenu.class);
+                                        startActivity(in);
+                                    }
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(NewPicturebook.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                    }
+
+                }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {            }
+
+        });
     }
 
-    void discardPicturebook() {
-        // delete title and summary from shared preferences
+    void saveToSP() {
+        editor = sharedPref.edit();
+        editor.putString(getString(R.string.title), title.getText().toString());
+        editor.putString(getString(R.string.summary), summary.getText().toString());
+        editor.apply();
+    }
+
+    void deleteFromSP() {
         editor.remove(getString(R.string.title));
         editor.remove(getString(R.string.summary));
         editor.apply();
