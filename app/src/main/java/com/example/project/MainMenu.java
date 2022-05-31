@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.project.editpage.NewPage;
 import com.example.project.picturebook.NewPicturebook;
 import com.example.project.user_profile.Login;
 import com.example.project.user_profile.Settings;
@@ -24,6 +25,7 @@ public class MainMenu extends AppCompatActivity {
 
 
     Button newPicturebook;
+    Button newPage;
     ImageView profileBtn;
     Bitmap image;
 
@@ -46,7 +48,8 @@ public class MainMenu extends AppCompatActivity {
             startActivity(in);
         }
 
-        newPicturebook = findViewById(R.id.buttonNew);
+        newPage = findViewById(R.id.buttonNewPage);
+        newPicturebook = findViewById(R.id.buttonNewPicturebook);
         profileBtn = findViewById(R.id.imageButtonProfile);
 
         checkProfilePicture();
@@ -59,6 +62,11 @@ public class MainMenu extends AppCompatActivity {
 
         newPicturebook.setOnClickListener(view -> {
             Intent in = new Intent(view.getContext(), NewPicturebook.class);
+            view.getContext().startActivity(in);
+        });
+
+        newPage.setOnClickListener(view -> {
+            Intent in = new Intent(view.getContext(), NewPage.class);
             view.getContext().startActivity(in);
         });
     }
