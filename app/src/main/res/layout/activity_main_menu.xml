@@ -30,10 +30,16 @@
         android:layout_margin="50dp">
 
         <Button
-            android:id="@+id/buttonNew"
+            android:id="@+id/buttonNewPage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/newSlikovnica" />
+            android:text="@string/newPage" />
+        <Button
+            android:id="@+id/buttonNewPicturebook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/newSlikovnica"
+            android:layout_below="@+id/buttonNewPage"/>
 
         <Button
             android:id="@+id/buttonArchive"
@@ -41,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/archive"
-            android:layout_below="@+id/buttonNew"/>
+            android:layout_below="@+id/buttonNewPicturebook"/>
 
         <Button
             android:id="@+id/buttonExplore"

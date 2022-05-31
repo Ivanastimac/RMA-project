@@ -16,7 +16,8 @@
     <string name="back_to_login">Back to login</string>
 
     <!-- Main Menu -->
-    <string name="newSlikovnica">New</string>
+    <string name="newPage">New Page</string>
+    <string name="newSlikovnica">New Picturebook</string>
     <string name="archive">Archive</string>
     <string name="explore">Explore</string>
 
@@ -35,7 +36,7 @@
     <string name="choose_picture">Choose picture</string>
     <string name="save_picture">Save picture</string>
     <string name="delete_profile_picture">Are you sure you want to delete profile picture?</string>
-  
+
     <!-- New Picturebook -->
     <string name="picturebookId">picturebookId</string>
     <string name="discard">Discard</string>

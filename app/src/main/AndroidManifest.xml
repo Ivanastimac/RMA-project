@@ -3,6 +3,7 @@
     package="com.example.project">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -11,36 +12,43 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
-
-        <activity android:name=".picturebook.NewPicturebook"
-            android:parentActivityName=".MainMenu" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.project.MainMenu"/>
-        </activity>
-        
-        <activity android:name=".user_profile.ChangeProfilePicture"
-            android:parentActivityName=".user_profile.Settings" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.project.user_profile.Settings"/>
-        </activity>
-
-        <activity android:name=".user_profile.ChangePassword"
-            android:parentActivityName=".user_profile.Settings" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.project.user_profile.Settings"/>
-        </activity>
-
-        <activity android:name=".user_profile.Settings"
+        <activity
+            android:name=".editpage.ViewFileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".editpage.ListFilesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".editpage.NewPage"
+            android:exported="false" />
+        <activity
+            android:name=".picturebook.NewPicturebook"
             android:parentActivityName=".MainMenu">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.project.MainMenu"/>
+                android:value="com.example.project.MainMenu" />
         </activity>
-
-
+        <activity
+            android:name=".user_profile.ChangeProfilePicture"
+            android:parentActivityName=".user_profile.Settings">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.project.user_profile.Settings" />
+        </activity>
+        <activity
+            android:name=".user_profile.ChangePassword"
+            android:parentActivityName=".user_profile.Settings">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.project.user_profile.Settings" />
+        </activity>
+        <activity
+            android:name=".user_profile.Settings"
+            android:parentActivityName=".MainMenu">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.project.MainMenu" />
+        </activity>
         <activity android:name=".user_profile.PasswordReset" />
         <activity android:name=".MainMenu" />
         <activity android:name=".user_profile.Register" />
