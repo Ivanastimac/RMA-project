@@ -4,12 +4,18 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_list_files.xml" value="0.1" />
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_login.xml" value="0.19202898550724637" />
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_main.xml" value="0.19202898550724637" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_main_menu.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_new_page.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_new_picturebook.xml" value="0.11302083333333333" />
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_password_reset.xml" value="0.2210144927536232" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_photo_editor_view.xml" value="0.1" />
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_register.xml" value="0.2210144927536232" />
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_settings.xml" value="0.19202898550724637" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_view_file.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/layout_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/picturebook_row_item.xml" value="0.19202898550724637" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/row_file.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/tools_item.xml" value="0.1" />
       </map>

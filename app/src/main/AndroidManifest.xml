@@ -20,7 +20,12 @@
             android:exported="false" />
         <activity
             android:name=".editpage.NewPage"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainMenu">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.project.MainMenu" />
+        </activity>
         <activity
             android:name=".picturebook.NewPicturebook"
             android:parentActivityName=".MainMenu">
