@@ -2,6 +2,7 @@ package com.example.project.model;
 
 public class Picturebook {
 
+    private String id;
     private String userId;
     private String title;
     private String summary;
@@ -17,6 +18,10 @@ public class Picturebook {
         this.summary = summary;
         status = Status.PRIVATE;
     }
+
+    public String getId() { return id; }
+
+    public void setId(String id) { this.id = id; }
 
     public String getUserId() {
         return userId;
