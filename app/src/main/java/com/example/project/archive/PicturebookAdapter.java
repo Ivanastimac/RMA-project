@@ -1,6 +1,8 @@
 package com.example.project.archive;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Movie;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import com.example.project.R;
 import com.example.project.model.ArchiveRow;
 import com.example.project.model.Picturebook;
 import com.example.project.picturebook.PagesAdapter;
+import com.example.project.user_profile.Login;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +32,29 @@ public class PicturebookAdapter extends RecyclerView.Adapter<PicturebookAdapter.
         this.rows = rows;
     }
 
-    public class MyView extends RecyclerView.ViewHolder {
+    public class MyView extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView image;
         TextView title;
+        CardView cv;
 
         public MyView(View view) {
             super(view);
             image = view.findViewById(R.id.imageViewArhive);
             title = view.findViewById(R.id.textViewTitle);
+            cv = view.findViewById(R.id.card_view_arhive);
+            cv.setOnClickListener(this);
         }
+
+        @SuppressLint("NonConstantResourceId")
+        public void onClick(View v) {
+            int position = getBindingAdapterPosition();
+            ArchiveRow row = rows.get(position);
+            Intent in = new Intent(v.getContext(), SinglePicturebook.class);
+            in.putExtra("picturebookId", row.getId());
+            v.getContext().startActivity(in);
+        }
+
     }
 
     public PicturebookAdapter(Context context) {

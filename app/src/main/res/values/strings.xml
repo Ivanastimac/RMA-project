@@ -45,4 +45,16 @@
     <string name="discard_picturebook_dialog">Are you sure you want to discard this picturebook?</string>
     <string name="add_page">Add page</string>
 
+    <!-- Single Picturebook -->
+    <string name="publish_picturebook_dialog">Are you sure you want to publish this picturebook? If picturebook is public, you can\'t edit it!</string>
+    <string name="make_private">Make private</string>
+    <string name="private_picturebook_dialog">Are you sure you want to make this picturebook private?</string>
+    <string name="publish">Publish</string>
+    <string name="picturebook_id">picturebookId</string>
+    <string name="delete_picture_book">Delete picture book</string>
+    <string name="status">status:</string>
+    <string name="title_single_picturebook">Title:</string>
+    <string name="summary_single_picturebook">Summary:</string>
+    <string name="delete_single_picturebook_dialog">Are you sure you want to delete this picturebook?</string>
+
 </resources>
