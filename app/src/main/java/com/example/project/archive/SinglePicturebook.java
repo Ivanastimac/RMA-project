@@ -119,7 +119,7 @@ public class SinglePicturebook extends AppCompatActivity {
     }
 
     void init() {
-
+        // save to shared preferences which picturebook was chosen
         id = getIntent().getStringExtra("picturebookId");
         if (id != null || !id.isEmpty()) {
             editor = sharedPref.edit();
@@ -135,8 +135,10 @@ public class SinglePicturebook extends AppCompatActivity {
                 summary.setText(picturebook.getSummary());
                 status.setText(picturebook.getStatus().toString());
                 if (picturebook.getStatus().toString().equals("PRIVATE")) {
+                    // if picturebook is private, hide button for making it private
                     privateBtn.setVisibility(View.GONE);
                 } else {
+                    // if picturebook is published, hide buttons for making it public and edit button
                     publishBtn.setVisibility(View.GONE);
                     editBtn.setVisibility(View.GONE);
                 }
@@ -224,7 +226,7 @@ public class SinglePicturebook extends AppCompatActivity {
         builder.setMessage(R.string.delete_single_picturebook_dialog)
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
+                        // first delete all pages from storage for picturebook we want to delete
                         storage = FirebaseStorage.getInstance();
                         storageRef = storage.getReference().child("images/pages/" + sharedPref.getString(getString(R.string.picturebook_id), null));
                         storageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
