@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -162,7 +164,6 @@ public class Settings extends AppCompatActivity {
                                                 database.child(uid).removeValue();
                                                 Intent in = new Intent(view.getContext(), Login.class);
                                                 view.getContext().startActivity(in);
-                                                Toast.makeText(Settings.this, "Your profile is deleted:( Create a account now!", Toast.LENGTH_SHORT).show();
                                             } else {
                                                 Toast.makeText(Settings.this, "Failed to delete your account!", Toast.LENGTH_SHORT).show();
                                             }

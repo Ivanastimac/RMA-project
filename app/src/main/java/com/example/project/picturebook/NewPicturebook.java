@@ -42,6 +42,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -225,7 +226,18 @@ public class NewPicturebook extends AppCompatActivity {
                 for (Uri filePath : filePaths) {
                     storageRef = storage.getReference().child("images/pages/" + picturebookId + "/" + i);
                     i++;
-                    storageRef.putFile(filePath)
+                    Bitmap bm = null;
+                    try {
+                        bm = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    bm.compress(Bitmap.CompressFormat.JPEG, 10, bytes);
+                    //String path = MediaStore.Images.Media.insertImage(NewPicturebook.this.getContentResolver(), bm, "slika" + i, null);
+                    //Uri uri = Uri.parse(path);
+                    byte[] reducedImage = bytes.toByteArray();
+                    storageRef.putBytes(reducedImage)
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

@@ -191,8 +191,8 @@ public class ChangeProfilePicture extends AppCompatActivity {
         storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                // refresh page
-                recreate();
+                profilePicture.setImageDrawable(getResources().getDrawable(R.drawable.profile));
+                Toast.makeText(ChangeProfilePicture.this, "Profile picture deleted!", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
