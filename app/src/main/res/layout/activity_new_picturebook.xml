@@ -16,7 +16,7 @@
             android:id="@+id/editTextTitle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:hint="@string/title"
             android:autofillHints="@string/title"/>
 
@@ -24,7 +24,7 @@
             android:id="@+id/editTextSummary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="textPersonName"
+            android:inputType="textCapSentences"
             android:hint="@string/summary"
             android:autofillHints="@string/summary"
             android:layout_below="@+id/editTextTitle"/>

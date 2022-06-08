@@ -49,6 +49,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class NewPicturebook extends AppCompatActivity {
@@ -120,13 +121,17 @@ public class NewPicturebook extends AppCompatActivity {
             }
         });
 
+        // clear all entered data
         discardPicturebookBtn.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(R.string.discard_picturebook_dialog)
                     .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            Intent in = new Intent(view.getContext(), MainMenu.class);
-                            view.getContext().startActivity(in);
+                            title.setText("");
+                            summary.setText("");
+                            filePaths.clear();
+                            images.clear();
+                            pAdapter.notifyDataSetChanged();
                         }
                     })
                     .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -154,6 +159,7 @@ public class NewPicturebook extends AppCompatActivity {
         // if we are editing existing picturebook, load it from database
         if (editMode) {
             loadData();
+            discardPicturebookBtn.setVisibility(View.GONE);
         }
     }
 

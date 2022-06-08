@@ -47,6 +47,7 @@ public class Settings extends AppCompatActivity {
     Button deleteAccountBtn;
     Button signOutBtn;
     Button saveEditedBtn;
+    Button cancelEditedBtn;
     ImageView editBtn;
     ImageView profileBtn;
     Bitmap image;
@@ -91,14 +92,9 @@ public class Settings extends AppCompatActivity {
         lastNameEdit = findViewById(R.id.editTextLastName);
         emailEdit = findViewById(R.id.editTextEmail);
         saveEditedBtn = findViewById(R.id.buttonSaveEdited);
+        cancelEditedBtn = findViewById(R.id.buttonCancelEdited);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        // editviews for updating info, visible after clicking edit button
-        firstNameEdit.setVisibility(View.GONE);
-        lastNameEdit.setVisibility(View.GONE);
-        emailEdit.setVisibility(View.GONE);
-        saveEditedBtn.setVisibility(View.GONE);
 
         database = FirebaseDatabase.getInstance().getReference("users");
 
@@ -123,25 +119,13 @@ public class Settings extends AppCompatActivity {
         saveEditedBtn.setOnClickListener(view -> {
 
             if (checkEnteredData()) {
-                // first update email through firebase auth method
-                loggedInUser.updateEmail(emailEdit.getText().toString().trim())
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(Settings.this, "Email address is updated.", Toast.LENGTH_LONG).show();
-                                } else {
-                                    Toast.makeText(Settings.this, "Failed to update email!", Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-                // update additional user info
-                database.child(loggedInUser.getUid()).child("firstName").setValue(firstNameEdit.getText().toString());
-                database.child(loggedInUser.getUid()).child("lastName").setValue(lastNameEdit.getText().toString());
-
-                returnFromEditMode();
+               saveData();
             }
 
+        });
+
+        cancelEditedBtn.setOnClickListener(view -> {
+            returnFromEditMode();
         });
 
         changePasswordBtn.setOnClickListener(view -> {
@@ -155,20 +139,7 @@ public class Settings extends AppCompatActivity {
             builder.setMessage(R.string.delete_account_dialog)
                     .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            String uid = loggedInUser.getUid();
-                            loggedInUser.delete()
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                database.child(uid).removeValue();
-                                                Intent in = new Intent(view.getContext(), Login.class);
-                                                view.getContext().startActivity(in);
-                                            } else {
-                                                Toast.makeText(Settings.this, "Failed to delete your account!", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
+                            deleteAccount(view);
                         }
                     })
                     .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -233,6 +204,14 @@ public class Settings extends AppCompatActivity {
     }
 
     void init() {
+
+        // editviews for updating info, visible after clicking edit button
+        firstNameEdit.setVisibility(View.GONE);
+        lastNameEdit.setVisibility(View.GONE);
+        emailEdit.setVisibility(View.GONE);
+        saveEditedBtn.setVisibility(View.GONE);
+        cancelEditedBtn.setVisibility(View.GONE);
+
         email.setText(loggedInUser.getEmail());
         checkProfilePicture();
 
@@ -252,6 +231,26 @@ public class Settings extends AppCompatActivity {
         });
     }
 
+    void saveData() {
+        // first update email through firebase auth method
+        loggedInUser.updateEmail(emailEdit.getText().toString().trim())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // update additional user info
+                            database.child(loggedInUser.getUid()).child("firstName").setValue(firstNameEdit.getText().toString());
+                            database.child(loggedInUser.getUid()).child("lastName").setValue(lastNameEdit.getText().toString());
+                            Toast.makeText(Settings.this, "Changes saved!", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(Settings.this, "Failed to update!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+        returnFromEditMode();
+    }
+
     void changeToEditMode() {
         firstName.setVisibility(View.GONE);
         lastName.setVisibility(View.GONE);
@@ -260,6 +259,7 @@ public class Settings extends AppCompatActivity {
         lastNameEdit.setVisibility(View.VISIBLE);
         emailEdit.setVisibility(View.VISIBLE);
         saveEditedBtn.setVisibility(View.VISIBLE);
+        cancelEditedBtn.setVisibility(View.VISIBLE);
         changePasswordBtn.setVisibility(View.GONE);
         deleteAccountBtn.setVisibility(View.GONE);
         signOutBtn.setVisibility(View.GONE);
@@ -274,6 +274,7 @@ public class Settings extends AppCompatActivity {
         lastNameEdit.setVisibility(View.GONE);
         emailEdit.setVisibility(View.GONE);
         saveEditedBtn.setVisibility(View.GONE);
+        cancelEditedBtn.setVisibility(View.GONE);
         firstName.setVisibility(View.VISIBLE);
         lastName.setVisibility(View.VISIBLE);
         email.setVisibility(View.VISIBLE);
@@ -299,6 +300,23 @@ public class Settings extends AppCompatActivity {
                 profileBtn.setImageDrawable(getResources().getDrawable(R.drawable.profile));
             }
         });
+    }
+
+    void deleteAccount(View view) {
+        String uid = loggedInUser.getUid();
+        loggedInUser.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            database.child(uid).removeValue();
+                            Intent in = new Intent(view.getContext(), Login.class);
+                            view.getContext().startActivity(in);
+                        } else {
+                            Toast.makeText(Settings.this, "Failed to delete your account!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
 
