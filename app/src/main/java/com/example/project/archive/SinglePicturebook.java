@@ -28,6 +28,7 @@ import com.example.project.R;
 import com.example.project.model.Picturebook;
 import com.example.project.model.Status;
 import com.example.project.model.User;
+import com.example.project.picturebook.NewPicturebook;
 import com.example.project.picturebook.PagesAdapter;
 import com.example.project.user_profile.ChangeProfilePicture;
 import com.example.project.user_profile.Login;
@@ -115,6 +116,12 @@ public class SinglePicturebook extends AppCompatActivity {
 
         deleteBtn.setOnClickListener(view -> {
             deletePicturebook(view);
+        });
+
+        editBtn.setOnClickListener(view -> {
+            Intent in = new Intent(this, NewPicturebook.class);
+            in.putExtra("picturebookId", sharedPref.getString(getString(R.string.picturebook_id), null));
+            startActivity(in);
         });
     }
 
