@@ -1,5 +1,7 @@
 package com.example.project.model;
 
+import java.util.ArrayList;
+
 public class Picturebook {
 
     private String id;
@@ -7,6 +9,7 @@ public class Picturebook {
     private String title;
     private String summary;
     private Status status;
+    private ArrayList<String> pagesId;
 
     public Picturebook() {
         // Default constructor required for calls to DataSnapshot.getValue(Picturebook.class)
@@ -17,6 +20,7 @@ public class Picturebook {
         this.title = title;
         this.summary = summary;
         status = Status.PRIVATE;
+        pagesId = new ArrayList<>();
     }
 
     public String getId() { return id; }
@@ -49,6 +53,14 @@ public class Picturebook {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public ArrayList<String> getPagesId() {
+        return pagesId;
+    }
+
+    public void setPagesId(ArrayList<String> pagesId) {
+        this.pagesId = pagesId;
     }
 
 }
