@@ -61,7 +61,7 @@ public class PagesAdapter extends RecyclerView.Adapter<PagesAdapter.MyView> {
         if (pages != null) {
             holder.image.setImageBitmap(pages.get(position).getImage());
         }
-        if (newPicturebook) {
+        if (newPicturebook || (pages.get(position).getId() == null)) {
             holder.cv.setOnLongClickListener(view -> {
                 pages.remove(position);
                 notifyItemRemoved(position);

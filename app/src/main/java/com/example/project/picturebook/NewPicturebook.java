@@ -249,9 +249,7 @@ public class NewPicturebook extends AppCompatActivity {
             }
             // refresh recyclerview
             pAdapter.notifyDataSetChanged();
-            if (!editMode) {
-                Toast.makeText(NewPicturebook.this, "You can remove page with long click!", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(NewPicturebook.this, "You can remove page with long click!", Toast.LENGTH_SHORT).show();
         }
     }
 
