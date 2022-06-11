@@ -150,6 +150,7 @@ public class NewPicturebook extends AppCompatActivity {
         if (picturebookId != null) {
             editMode = true;
         }
+
         rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         pAdapter = new PagesAdapter(this);
         rv.setAdapter(pAdapter);
@@ -159,6 +160,10 @@ public class NewPicturebook extends AppCompatActivity {
         if (editMode) {
             loadData();
             discardPicturebookBtn.setVisibility(View.GONE);
+        } else {
+            // if we are creating new picture book, we can remove pages with long click from adapter
+            // because they are not yet saved to database
+            pAdapter.setNewPicturebook(true);
         }
     }
 
@@ -244,6 +249,9 @@ public class NewPicturebook extends AppCompatActivity {
             }
             // refresh recyclerview
             pAdapter.notifyDataSetChanged();
+            if (!editMode) {
+                Toast.makeText(NewPicturebook.this, "You can remove page with long click!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

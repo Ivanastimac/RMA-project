@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project.R;
@@ -18,19 +19,25 @@ public class PagesAdapter extends RecyclerView.Adapter<PagesAdapter.MyView> {
 
     private List<Page> pages;
     private LayoutInflater mInflater;
+    boolean newPicturebook = false;
 
     public void setImages(ArrayList<Page> pages) {
         this.pages = pages;
     }
 
+    public void setNewPicturebook(boolean np) { newPicturebook = np; }
+
     public class MyView extends RecyclerView.ViewHolder {
 
         ImageView image;
+        CardView cv;
 
         public MyView(View view) {
             super(view);
             image = (ImageView) view.findViewById(R.id.imageViewPage);
+            cv = view.findViewById(R.id.card_view);
         }
+
     }
 
     public PagesAdapter(Context context) {
@@ -53,6 +60,14 @@ public class PagesAdapter extends RecyclerView.Adapter<PagesAdapter.MyView> {
     public void onBindViewHolder(final MyView holder, final int position) {
         if (pages != null) {
             holder.image.setImageBitmap(pages.get(position).getImage());
+        }
+        if (newPicturebook) {
+            holder.cv.setOnLongClickListener(view -> {
+                pages.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, pages.size());
+                return true;
+            });
         }
     }
 
