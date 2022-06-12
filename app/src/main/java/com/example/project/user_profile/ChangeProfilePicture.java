@@ -29,6 +29,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class ChangeProfilePicture extends AppCompatActivity {
@@ -136,13 +137,22 @@ public class ChangeProfilePicture extends AppCompatActivity {
     // save profile picture in storage
     void uploadProfilePicture() {
         storageRef = storage.getReference();
+        storageRef = storageRef.child("images/profile_pictures/"+ loggedInUser.getUid());
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading...");
         progressDialog.show();
 
-        storageRef = storageRef.child("images/profile_pictures/"+ loggedInUser.getUid());
-        storageRef.putFile(filePath)
+        Bitmap bm = null;
+        try {
+            bm = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 5, bytes);
+        byte[] reducedImage = bytes.toByteArray();
+        storageRef.putBytes(reducedImage)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

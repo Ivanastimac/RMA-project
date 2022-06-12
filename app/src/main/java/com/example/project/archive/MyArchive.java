@@ -1,27 +1,25 @@
 package com.example.project.archive;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.ParcelableColorSpace;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.project.R;
 import com.example.project.model.ArchiveRow;
 import com.example.project.model.Picturebook;
-import com.example.project.picturebook.PagesAdapter;
 import com.example.project.user_profile.Login;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,8 +42,11 @@ public class MyArchive extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser loggedInUser;
     DatabaseReference database;
-    FirebaseStorage storage;
+    FirebaseDatabase databaseIns;
+    FirebaseStorage storageIns;
     StorageReference storageRef;
+
+    final long ONE_MEGABYTE = 1024 * 1024;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,8 @@ public class MyArchive extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         loggedInUser = auth.getCurrentUser();
-        database = FirebaseDatabase.getInstance().getReference("/picturebooks");
+        databaseIns = FirebaseDatabase.getInstance();
+        storageIns = FirebaseStorage.getInstance();
 
         // if user is not logged in, redirect to login page
         if (loggedInUser == null) {
@@ -73,6 +75,7 @@ public class MyArchive extends AppCompatActivity {
         rv.setAdapter(pAdapter);
         pAdapter.setPicturebooks(rows);
 
+        database = databaseIns.getReference("/picturebooks");
         database.orderByChild("userId").equalTo(loggedInUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -94,29 +97,50 @@ public class MyArchive extends AppCompatActivity {
         });
     }
 
+    // for each picture book get first page
     void getFirstPage(ArrayList<Picturebook> picturebooks) {
-        storage = FirebaseStorage.getInstance();
-        // TODO change path
-        int i = 0;
-        for (Picturebook picturebook : picturebooks) {
-            storageRef = storage.getReference().child("images/pages/" + picturebook.getId() + "/" + 0);
-            final long ONE_MEGABYTE = 1024 * 1024;
-            storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+
+        for (Picturebook pc : picturebooks) {
+            // TODO change limitToFirst
+            database = databaseIns.getReference("/pages");
+            database.orderByChild("picturebookId").equalTo(pc.getId()).limitToFirst(1).addChildEventListener(new ChildEventListener() {
                 @Override
-                public void onSuccess(byte[] bytes) {
-                    row = new ArchiveRow(picturebook.getId(), picturebook.getTitle(), BitmapFactory.decodeByteArray(bytes,0, bytes.length));
-                    rows.add(row);
-                    pAdapter.notifyDataSetChanged();
+                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    if (snapshot.exists()) {
+                        String pageId = snapshot.getKey();
+                        storageRef = storageIns.getReference().child("images/pages/" + pc.getId() + "/" + pageId);
+                        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            @Override
+                            public void onSuccess(byte[] bytes) {
+                                row = new ArchiveRow(pc.getId(), pc.getTitle(), BitmapFactory.decodeByteArray(bytes,0, bytes.length));
+                                rows.add(row);
+                                pAdapter.notifyDataSetChanged();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                Toast.makeText(MyArchive.this, "Failed to load page.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
-            }).addOnFailureListener(new OnFailureListener() {
+
                 @Override
-                public void onFailure(@NonNull Exception exception) {
-                    row = new ArchiveRow(picturebook.getId(), picturebook.getTitle(), BitmapFactory.decodeResource(getResources(), R.drawable.profile));
-                    rows.add(row);
-                    pAdapter.notifyDataSetChanged();
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    Toast.makeText(MyArchive.this, "Failed to read picturebooks." + error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-            ++i;
+
         }
     }
+
 }

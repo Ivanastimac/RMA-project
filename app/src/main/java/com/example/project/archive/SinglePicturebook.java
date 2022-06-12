@@ -6,36 +6,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.project.R;
+import com.example.project.model.DatabasePage;
+import com.example.project.model.Page;
 import com.example.project.model.Picturebook;
 import com.example.project.model.Status;
-import com.example.project.model.User;
+import com.example.project.picturebook.NewPicturebook;
 import com.example.project.picturebook.PagesAdapter;
-import com.example.project.user_profile.ChangeProfilePicture;
 import com.example.project.user_profile.Login;
-import com.example.project.user_profile.Settings;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,7 +34,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -60,18 +49,20 @@ public class SinglePicturebook extends AppCompatActivity {
     ImageView editBtn;
     RecyclerView rv;
     PagesAdapter pAdapter;
-    ArrayList<Bitmap> images;
+    ArrayList<Page> pages;
     Picturebook picturebook;
-    String id;
+    String picturebookId;
+    DatabasePage dbPage;
+    ArrayList<DatabasePage> dbPages;
 
     FirebaseAuth auth;
     FirebaseUser loggedInUser;
     DatabaseReference database;
-    FirebaseStorage storage;
+    FirebaseDatabase databaseIns;
+    FirebaseStorage storageIns;
     StorageReference storageRef;
 
-    SharedPreferences sharedPref;
-    SharedPreferences.Editor editor;
+    final long ONE_MEGABYTE = 1024 * 1024;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,16 +77,15 @@ public class SinglePicturebook extends AppCompatActivity {
         deleteBtn = findViewById(R.id.buttonDeletePicturebook);
         editBtn = findViewById(R.id.imageButtonEditPicturebook);
         rv = findViewById(R.id.recyclerViewPagesArchive);
-        images = new ArrayList<>();
-
-        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        storage = FirebaseStorage.getInstance();
+        pages = new ArrayList<>();
+        dbPages = new ArrayList<>();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         auth = FirebaseAuth.getInstance();
         loggedInUser = auth.getCurrentUser();
-        database = FirebaseDatabase.getInstance().getReference("/picturebooks");
+        databaseIns = FirebaseDatabase.getInstance();
+        storageIns = FirebaseStorage.getInstance();
 
         // if user is not logged in, redirect to login page
         if (loggedInUser == null) {
@@ -116,18 +106,20 @@ public class SinglePicturebook extends AppCompatActivity {
         deleteBtn.setOnClickListener(view -> {
             deletePicturebook(view);
         });
+
+        editBtn.setOnClickListener(view -> {
+            Intent in = new Intent(this, NewPicturebook.class);
+            in.putExtra("picturebookId", picturebookId);
+            startActivity(in);
+        });
     }
 
     void init() {
-        // save to shared preferences which picturebook was chosen
-        id = getIntent().getStringExtra("picturebookId");
-        if (id != null || !id.isEmpty()) {
-            editor = sharedPref.edit();
-            editor.putString(getString(R.string.picturebook_id), getIntent().getStringExtra("picturebookId"));
-            editor.apply();
-        }
 
-        database.child(sharedPref.getString(getString(R.string.picturebook_id), null)).addValueEventListener(new ValueEventListener() {
+        picturebookId = getIntent().getStringExtra("picturebookId");
+
+        database = databaseIns.getReference("/picturebooks");
+        database.child(picturebookId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 picturebook = dataSnapshot.getValue(Picturebook.class);
@@ -154,31 +146,48 @@ public class SinglePicturebook extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         pAdapter = new PagesAdapter(this);
         rv.setAdapter(pAdapter);
-        pAdapter.setImages(images);
+        pAdapter.setImages(pages);
 
-        storageRef = storage.getReference().child("images/pages/" + sharedPref.getString(getString(R.string.picturebook_id), null));
-
-        final long ONE_MEGABYTE = 1024 * 1024;
-        storageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+        database = databaseIns.getReference("/pages");
+        database.orderByChild("picturebookId").equalTo(picturebookId).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onSuccess(ListResult listResult) {
-                for (StorageReference file : listResult.getItems()) {
-                    file.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            images.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-                            pAdapter.notifyDataSetChanged();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            Toast.makeText(SinglePicturebook.this, "Failed to load image." + exception.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    pages.clear();
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        dbPage = ds.getValue(DatabasePage.class);
+                        dbPage.setId(ds.getKey());
+                        dbPages.add(dbPage);
+                    }
                 }
+                getPages();
+                database.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(SinglePicturebook.this, "Failed to read value." + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    void getPages() {
+        for (DatabasePage page : dbPages) {
+            storageRef = storageIns.getReference().child("images/pages/" + picturebookId + "/" + page.getId());
+            storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    pages.add(new Page(page.getId(), BitmapFactory.decodeByteArray(bytes,0, bytes.length)));
+                    pAdapter.notifyDataSetChanged();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(SinglePicturebook.this, "Failed to load image.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     void publish() {
@@ -186,7 +195,8 @@ public class SinglePicturebook extends AppCompatActivity {
         builder.setMessage(R.string.publish_picturebook_dialog)
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        database.child("/" + sharedPref.getString(getString(R.string.picturebook_id), null)).child("status").setValue(Status.PUBLISHED);
+                        database = databaseIns.getReference("/picturebooks");
+                        database.child("/" + picturebookId).child("status").setValue(Status.PUBLISHED);
                         editBtn.setVisibility(View.GONE);
                         publishBtn.setVisibility(View.GONE);
                         privateBtn.setVisibility(View.VISIBLE);
@@ -206,7 +216,8 @@ public class SinglePicturebook extends AppCompatActivity {
         builder.setMessage(R.string.private_picturebook_dialog)
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        database.child("/" + sharedPref.getString(getString(R.string.picturebook_id), null)).child("status").setValue(Status.PRIVATE);
+                        database = databaseIns.getReference("/picturebooks");
+                        database.child("/" + picturebookId).child("status").setValue(Status.PRIVATE);
                         editBtn.setVisibility(View.VISIBLE);
                         publishBtn.setVisibility(View.VISIBLE);
                         privateBtn.setVisibility(View.GONE);
@@ -226,22 +237,24 @@ public class SinglePicturebook extends AppCompatActivity {
         builder.setMessage(R.string.delete_single_picturebook_dialog)
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // first delete all pages from storage for picturebook we want to delete
-                        storage = FirebaseStorage.getInstance();
-                        storageRef = storage.getReference().child("images/pages/" + sharedPref.getString(getString(R.string.picturebook_id), null));
-                        storageRef.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+                        database = databaseIns.getReference("/pages");
+                        database.orderByChild("picturebookId").equalTo(picturebookId).addValueEventListener(new ValueEventListener() {
                             @Override
-                            public void onSuccess(ListResult listResult) {
-                                for (StorageReference file : listResult.getItems()) {
-                                    file.delete();
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                        dbPage = ds.getValue(DatabasePage.class);
+                                        dbPage.setId(ds.getKey());
+                                        dbPages.add(dbPage);
+                                        ds.getRef().removeValue();
+                                    }
                                 }
-                                database.child("/" + sharedPref.getString(getString(R.string.picturebook_id), null)).removeValue();
-                                editor.remove(getString(R.string.picturebook_id));
-                                editor.apply();
-                                Toast.makeText(SinglePicturebook.this, "Picturebook is deleted!", Toast.LENGTH_SHORT).show();
-                                Intent in = new Intent(view.getContext(), MyArchive.class);
-                                view.getContext().startActivity(in);
+                                removePages(view);
+                                database.removeEventListener(this);
                             }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) { }
                         });
 
                     }
@@ -254,4 +267,30 @@ public class SinglePicturebook extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    void removePages(View view) {
+
+        for (DatabasePage page : dbPages) {
+            storageRef = storageIns.getReference().child("images/pages/" + picturebookId + "/" + page.getId());
+            storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(SinglePicturebook.this, "Deleted!", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(SinglePicturebook.this, "Unsuccessful!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        database = databaseIns.getReference("/picturebooks");
+        database.child("/" + picturebookId).removeValue();
+        Toast.makeText(SinglePicturebook.this, "Picturebook is deleted!", Toast.LENGTH_SHORT).show();
+        Intent in = new Intent(view.getContext(), MyArchive.class);
+        view.getContext().startActivity(in);
+
+    }
+
 }

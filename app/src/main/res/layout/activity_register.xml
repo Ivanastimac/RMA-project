@@ -12,7 +12,7 @@
             android:id="@+id/editTextFirstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:hint="@string/first_name"
             android:autofillHints="@string/first_name"/>
 
@@ -20,7 +20,7 @@
             android:id="@+id/editTextLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
             android:hint="@string/last_name"
             android:autofillHints="@string/last_name"
             android:layout_below="@+id/editTextFirstName"/>
@@ -29,7 +29,7 @@
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
             android:hint="@string/e_mail"
             android:autofillHints="@string/e_mail"
             android:layout_below="@+id/editTextLastName"/>

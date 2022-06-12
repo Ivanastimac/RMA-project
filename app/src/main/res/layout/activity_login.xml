@@ -12,9 +12,9 @@
                 android:id="@+id/editTextUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:hint="@string/username"
-                android:autofillHints="@string/username"/>
+                android:inputType="textEmailAddress"
+                android:hint="@string/e_mail"
+                android:autofillHints="@string/e_mail"/>
 
             <EditText
                 android:id="@+id/editTextPassword"

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.project.archive.MyArchive;
 import com.example.project.editpage.NewPage;
 import com.example.project.picturebook.NewPicturebook;
