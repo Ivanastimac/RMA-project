@@ -58,6 +58,13 @@
             android:text="@string/discard"
             android:layout_below="@id/buttonSavePicturebook"/>
 
+        <Button
+            android:id="@+id/buttonEditPages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_pages"
+            android:layout_below="@id/buttonSavePicturebook"/>
+
     </RelativeLayout>
 
 </ScrollView>
