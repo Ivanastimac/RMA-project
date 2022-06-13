@@ -6,11 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".archive.EditPages">
 
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/recyclerViewEditPages"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="vertical"
-    tools:listitem="@layout/edit_pages_row_item" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewEditPages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/edit_pages_row_item" />
+
+        <Button
+            android:id="@+id/buttonSavePagesDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:layout_below="@+id/recyclerViewEditPages"
+            android:layout_margin="20dp"/>
+
+    </RelativeLayout>
 
     </ScrollView>

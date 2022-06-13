@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.project.R;
@@ -43,8 +44,10 @@ public class EditPages extends AppCompatActivity {
     RecyclerView rv;
     PagesDetailsAdapter pdAdapter;
     String picturebookId;
-    DatabasePage page;
+    DatabasePage dbPage;
+    Page page;
     ArrayList<DatabasePage> dbPages;
+    Button saveBtn;
 
     final long ONE_MEGABYTE = 1024 * 1024;
 
@@ -54,6 +57,7 @@ public class EditPages extends AppCompatActivity {
         setContentView(R.layout.activity_edit_pages);
 
         rv = findViewById(R.id.recyclerViewEditPages);
+        saveBtn = findViewById(R.id.buttonSavePagesDetails);
         pages = new ArrayList<>();
         dbPages = new ArrayList<>();
 
@@ -82,11 +86,12 @@ public class EditPages extends AppCompatActivity {
                 if(dataSnapshot.exists()) {
                     pages.clear();
                     for (DataSnapshot pc : dataSnapshot.getChildren()) {
-                        page = pc.getValue(DatabasePage.class);
-                        page.setId(pc.getKey());
-                        dbPages.add(page);
+                        dbPage = pc.getValue(DatabasePage.class);
+                        dbPage.setId(pc.getKey());
+                        dbPages.add(dbPage);
                     }
-                    getPagesFromStorage(dbPages);
+                    pdAdapter.setNumPages(dbPages.size());
+                    getPagesFromStorage();
                 }
             }
 
@@ -96,9 +101,13 @@ public class EditPages extends AppCompatActivity {
             }
         });
 
+        saveBtn.setOnClickListener(view -> {
+            saveEdited();
+        });
+
     }
 
-    void getPagesFromStorage(ArrayList<DatabasePage> dbPages) {
+    void getPagesFromStorage() {
         for (DatabasePage page : dbPages) {
             storageRef = storageIns.getReference().child("images/pages/" + picturebookId + "/" + page.getId());
             storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -114,5 +123,16 @@ public class EditPages extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    void saveEdited() {
+        database = databaseIns.getReference("/pages");
+        for (Page page : pages) {
+            DatabasePage dbPage = new DatabasePage(picturebookId, page.getCaption(), page.getNum());
+            database.child(page.getId()).setValue(dbPage);
+        }
+        Intent in = new Intent(this, SinglePicturebook.class);
+        in.putExtra("picturebookId", picturebookId);
+        startActivity(in);
     }
 }
