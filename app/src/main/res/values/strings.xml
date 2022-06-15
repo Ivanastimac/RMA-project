@@ -61,6 +61,8 @@
     <string name="summary_single_picturebook">Summary:</string>
     <string name="delete_single_picturebook_dialog">Are you sure you want to delete this picturebook?</string>
     <string name="edit_pages">edit pages</string>
+    <string name="reset">reset</string>
+    <string name="caption">caption:</string>
 
 
 </resources>

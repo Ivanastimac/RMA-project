@@ -23,7 +23,9 @@
             android:layout_height="wrap_content"
             android:text="@string/save"
             android:layout_below="@+id/recyclerViewEditPages"
-            android:layout_margin="20dp"/>
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"/>
 
     </RelativeLayout>
 

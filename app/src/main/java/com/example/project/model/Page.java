@@ -9,6 +9,13 @@ public class Page {
     private String caption;
     private int num;
 
+    public Page(String id, Bitmap bm, String caption, int num) {
+        this.id = id;
+        image = bm;
+        this.caption = caption;
+        this.num = num;
+    }
+
     public Page(String id, Bitmap bm) {
         this.id = id;
         image = bm;

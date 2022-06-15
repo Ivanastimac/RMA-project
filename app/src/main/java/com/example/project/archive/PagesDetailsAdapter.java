@@ -75,10 +75,22 @@ public class PagesDetailsAdapter extends RecyclerView.Adapter<PagesDetailsAdapte
             rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                    View radioButton = rg.findViewById(i);
+                    RadioButton radioButton = rg.findViewById(i);
                     int index = rg.indexOfChild(radioButton);
                     Page page = pages.get(getAbsoluteAdapterPosition());
-                    page.setNum(index + 1);
+                    boolean flag = false;
+                    for (Page anotherPage : pages) {
+                        if (anotherPage.getNum() == index + 1 && !anotherPage.getId().equals(page.getId())) {
+                            flag = true;
+                        }
+                    }
+                    if (flag) {
+                        Toast.makeText(view.getContext(), "Two pages can't have the same page number!", Toast.LENGTH_SHORT).show();
+                        page.setNum(0);
+                        radioButton.setChecked(false);
+                    } else {
+                        page.setNum(index + 1);
+                    }
                     pages.set(getAbsoluteAdapterPosition(), page);
                 }
             });
@@ -102,8 +114,20 @@ public class PagesDetailsAdapter extends RecyclerView.Adapter<PagesDetailsAdapte
     public void onBindViewHolder(@NonNull PagesDetailsAdapter.MyView holder, int position) {
         if (pages != null) {
             holder.image.setImageBitmap(pages.get(position).getImage());
-            for (int i = numPages; i <= 4; ++i) {
-                holder.btns[i].setVisibility(View.GONE);
+            holder.caption.setText(pages.get(position).getCaption());
+            for (int i = 0; i <= 4; ++i) {
+                if (i >= numPages) {
+                    holder.btns[i].setVisibility(View.GONE);
+                }
+                if (pages.get(position).getNum() - 1 == i) {
+                    if (!holder.btns[i].isChecked()) {
+                        holder.btns[i].setChecked(true);
+                    }
+                } else {
+                    if (holder.btns[i].isChecked()) {
+                        holder.btns[i].setChecked(false);
+                    }
+                }
             }
         }
     }

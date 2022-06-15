@@ -14,11 +14,11 @@ import android.widget.Toast;
 import com.example.project.R;
 import com.example.project.model.DatabasePage;
 import com.example.project.model.Page;
-import com.example.project.model.Picturebook;
-import com.example.project.picturebook.NewPicturebook;
 import com.example.project.user_profile.Login;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,7 +45,6 @@ public class EditPages extends AppCompatActivity {
     PagesDetailsAdapter pdAdapter;
     String picturebookId;
     DatabasePage dbPage;
-    Page page;
     ArrayList<DatabasePage> dbPages;
     Button saveBtn;
 
@@ -72,10 +71,15 @@ public class EditPages extends AppCompatActivity {
             startActivity(in);
         }
 
-        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        pdAdapter = new PagesDetailsAdapter(this);
-        rv.setAdapter(pdAdapter);
-        pdAdapter.setPages(pages);
+        init();
+
+        saveBtn.setOnClickListener(view -> {
+            saveEdited();
+        });
+
+    }
+
+    void init() {
 
         picturebookId = getIntent().getStringExtra("picturebookId");
 
@@ -101,9 +105,10 @@ public class EditPages extends AppCompatActivity {
             }
         });
 
-        saveBtn.setOnClickListener(view -> {
-            saveEdited();
-        });
+        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        pdAdapter = new PagesDetailsAdapter(this);
+        rv.setAdapter(pdAdapter);
+        pdAdapter.setPages(pages);
 
     }
 
@@ -113,7 +118,7 @@ public class EditPages extends AppCompatActivity {
             storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
-                    pages.add(new Page(page.getId(), BitmapFactory.decodeByteArray(bytes,0, bytes.length)));
+                    pages.add(new Page(page.getId(), BitmapFactory.decodeByteArray(bytes,0, bytes.length), page.getCaption(), page.getNum()));
                     pdAdapter.notifyDataSetChanged();
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -126,13 +131,33 @@ public class EditPages extends AppCompatActivity {
     }
 
     void saveEdited() {
-        database = databaseIns.getReference("/pages");
+
+        boolean valid = true;
         for (Page page : pages) {
-            DatabasePage dbPage = new DatabasePage(picturebookId, page.getCaption(), page.getNum());
-            database.child(page.getId()).setValue(dbPage);
+            if (page.getCaption().isEmpty() || page.getCaption().equals("") || page.getNum() <= 0) {
+                valid = false;
+            }
         }
-        Intent in = new Intent(this, SinglePicturebook.class);
-        in.putExtra("picturebookId", picturebookId);
-        startActivity(in);
+
+        if (valid) {
+            database = databaseIns.getReference("/pages");
+            for (Page page : pages) {
+                DatabasePage dbPage = new DatabasePage(picturebookId, page.getCaption(), page.getNum());
+                database.child(page.getId()).setValue(dbPage).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (page.getId().equals(pages.get(pages.size() - 1).getId())) {
+                            Intent in = new Intent(getBaseContext(), SinglePicturebook.class);
+                            in.putExtra("picturebookId", picturebookId);
+                            startActivity(in);
+                        }
+                    }
+                });
+            }
+
+        } else {
+            Toast.makeText(EditPages.this, "You need to fill all information in order to save details about pages!", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

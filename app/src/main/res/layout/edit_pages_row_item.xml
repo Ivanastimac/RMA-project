@@ -23,13 +23,25 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_centerInParent="true"
-                android:layout_alignParentTop="true"/>
+                android:layout_alignParentTop="true"
+                android:layout_margin="10dp"/>
+
+            <TextView
+                android:id="@+id/textViewCaptionWord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/caption"
+                android:textColor="@color/black"
+                android:textAllCaps="true"
+                android:textSize="20dp"
+                android:layout_below="@+id/imageViewSinglePage"/>
 
             <EditText
                 android:id="@+id/editTextCaption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/imageViewSinglePage"/>
+                android:inputType="textCapSentences"
+                android:layout_below="@+id/textViewCaptionWord"/>
 
             <TextView
                 android:id="@+id/textViewPageNumber"
