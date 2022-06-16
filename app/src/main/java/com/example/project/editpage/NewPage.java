@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import com.example.project.R;
 import com.example.project.editpage.adapters.ToolsAdabters;
@@ -134,6 +135,13 @@ public class NewPage extends AppCompatActivity implements ToolsListener {
 
         }
     }
+
+    public void newFile(View view){
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
 
     private void saveBitmap() throws IOException {
         Bitmap bitmap = mPaintView.getBitmap();

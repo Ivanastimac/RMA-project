@@ -18,6 +18,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import com.example.project.R;
+import com.example.project.editpage.NewPage;
 
 import java.util.ArrayList;
 
@@ -44,6 +45,7 @@ public class PaintView extends View {
 
         init();
     }
+
 
     private void init() {
         sizeEraser = sizeBrush = 12;
@@ -298,4 +300,5 @@ public class PaintView extends View {
         invalidate();
 
     }
+
 }
