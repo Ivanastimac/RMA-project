@@ -138,7 +138,8 @@ public class EditPages extends AppCompatActivity {
                 valid = false;
             }
         }
-
+        // save details only if all information is provided
+        // details are saved in pages array (on change listeners in PagesDetailsAdapter)
         if (valid) {
             database = databaseIns.getReference("/pages");
             for (Page page : pages) {

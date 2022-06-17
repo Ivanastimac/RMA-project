@@ -79,6 +79,7 @@ public class PagesDetailsAdapter extends RecyclerView.Adapter<PagesDetailsAdapte
                     int index = rg.indexOfChild(radioButton);
                     Page page = pages.get(getAbsoluteAdapterPosition());
                     boolean flag = false;
+                    // check if some other page already has selected page number
                     for (Page anotherPage : pages) {
                         if (anotherPage.getNum() == index + 1 && !anotherPage.getId().equals(page.getId())) {
                             flag = true;
@@ -89,6 +90,7 @@ public class PagesDetailsAdapter extends RecyclerView.Adapter<PagesDetailsAdapte
                         page.setNum(0);
                         radioButton.setChecked(false);
                     } else {
+                        radioButton.setChecked(true);
                         page.setNum(index + 1);
                     }
                     pages.set(getAbsoluteAdapterPosition(), page);
@@ -115,6 +117,7 @@ public class PagesDetailsAdapter extends RecyclerView.Adapter<PagesDetailsAdapte
         if (pages != null) {
             holder.image.setImageBitmap(pages.get(position).getImage());
             holder.caption.setText(pages.get(position).getCaption());
+            // hide buttons if picture book has less than 5 pages
             for (int i = 0; i <= 4; ++i) {
                 if (i >= numPages) {
                     holder.btns[i].setVisibility(View.GONE);
