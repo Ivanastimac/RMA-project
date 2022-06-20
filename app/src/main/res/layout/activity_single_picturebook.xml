@@ -11,13 +11,11 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:padding="70dp"
-        android:weightSum="1"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.3">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/imageButtonEditPicturebook"
@@ -108,8 +106,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.6">
+            android:layout_height="wrap_content">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewPagesArchive"
@@ -122,8 +119,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.1">
+            android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/buttonDeletePicturebook"
