@@ -133,6 +133,7 @@ public class SinglePicturebook extends AppCompatActivity {
                     // if picturebook is published, hide buttons for making it public and edit button
                     publishBtn.setVisibility(View.GONE);
                     editBtn.setVisibility(View.GONE);
+                    deleteBtn.setVisibility(View.GONE);
                 }
                 database.removeEventListener(this);
             }
@@ -200,6 +201,7 @@ public class SinglePicturebook extends AppCompatActivity {
                         editBtn.setVisibility(View.GONE);
                         publishBtn.setVisibility(View.GONE);
                         privateBtn.setVisibility(View.VISIBLE);
+                        deleteBtn.setVisibility(View.GONE);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -221,6 +223,7 @@ public class SinglePicturebook extends AppCompatActivity {
                         editBtn.setVisibility(View.VISIBLE);
                         publishBtn.setVisibility(View.VISIBLE);
                         privateBtn.setVisibility(View.GONE);
+                        deleteBtn.setVisibility(View.VISIBLE);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.project.MainMenu;
 import com.example.project.R;
+import com.example.project.archive.EditPages;
 import com.example.project.archive.SinglePicturebook;
 import com.example.project.model.DatabasePage;
 import com.example.project.model.Page;
@@ -56,6 +57,7 @@ public class NewPicturebook extends AppCompatActivity {
     Button savePicturebookBtn;
     Button discardPicturebookBtn;
     Button addPageBtn;
+    Button editPagesBtn;
     String picturebookId;
     DatabasePage dbPage;
     ArrayList<DatabasePage> dbPages;
@@ -91,6 +93,7 @@ public class NewPicturebook extends AppCompatActivity {
         savePicturebookBtn = findViewById(R.id.buttonSavePicturebook);
         discardPicturebookBtn = findViewById(R.id.buttonDiscardPicturebook);
         addPageBtn = findViewById(R.id.buttonAddPage);
+        editPagesBtn = findViewById(R.id.buttonEditPages);
         rv = findViewById(R.id.recyclerViewPages);
         pages = new ArrayList<>();
         dbPages = new ArrayList<>();
@@ -141,6 +144,12 @@ public class NewPicturebook extends AppCompatActivity {
             dialog.show();
         });
 
+        editPagesBtn.setOnClickListener(view -> {
+            Intent in = new Intent(this, EditPages.class);
+            in.putExtra("picturebookId", picturebookId);
+            startActivity(in);
+        });
+
     }
 
     void init() {
@@ -164,6 +173,7 @@ public class NewPicturebook extends AppCompatActivity {
             // if we are creating new picture book, we can remove pages with long click from adapter
             // because they are not yet saved to database
             pAdapter.setNewPicturebook(true);
+            editPagesBtn.setVisibility(View.GONE);
         }
     }
 
