@@ -1,31 +1,25 @@
-package com.example.project.archive;
+package com.example.project.explore;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Movie;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project.R;
 import com.example.project.model.ArchiveRow;
-import com.example.project.model.Picturebook;
-import com.example.project.picturebook.PagesAdapter;
-import com.example.project.user_profile.Login;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class PicturebookAdapter extends RecyclerView.Adapter<PicturebookAdapter.MyView>{
-
+public class ExplorePicturebookAdapter extends RecyclerView.Adapter<ExplorePicturebookAdapter.MyView> {
     private List<ArchiveRow> rows;
     private LayoutInflater mInflater;
 
@@ -33,6 +27,10 @@ public class PicturebookAdapter extends RecyclerView.Adapter<PicturebookAdapter.
         this.rows = rows;
     }
 
+    public void setFilteredList(List<ArchiveRow> filteredList){
+        this.rows = filteredList;
+        notifyDataSetChanged();
+    }
 
     public class MyView extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -52,19 +50,19 @@ public class PicturebookAdapter extends RecyclerView.Adapter<PicturebookAdapter.
         public void onClick(View v) {
             int position = getBindingAdapterPosition();
             ArchiveRow row = rows.get(position);
-            Intent in = new Intent(v.getContext(), SinglePicturebook.class);
+            Intent in = new Intent(v.getContext(), ExploreSinglePicturebook.class);
             in.putExtra("picturebookId", row.getId());
             v.getContext().startActivity(in);
         }
 
     }
 
-    public PicturebookAdapter(Context context) {
+    public ExplorePicturebookAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
     }
 
     @Override
-    public PicturebookAdapter.MyView onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ExplorePicturebookAdapter.MyView onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View itemView = LayoutInflater
                 .from(parent.getContext())
@@ -72,11 +70,11 @@ public class PicturebookAdapter extends RecyclerView.Adapter<PicturebookAdapter.
                         parent,
                         false);
 
-        return new PicturebookAdapter.MyView(itemView);
+        return new ExplorePicturebookAdapter.MyView(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final PicturebookAdapter.MyView holder, final int position) {
+    public void onBindViewHolder(final ExplorePicturebookAdapter.MyView holder, final int position) {
         if (rows != null) {
             holder.title.setText(rows.get(position).getTitle());
             holder.image.setImageBitmap(rows.get(position).getFirstPage());
@@ -92,4 +90,5 @@ public class PicturebookAdapter extends RecyclerView.Adapter<PicturebookAdapter.
         }
     }
 
-    }
+}
+
