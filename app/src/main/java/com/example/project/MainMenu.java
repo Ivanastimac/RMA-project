@@ -10,9 +10,9 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.example.project.archive.MyArchive;
 import com.example.project.editpage.NewPage;
+import com.example.project.explore.Explore;
 import com.example.project.picturebook.NewPicturebook;
 import com.example.project.user_profile.Login;
 import com.example.project.user_profile.Settings;
@@ -29,6 +29,7 @@ public class MainMenu extends AppCompatActivity {
     Button newPicturebook;
     Button newPage;
     Button archive;
+    Button explore;
     ImageView profileBtn;
     Bitmap image;
 
@@ -55,6 +56,7 @@ public class MainMenu extends AppCompatActivity {
         newPicturebook = findViewById(R.id.buttonNewPicturebook);
         profileBtn = findViewById(R.id.imageButtonProfile);
         archive = findViewById(R.id.buttonArchive);
+        explore = findViewById(R.id.buttonExplore);
 
         checkProfilePicture();
 
@@ -76,6 +78,11 @@ public class MainMenu extends AppCompatActivity {
 
         archive.setOnClickListener(view -> {
             Intent in = new Intent(view.getContext(), MyArchive.class);
+            view.getContext().startActivity(in);
+        });
+
+        explore.setOnClickListener(view -> {
+            Intent in = new Intent(view.getContext(), Explore.class);
             view.getContext().startActivity(in);
         });
     }

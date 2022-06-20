@@ -14,6 +14,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
         <activity
+            android:name=".explore.ExploreSinglePicturebook"
+            android:exported="false"
+            android:parentActivityName=".explore.Explore">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.project.explore.Explore" />
+        </activity>
+        <activity
+            android:name=".explore.Explore"
+            android:exported="false"
+            android:parentActivityName=".MainMenu">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.project.MainMenu" />
+        </activity>
+        <activity
             android:name=".archive.SinglePicturebook"
             android:parentActivityName=".archive.MyArchive">
             <meta-data
