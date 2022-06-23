@@ -81,7 +81,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="0.7"
+        android:layout_weight="0.5"
         android:gravity="center"
         android:background="@color/purple_200"
         android:adjustViewBounds="true">
@@ -100,17 +100,26 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1">
+        android:layout_weight="0.3">
 
+        <ImageButton
+            android:id="@+id/addReviews"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:clickable="true"
+            android:src="@drawable/ic_baseline_rate_review_24" />
         <Button
             android:id="@+id/buttonDeletePicturebook"
             android:layout_width="match_parent"
+            android:layout_below="@+id/addReviews"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="35dp"
             android:padding="5dp"
             android:text="@string/delete_picture_book" />
-
     </RelativeLayout>
 
 </LinearLayout>

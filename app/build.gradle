@@ -54,5 +54,5 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.github.QuadFlask:colorpicker:0.0.15'
     implementation 'com.google.android.material:material:1.1.0-alpha10'
-
+    implementation 'com.github.mohammadatif:CircularImageView:1.0.1'
 }
