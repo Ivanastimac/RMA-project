@@ -3,16 +3,12 @@ package com.example.project.review;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.blogspot.atifsoftwares.circularimageview.CircularImageView;
 import com.example.project.R;
-import com.example.project.archive.MyArchive;
-import com.example.project.model.ArchiveRow;
 import com.example.project.model.DatabasePage;
 import com.example.project.model.PicturebookCoverImage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -155,7 +151,7 @@ public class WriteReview extends AppCompatActivity {
     }
 
     private void loadMyReview() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/users");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/picturebooks");
         ref.child(picturebooksId).child("/ratings").child(firebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -189,7 +185,7 @@ public class WriteReview extends AppCompatActivity {
         hashMap.put("review", ""+ review);
         hashMap.put("timestamp", ""+ timestamp);
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/users");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/picturebooks");
         ref.child(picturebooksId).child("/ratings").child(firebaseAuth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
