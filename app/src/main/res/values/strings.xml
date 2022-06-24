@@ -67,5 +67,6 @@
     <string name="edit_pages">edit pages</string>
     <string name="reset">reset</string>
     <string name="caption">caption:</string>
+    <string name="take_picture">Take picture</string>
 
 </resources>

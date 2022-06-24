@@ -8,13 +8,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -37,6 +41,7 @@ public class ChangeProfilePicture extends AppCompatActivity {
     Button choosePictureBtn;
     Button savePictureBtn;
     Button deletePictureBtn;
+    Button takePictureBtn;
     ImageView profilePicture;
     Bitmap image;
 
@@ -48,6 +53,10 @@ public class ChangeProfilePicture extends AppCompatActivity {
     FirebaseStorage storage;
     StorageReference storageRef;
 
+    boolean takenWithCamera;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +65,9 @@ public class ChangeProfilePicture extends AppCompatActivity {
         choosePictureBtn = findViewById(R.id.buttonChoosePicture);
         savePictureBtn = findViewById(R.id.buttonSavePicture);
         deletePictureBtn = findViewById(R.id.buttonDeletePicture);
+        takePictureBtn = findViewById(R.id.buttonTakePicture);
         profilePicture = findViewById(R.id.imageProfilePicture);
+        takenWithCamera = false;
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -71,14 +82,23 @@ public class ChangeProfilePicture extends AppCompatActivity {
 
         storage = FirebaseStorage.getInstance();
 
+        // if camera is not available, hide button for taking profile picture
+        if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+            takePictureBtn.setVisibility(View.GONE);
+        }
+
         checkProfilePicture();
+
+        takePictureBtn.setOnClickListener(view -> {
+            takeProfilePicture();
+        });
 
         choosePictureBtn.setOnClickListener(view -> {
             chooseProfilePicture();
         });
 
         savePictureBtn.setOnClickListener(view -> {
-            if (selectedImageBitmap == null) {
+            if (selectedImageBitmap == null && !takenWithCamera) {
                 Toast.makeText(ChangeProfilePicture.this, "Please choose picture.", Toast.LENGTH_SHORT).show();
             } else {
                 uploadProfilePicture();
@@ -102,6 +122,28 @@ public class ChangeProfilePicture extends AppCompatActivity {
             dialog.show();
 
         });
+    }
+
+    // open camera
+    private void takeProfilePicture() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // after taking photo, set it in profile picture image view
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            profilePicture.setImageBitmap(imageBitmap);
+            takenWithCamera = true;
+        }
     }
 
     // choose profile picture from gallery
@@ -143,14 +185,11 @@ public class ChangeProfilePicture extends AppCompatActivity {
         progressDialog.setTitle("Uploading...");
         progressDialog.show();
 
-        Bitmap bm = null;
-        try {
-            bm = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        BitmapDrawable drawable = (BitmapDrawable) profilePicture.getDrawable();
+        Bitmap bm = drawable.getBitmap();
+
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 5, bytes);
+        bm.compress(Bitmap.CompressFormat.JPEG, 10, bytes);
         byte[] reducedImage = bytes.toByteArray();
         storageRef.putBytes(reducedImage)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
