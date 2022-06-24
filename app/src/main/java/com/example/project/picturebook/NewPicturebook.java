@@ -115,7 +115,11 @@ public class NewPicturebook extends AppCompatActivity {
         init();
 
         addPageBtn.setOnClickListener(view -> {
-            choosePages();
+            if (pAdapter.getItemCount() == 7) {
+                Toast.makeText(NewPicturebook.this, "You've reached maximum number of pages!", Toast.LENGTH_SHORT).show();
+            } else {
+                choosePages();
+            }
         });
 
         savePicturebookBtn.setOnClickListener(view -> {
