@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/drawable/ic_baseline_rate_review_24.xml" value="0.215" />
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_change_password.xml" value="0.16458333333333333" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_explore.xml" value="0.1634963768115942" />
-        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_explore_single_picturebook.xml" value="0.2" />
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_explore_single_picturebook.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_list_files.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_login.xml" value="0.19202898550724637" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_main.xml" value="0.19202898550724637" />
@@ -18,6 +20,7 @@
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_settings.xml" value="0.19202898550724637" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_single_picturebook.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_view_file.xml" value="0.1" />
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_write_review.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/archive_row_item.xml" value="0.1634963768115942" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/layout_dialog.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/picturebook_row_item.xml" value="0.1" />

@@ -9,22 +9,39 @@
     android:background="@color/teal_200"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        card_view:cardCornerRadius="4dp">
-
-        <ImageView
-            android:id="@+id/imageViewPage"
+        android:layout_height="match_parent">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:background="@color/colorAccent"
-            android:scaleType="fitXY" />
-    </androidx.cardview.widget.CardView>
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            card_view:cardCornerRadius="4dp">
+
+
+                <ImageView
+                    android:id="@+id/imageViewPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:background="@color/colorAccent"
+                    android:scaleType="fitXY" />
+                <TextView
+                    android:id="@+id/textCaption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imageViewPage"
+                    android:layout_gravity="bottom"
+                    android:textSize="40dp"
+                    android:background="@color/white"
+                    android:textAlignment="center"/>
+
+
+
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
 
 
 

@@ -13,7 +13,9 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.project.R;
+import com.example.project.archive.MyArchive;
 import com.example.project.model.ArchiveRow;
+import com.example.project.model.DatabasePage;
 import com.example.project.model.Picturebook;
 import com.example.project.user_profile.Login;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,6 +47,8 @@ public class Explore extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser loggedInUser;
     DatabaseReference database;
+    DatabasePage dbPage;
+    String pageId;
     FirebaseDatabase databaseIns;
     FirebaseStorage storageIns;
     StorageReference storageRef;
@@ -99,7 +103,7 @@ public class Explore extends AppCompatActivity {
         database.orderByChild("status").equalTo("PUBLISHED").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
+                if (dataSnapshot.exists()) {
                     rows.clear();
                     for (DataSnapshot pc : dataSnapshot.getChildren()) {
                         picturebook = pc.getValue(Picturebook.class);
@@ -119,15 +123,15 @@ public class Explore extends AppCompatActivity {
 
     private void filterList(String text) {
         List<ArchiveRow> filteredList = new ArrayList<>();
-        for(ArchiveRow pic : rows){
-            if(pic.getTitle().toLowerCase().contains(text.toLowerCase())){
+        for (ArchiveRow pic : rows) {
+            if (pic.getTitle().toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(pic);
             }
         }
 
-        if(filteredList.isEmpty()){
+        if (filteredList.isEmpty()) {
             Toast.makeText(Explore.this, "No matches found", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             pAdapter.setFilteredList(filteredList);
         }
     }
@@ -137,16 +141,24 @@ public class Explore extends AppCompatActivity {
         for (Picturebook pc : picturebooks) {
             // TODO change limitToFirst
             database = databaseIns.getReference("/pages");
-            database.orderByChild("picturebookId").equalTo(pc.getId()).limitToFirst(1).addChildEventListener(new ChildEventListener() {
+            database.orderByChild("picturebookId").equalTo(pc.getId()).addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                    if (snapshot.exists()) {
-                        String pageId = snapshot.getKey();
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot pc : dataSnapshot.getChildren()) {
+                            dbPage = pc.getValue(DatabasePage.class);
+                            // if pages have page numbers, find first page, else - display random page as first page
+                            if (dbPage.getNum() == 1) {
+                                pageId = pc.getKey();
+                                break;
+                            }
+                            pageId = pc.getKey();
+                        }
                         storageRef = storageIns.getReference().child("images/pages/" + pc.getId() + "/" + pageId);
                         storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                             @Override
                             public void onSuccess(byte[] bytes) {
-                                row = new ArchiveRow(pc.getId(), pc.getTitle(), BitmapFactory.decodeByteArray(bytes,0, bytes.length));
+                                row = new ArchiveRow(pc.getId(), pc.getTitle(), BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
                                 rows.add(row);
                                 pAdapter.notifyDataSetChanged();
                             }
@@ -160,22 +172,11 @@ public class Explore extends AppCompatActivity {
                 }
 
                 @Override
-                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {                }
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot snapshot) {                }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    Toast.makeText(Explore.this, "Failed to read picturebooks." + error.getMessage(), Toast.LENGTH_SHORT).show();
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(Explore.this, "Failed to load picturebook.", Toast.LENGTH_SHORT).show();
                 }
-            });
 
+            });
         }
     }
-
-
 }

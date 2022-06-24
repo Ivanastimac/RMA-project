@@ -39,6 +39,7 @@ public class ExplorePagesAdapter extends RecyclerView.Adapter<ExplorePagesAdapte
             super(view);
             image = (ImageView) view.findViewById(R.id.imageViewPage);
             cv = view.findViewById(R.id.card_view);
+            textView = view.findViewById(R.id.textCaption);
         }
 
     }
@@ -63,6 +64,7 @@ public class ExplorePagesAdapter extends RecyclerView.Adapter<ExplorePagesAdapte
     public void onBindViewHolder(final ExplorePagesAdapter.MyView holder, final int position) {
         if (pages != null) {
             holder.image.setImageBitmap(pages.get(position).getImage());
+            holder.textView.setText(pages.get(position).getCaption());
         }
         if (newPicturebook || (pages.get(position).getId() == null)) {
             holder.cv.setOnLongClickListener(view -> {

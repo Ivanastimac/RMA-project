@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,7 @@ import com.example.project.model.Picturebook;
 import com.example.project.model.Status;
 import com.example.project.model.User;
 import com.example.project.picturebook.NewPicturebook;
+import com.example.project.review.WriteReview;
 import com.example.project.user_profile.Login;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,6 +46,7 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
     TextView title;
     TextView summary;
     TextView status;
+    TextView caption;
     Button follow;
     Button deleteBtn;
     RecyclerView rv;
@@ -52,13 +55,13 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
     Picturebook picturebook;
     User user;
     String picturebookId;
-    String userId;
     DatabasePage dbPage;
     ArrayList<DatabasePage> dbPages;
     Boolean clickedFollow = false;
     String authorName;
     String picturebookAuthorId;
     private static final String TAG = "Explore Activity";
+    ImageButton reviewBtn;
 
     FirebaseAuth auth;
     FirebaseUser loggedInUser;
@@ -81,9 +84,11 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
         title = findViewById(R.id.textViewTitleExplore);
         summary = findViewById(R.id.textViewSummaryExplore);
         status = findViewById(R.id.textViewStatusExplore);
+        caption = findViewById(R.id.textCaption);
         deleteBtn = findViewById(R.id.buttonDeletePicturebook);
         follow = findViewById(R.id.follow_button);
         rv = findViewById(R.id.recyclerViewPagesExplore);
+        reviewBtn = findViewById(R.id.addReviews);
         pages = new ArrayList<>();
         dbPages = new ArrayList<>();
 
@@ -115,6 +120,16 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
             }
         });
 
+        picturebookId = getIntent().getStringExtra("picturebookId");
+
+        reviewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ExploreSinglePicturebook.this, WriteReview.class);
+                intent.putExtra("picturebooksId", picturebookId);
+                startActivity(intent);
+            }
+        });
 
         deleteBtn.setOnClickListener(view -> {
             deletePicturebook(view);
@@ -133,16 +148,12 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 picturebook = dataSnapshot.getValue(Picturebook.class);
                 picturebookAuthorId = picturebook.getUserId();
-                Log.i(TAG, "I am here" + picturebookAuthorId);
                 database2.child(picturebookAuthorId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Log.i(TAG, "I have entered");
                         user = snapshot.getValue(User.class);
                         authorName = user.getFirstName() + ' ' + user.getLastName();
                         status.setText(authorName);
-
-                        Log.i(TAG, "Author name:" + authorName);
                     }
 
                     @Override
@@ -150,9 +161,6 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
                         Toast.makeText(ExploreSinglePicturebook.this, "Failed to read value." + error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-
-                Log.i(TAG, "I have left");
-                Log.i(TAG, "Author name:" + authorName);
 
                 title.setText(picturebook.getTitle());
                 summary.setText(picturebook.getSummary());
@@ -201,7 +209,7 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
             storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
-                    pages.add(new Page(page.getId(), BitmapFactory.decodeByteArray(bytes,0, bytes.length)));
+                    pages.add(new Page(page.getId(), BitmapFactory.decodeByteArray(bytes,0, bytes.length), page.getCaption(), page.getNum()));
                     pAdapter.notifyDataSetChanged();
                 }
             }).addOnFailureListener(new OnFailureListener() {
