@@ -42,19 +42,18 @@ public class PagesDetailsAdapter extends RecyclerView.Adapter<PagesDetailsAdapte
         ImageView image;
         EditText caption;
         RadioGroup rg;
-        RadioButton[] btns = new RadioButton[5];
+        RadioButton[] btns = new RadioButton[7];
 
         public MyView(@NonNull View view) {
             super(view);
             image = view.findViewById(R.id.imageViewSinglePage);
             caption = view.findViewById(R.id.editTextCaption);
             rg = view.findViewById(R.id.radioGroupPages);
-            // TODO fix
-            btns[0] = view.findViewById(R.id.radio_button_1);
-            btns[1] = view.findViewById(R.id.radio_button_2);
-            btns[2] = view.findViewById(R.id.radio_button_3);
-            btns[3] = view.findViewById(R.id.radio_button_4);
-            btns[4] = view.findViewById(R.id.radio_button_5);
+
+            for (int i = 0; i < rg.getChildCount(); ++i) {
+                View child = rg.getChildAt(i);
+                btns[i] = (RadioButton) child;
+            }
 
             caption.addTextChangedListener(new TextWatcher() {
 
@@ -117,8 +116,8 @@ public class PagesDetailsAdapter extends RecyclerView.Adapter<PagesDetailsAdapte
         if (pages != null) {
             holder.image.setImageBitmap(pages.get(position).getImage());
             holder.caption.setText(pages.get(position).getCaption());
-            // hide buttons if picture book has less than 5 pages
-            for (int i = 0; i <= 4; ++i) {
+            // hide buttons if picture book has less than 7 pages
+            for (int i = 0; i <= 6; ++i) {
                 if (i >= numPages) {
                     holder.btns[i].setVisibility(View.GONE);
                 }
