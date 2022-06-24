@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -28,6 +29,7 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -62,14 +64,33 @@ public class NewPage extends AppCompatActivity implements ToolsListener {
     PaintView mPaintView;
     int colorBackground, colorBrush;
     int brushSize, eraserSize;
+    Button takePhoto;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_page);
 
+        takePhoto = findViewById(R.id.takePhoto);
+
         initTools();
+
+        takePhoto.setOnClickListener(view -> {
+            takePhoto();
+        });
     }
+
+    // open camera
+    void takePhoto() {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            try {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            } catch (ActivityNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
 
     private void initTools() {
 
@@ -287,6 +308,11 @@ public class NewPage extends AppCompatActivity implements ToolsListener {
                 cursor.close();
             }
 
+            // part for loading photo from camera
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            mPaintView.setImage(imageBitmap);
         }
 
         super.onActivityResult(requestCode, resultCode, data);

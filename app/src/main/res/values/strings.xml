@@ -68,5 +68,6 @@
     <string name="reset">reset</string>
     <string name="caption">caption:</string>
     <string name="take_picture">Take picture</string>
+    <string name="photo">Photo</string>
 
 </resources>
