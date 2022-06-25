@@ -21,24 +21,20 @@ import com.google.firebase.storage.StorageReference;
 import java.sql.Struct;
 import java.util.ArrayList;
 
-public class ExploreRow {
+public class ExploreRow implements Comparable<ExploreRow> {
     private String id;
     private String title;
     private Bitmap firstPage;
     private String authorName;
-    Picturebook picturebook;
-    User user;
-    String picturebookId;
-    String picturebookAuthorId;
-    DatabaseReference database;
-    DatabaseReference database2;
+    private boolean following;
     private static final String TAG = "Explore Activity";
 
-    public ExploreRow(String id, String title, Bitmap image, String author) {
+    public ExploreRow(String id, String title, Bitmap image, String author, boolean following) {
         this.id = id;
         this.title = title;
         this.firstPage = image;
         this.authorName = author;
+        this.following = following;
     }
 
     public String getId() {
@@ -65,5 +61,24 @@ public class ExploreRow {
 
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
+    }
+
+    public boolean getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(boolean following) {
+        this.following = following;
+    }
+
+    @Override
+    public int compareTo(ExploreRow exploreRow) {
+        if (this.following) {
+            return 1;
+        }
+        if (exploreRow.following) {
+            return -1;
+        }
+        return 0;
     }
 }

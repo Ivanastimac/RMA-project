@@ -33,6 +33,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -48,6 +49,7 @@ public class Explore extends AppCompatActivity {
     String picturebookAuthorId;
     String authorName;
     User user;
+    boolean following;
 
     FirebaseAuth auth;
     FirebaseUser loggedInUser;
@@ -146,7 +148,6 @@ public class Explore extends AppCompatActivity {
     void getFirstPage(ArrayList<Picturebook> picturebooks) {
 
         for (Picturebook pc : picturebooks) {
-            // TODO change limitToFirst
             database = databaseIns.getReference("/pages");
             database.orderByChild("picturebookId").equalTo(pc.getId()).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -162,26 +163,43 @@ public class Explore extends AppCompatActivity {
                             pageId = pc.getKey();
                         }
 
-
-
-
                         storageRef = storageIns.getReference().child("images/pages/" + pc.getId() + "/" + pageId);
                         storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                             @Override
                             public void onSuccess(byte[] bytes) {
                                 Log.i(TAG, "IME u on success: "+ authorName);
-                                picturebookId = pc.getUserId();
+                                String userId = pc.getUserId();
+
+                                following = false;
+                                database = databaseIns.getReference("/users/" + loggedInUser.getUid() + "/following");
+                                database.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()) {
+                                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                                if (ds.getValue().equals(picturebookAuthorId)) {
+                                                    following = true;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) { }
+                                });
 
                                 database2 = FirebaseDatabase.getInstance().getReference("/users");
 
                                 //database = FirebaseDatabase.getInstance().getReference("/picturebooks");
-                                database2.child(picturebookId).addValueEventListener(new ValueEventListener() {
+                                database2.child(userId).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         user = dataSnapshot.getValue(User.class);
                                         authorName = user.getFirstName() + ' ' + user.getLastName();
-                                        row = new ExploreRow(pc.getId(), pc.getTitle(), BitmapFactory.decodeByteArray(bytes, 0, bytes.length), authorName);
+
+                                        row = new ExploreRow(pc.getId(), pc.getTitle(), BitmapFactory.decodeByteArray(bytes, 0, bytes.length), authorName, following);
                                         rows.add(row);
+                                        Collections.sort(rows);
                                         pAdapter.notifyDataSetChanged();
                                         Log.i(TAG, "IME: "+ authorName);
                                     }
