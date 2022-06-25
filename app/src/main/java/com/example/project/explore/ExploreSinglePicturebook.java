@@ -1,5 +1,6 @@
 package com.example.project.explore;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.project.R;
 import android.os.Bundle;
@@ -27,10 +28,13 @@ import com.example.project.model.User;
 import com.example.project.picturebook.NewPicturebook;
 import com.example.project.review.WriteReview;
 import com.example.project.user_profile.Login;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -57,11 +61,13 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
     String picturebookId;
     DatabasePage dbPage;
     ArrayList<DatabasePage> dbPages;
-    Boolean clickedFollow = false;
+    boolean following;
     String authorName;
     String picturebookAuthorId;
     private static final String TAG = "Explore Activity";
     ImageButton reviewBtn;
+
+    String followingId;
 
     FirebaseAuth auth;
     FirebaseUser loggedInUser;
@@ -91,6 +97,7 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
         reviewBtn = findViewById(R.id.addReviews);
         pages = new ArrayList<>();
         dbPages = new ArrayList<>();
+        following = false;
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -110,13 +117,7 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!clickedFollow){
-                    follow.setText("Following");
-                    clickedFollow = true;
-                }else{
-                    follow.setText("Follow");
-                    clickedFollow = false;
-                }
+                follow();
             }
         });
 
@@ -148,6 +149,9 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 picturebook = dataSnapshot.getValue(Picturebook.class);
                 picturebookAuthorId = picturebook.getUserId();
+                if (loggedInUser.getUid().equals(picturebookAuthorId)) {
+                    follow.setVisibility(View.GONE);
+                }
                 database2.child(picturebookAuthorId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -201,6 +205,28 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
             }
         });
 
+        database = databaseIns.getReference("/users/" + loggedInUser.getUid() + "/following");
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        if (ds.getValue().equals(picturebookAuthorId)) {
+                            followingId = ds.getKey();
+                            following = true;
+                            follow.setText("Unfollow");
+                        }
+                    }
+                }
+                if (!following) {
+                    follow.setText("Follow");
+                }
+                database.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {            }
+        });
     }
 
     void getPages() {
@@ -218,6 +244,39 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
                     Toast.makeText(ExploreSinglePicturebook.this, "Failed to load image.", Toast.LENGTH_SHORT).show();
                 }
             });
+        }
+    }
+
+    void follow() {
+        if (!following) {
+            database = databaseIns.getReference("/users/" + loggedInUser.getUid() + "/following");
+            database.push().setValue(picturebookAuthorId);
+            database.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                    followingId = dataSnapshot.getKey();
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) { }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {                }
+
+                });
+            following = true;
+            follow.setText("Unfollow");
+        } else {
+            database = databaseIns.getReference("/users/" + loggedInUser.getUid() + "/following");
+            database.child(followingId).removeValue();
+            following = false;
+            follow.setText("Follow");
         }
     }
 
