@@ -188,7 +188,7 @@ public class SinglePicturebook extends AppCompatActivity {
                     }
                     // if pages have page number, they will be sorted by that number
                     Collections.sort(pages);
-                    pAdapter.notifyItemRangeChanged(0, pages.size() - 1);
+                    pAdapter.notifyItemRangeChanged(0, pages.size());
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

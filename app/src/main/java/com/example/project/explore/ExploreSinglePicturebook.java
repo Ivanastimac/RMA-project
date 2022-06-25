@@ -149,6 +149,7 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 picturebook = dataSnapshot.getValue(Picturebook.class);
                 picturebookAuthorId = picturebook.getUserId();
+                // user can't follow himself
                 if (loggedInUser.getUid().equals(picturebookAuthorId)) {
                     follow.setVisibility(View.GONE);
                 }
