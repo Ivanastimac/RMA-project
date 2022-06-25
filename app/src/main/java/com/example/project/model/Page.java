@@ -2,7 +2,7 @@ package com.example.project.model;
 
 import android.graphics.Bitmap;
 
-public class Page {
+public class Page implements Comparable<Page> {
 
     private String id;
     private Bitmap image;
@@ -19,6 +19,12 @@ public class Page {
     public Page(String id, Bitmap bm) {
         this.id = id;
         image = bm;
+    }
+
+    public Page(String id, int num, Bitmap bm) {
+        this.id = id;
+        image = bm;
+        this.num = num;
     }
 
     public Page(DatabasePage page) {
@@ -41,4 +47,13 @@ public class Page {
     public int getNum() { return num; }
 
     public void setNum(int num) { this.num = num; }
+
+    @Override
+    public int compareTo(Page page) {
+        if (page.getNum() != 0) {
+            return Integer.compare(this.getNum(), page.getNum());
+        } else {
+            return this.getId().compareTo(page.getId());
+        }
+    }
 }

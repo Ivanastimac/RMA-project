@@ -37,6 +37,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class SinglePicturebook extends AppCompatActivity {
 
@@ -179,8 +181,14 @@ public class SinglePicturebook extends AppCompatActivity {
             storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
-                    pages.add(new Page(page.getId(), BitmapFactory.decodeByteArray(bytes,0, bytes.length)));
-                    pAdapter.notifyDataSetChanged();
+                    if (page.getNum() != 0) {
+                        pages.add(new Page(page.getId(), page.getNum(), BitmapFactory.decodeByteArray(bytes, 0, bytes.length)));
+                    } else {
+                        pages.add(new Page(page.getId(), BitmapFactory.decodeByteArray(bytes, 0, bytes.length)));
+                    }
+                    // if pages have page number, they will be sorted by that number
+                    Collections.sort(pages);
+                    pAdapter.notifyItemRangeChanged(0, pages.size() - 1);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -189,6 +197,7 @@ public class SinglePicturebook extends AppCompatActivity {
                 }
             });
         }
+
     }
 
     void publish() {

@@ -47,6 +47,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 // Activity for creating and editing picture books
@@ -229,8 +230,13 @@ public class NewPicturebook extends AppCompatActivity {
             storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
-                    pages.add(new Page(page.getId(), BitmapFactory.decodeByteArray(bytes,0, bytes.length)));
-                    pAdapter.notifyDataSetChanged();
+                    if (page.getNum() != 0) {
+                        pages.add(new Page(page.getId(), page.getNum(), BitmapFactory.decodeByteArray(bytes, 0, bytes.length)));
+                    } else {
+                        pages.add(new Page(page.getId(), BitmapFactory.decodeByteArray(bytes, 0, bytes.length)));
+                    }
+                    Collections.sort(pages);
+                    pAdapter.notifyItemRangeChanged(0, pages.size() - 1);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
