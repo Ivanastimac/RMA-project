@@ -48,6 +48,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ExploreSinglePicturebook extends AppCompatActivity {
 
@@ -287,8 +288,13 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
             storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
-                    pages.add(new Page(page.getId(), BitmapFactory.decodeByteArray(bytes,0, bytes.length), page.getCaption(), page.getNum()));
-                    pAdapter.notifyDataSetChanged();
+                    if (page.getNum() != 0) {
+                        pages.add(new Page(page.getId(), BitmapFactory.decodeByteArray(bytes, 0, bytes.length), page.getCaption(), page.getNum()));
+                    } else {
+                        pages.add(new Page(page.getId(), BitmapFactory.decodeByteArray(bytes, 0, bytes.length), page.getCaption()));
+                    }
+                    Collections.sort(pages);
+                    pAdapter.notifyItemRangeChanged(0, pages.size() - 1);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

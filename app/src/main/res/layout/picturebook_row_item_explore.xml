@@ -23,8 +23,9 @@
 
                 <ImageView
                     android:id="@+id/imageViewPage"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:adjustViewBounds="true"
                     android:background="@color/colorAccent"
                     android:scaleType="fitXY" />
@@ -34,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imageViewPage"
                     android:layout_gravity="bottom"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:background="@color/white"
                     android:textAlignment="center"/>
 

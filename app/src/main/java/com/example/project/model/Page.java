@@ -21,6 +21,12 @@ public class Page implements Comparable<Page> {
         image = bm;
     }
 
+    public Page(String id, Bitmap bm, String caption) {
+        this.id = id;
+        image = bm;
+        this.caption = caption;
+    }
+
     public Page(String id, int num, Bitmap bm) {
         this.id = id;
         image = bm;

@@ -75,6 +75,11 @@ public class NewPage extends AppCompatActivity implements ToolsListener {
 
         takePhoto = findViewById(R.id.takePhoto);
 
+        // if camera is not available, hide button for taking profile picture
+        if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+            takePhoto.setVisibility(View.GONE);
+        }
+
         initTools();
 
         takePhoto.setOnClickListener(view -> {
