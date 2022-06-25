@@ -190,6 +190,7 @@ public class WriteReview extends AppCompatActivity {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(WriteReview.this,"Review published successfully...", Toast.LENGTH_SHORT).show();
+                finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

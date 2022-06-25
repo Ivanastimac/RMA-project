@@ -4,7 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera"
+
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="false" />
 
     <application
@@ -15,6 +17,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
+        <activity
+            android:name=".showreviews.ShowReviews"
+            android:exported="false"
+            android:parentActivityName=".explore.ExploreSinglePicturebook">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.project.explore.ExploreSinglePicturebook" />
+        </activity>
         <activity
             android:name=".review.WriteReview"
             android:exported="false"
@@ -100,12 +110,12 @@
         <activity android:name=".user_profile.PasswordReset" />
         <activity android:name=".MainMenu" />
         <activity android:name=".user_profile.Register" />
-        <activity android:name=".user_profile.Login" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".user_profile.Login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

@@ -17,16 +17,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.project.archive.MyArchive;
 import com.example.project.model.DatabasePage;
 import com.example.project.model.Page;
 import com.example.project.model.Picturebook;
+import com.example.project.model.Review;
 import com.example.project.model.Status;
 import com.example.project.model.User;
 import com.example.project.picturebook.NewPicturebook;
 import com.example.project.review.WriteReview;
+import com.example.project.showreviews.ReviewAdapter;
+import com.example.project.showreviews.ShowReviews;
 import com.example.project.user_profile.Login;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -66,6 +70,8 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
     String picturebookAuthorId;
     private static final String TAG = "Explore Activity";
     ImageButton reviewBtn;
+    ImageButton viewReviewsBtn;
+    RatingBar ratingBar;
 
     String followingId;
 
@@ -95,6 +101,8 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
         follow = findViewById(R.id.follow_button);
         rv = findViewById(R.id.recyclerViewPagesExplore);
         reviewBtn = findViewById(R.id.addReviews);
+        viewReviewsBtn = findViewById(R.id.reviewBtn);
+        ratingBar =findViewById(R.id.ratingBar4);
         pages = new ArrayList<>();
         dbPages = new ArrayList<>();
         following = false;
@@ -105,6 +113,7 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
         loggedInUser = auth.getCurrentUser();
         databaseIns = FirebaseDatabase.getInstance();
         storageIns = FirebaseStorage.getInstance();
+
 
         // if user is not logged in, redirect to login page
         if (loggedInUser == null) {
@@ -132,8 +141,50 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
             }
         });
 
+        viewReviewsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ExploreSinglePicturebook.this, ShowReviews.class);
+                intent.putExtra("picturebookId", picturebookId);
+                startActivity(intent);
+            }
+        });
+
+
         deleteBtn.setOnClickListener(view -> {
             deletePicturebook(view);
+        });
+
+        loadReviews();
+
+    }
+
+    private float ratingsSum = 0;
+    private void loadReviews() {
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/picturebooks");
+        ref.child(picturebookId).child("/ratings").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ratingsSum = 0;
+
+                for(DataSnapshot ds: snapshot.getChildren()){
+                    float rating = Float.parseFloat(""+ds.child("ratings").getValue());
+
+                    ratingsSum = ratingsSum + rating;
+                }
+
+                long numberOfReviews = snapshot.getChildrenCount();
+                float avgRating = ratingsSum/numberOfReviews;
+
+                ratingBar.setRating(avgRating);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
 
     }

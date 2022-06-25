@@ -9,14 +9,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.project.R;
-import com.example.project.archive.MyArchive;
-import com.example.project.model.ArchiveRow;
 import com.example.project.model.DatabasePage;
+import com.example.project.model.ExploreRow;
 import com.example.project.model.Picturebook;
+import com.example.project.model.User;
 import com.example.project.user_profile.Login;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,15 +39,20 @@ import java.util.Locale;
 
 public class Explore extends AppCompatActivity {
 
-    ArrayList<ArchiveRow> rows;
+    ArrayList<ExploreRow> rows;
     ArrayList<Picturebook> picturebooks;
     RecyclerView rv;
-    ArchiveRow row;
+    ExploreRow row;
     SearchView searchView;
+    String picturebookId;
+    String picturebookAuthorId;
+    String authorName;
+    User user;
 
     FirebaseAuth auth;
     FirebaseUser loggedInUser;
     DatabaseReference database;
+    DatabaseReference database2;
     DatabasePage dbPage;
     String pageId;
     FirebaseDatabase databaseIns;
@@ -55,6 +61,7 @@ public class Explore extends AppCompatActivity {
     ExplorePicturebookAdapter pAdapter;
     Picturebook picturebook;
     final long ONE_MEGABYTE = 1024 * 1024;
+    private static final String TAG = "Explore Activity";
 
 
     @Override
@@ -122,9 +129,9 @@ public class Explore extends AppCompatActivity {
     }
 
     private void filterList(String text) {
-        List<ArchiveRow> filteredList = new ArrayList<>();
-        for (ArchiveRow pic : rows) {
-            if (pic.getTitle().toLowerCase().contains(text.toLowerCase())) {
+        List<ExploreRow> filteredList = new ArrayList<>();
+        for (ExploreRow pic : rows) {
+            if (pic.getTitle().toLowerCase().contains(text.toLowerCase()) || pic.getAuthorName().toLowerCase().contains(text.toLowerCase())){
                 filteredList.add(pic);
             }
         }
@@ -154,13 +161,37 @@ public class Explore extends AppCompatActivity {
                             }
                             pageId = pc.getKey();
                         }
+
+
+
+
                         storageRef = storageIns.getReference().child("images/pages/" + pc.getId() + "/" + pageId);
                         storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                             @Override
                             public void onSuccess(byte[] bytes) {
-                                row = new ArchiveRow(pc.getId(), pc.getTitle(), BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-                                rows.add(row);
-                                pAdapter.notifyDataSetChanged();
+                                Log.i(TAG, "IME u on success: "+ authorName);
+                                picturebookId = pc.getUserId();
+
+                                database2 = FirebaseDatabase.getInstance().getReference("/users");
+
+                                //database = FirebaseDatabase.getInstance().getReference("/picturebooks");
+                                database2.child(picturebookId).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        user = dataSnapshot.getValue(User.class);
+                                        authorName = user.getFirstName() + ' ' + user.getLastName();
+                                        row = new ExploreRow(pc.getId(), pc.getTitle(), BitmapFactory.decodeByteArray(bytes, 0, bytes.length), authorName);
+                                        rows.add(row);
+                                        pAdapter.notifyDataSetChanged();
+                                        Log.i(TAG, "IME: "+ authorName);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -179,4 +210,5 @@ public class Explore extends AppCompatActivity {
             });
         }
     }
+
 }

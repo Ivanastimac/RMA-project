@@ -30,6 +30,15 @@
             android:layout_toRightOf="@id/textViewTitleWord"
             android:padding="5dp" />
 
+        <RatingBar
+            android:id="@+id/ratingBar4"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:numStars="5"
+            android:progressTint="@color/teal_200"/>
+
         <TextView
             android:id="@+id/textViewSummaryWord"
             android:layout_width="wrap_content"
@@ -117,9 +126,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="100dp"
             android:padding="5dp"
             android:text="@string/delete_picture_book" />
+
+        <ImageButton
+            android:id="@+id/reviewBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_baseline_star_outline_24"/>
     </RelativeLayout>
 
 </LinearLayout>
