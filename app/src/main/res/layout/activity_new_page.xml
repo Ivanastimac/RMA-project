@@ -16,83 +16,35 @@ tools:context=".editpage.NewPage">
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@color/purple_500"
         android:id="@+id/recycler_view_tools"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center">
 
-        <!--<ImageButton
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            android:src="@drawable/ic_baseline_arrow_back_24"
-            android:onClick="finishPaint"/>-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:layout_weight="1">
+        <Button
+            android:id="@+id/buttonResetNewPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reset"
+            android:layout_margin="5dp"/>
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
-                android:src="@drawable/newbutton"
-                android:onClick="newFile"
-                android:layout_marginLeft="20dp"/>
+        <Button
+            android:id="@+id/buttonSavePage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:layout_margin="5dp"/>
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="right"
-            android:layout_weight="1">
-
-            <!--<ImageButton
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
-                android:src="@drawable/ic_baseline_share_24"
-                android:onClick="shareApp"/>
-
-            <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
-                android:src="@drawable/ic_baseline_home_24"
-                android:onClick="showFiles"/>-->
-
-            <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
-                android:src="@drawable/save"
-                android:onClick="saveFile"
-                android:layout_marginRight="20dp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:layout_weight="1">
-
-            <Button
-                android:id="@+id/takePhoto"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
-                android:text="@string/photo"/>
-
-        </LinearLayout>
+        <Button
+            android:id="@+id/buttonTakePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/take_picture"
+            android:layout_margin="5dp"/>
 
     </LinearLayout>
 

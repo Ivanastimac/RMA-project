@@ -65,9 +65,10 @@ public class WriteReview extends AppCompatActivity {
         loadPicturebookInfo();
         loadMyReview();
 
-        submitReview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        submitReview.setOnClickListener(v -> {
+            if (ratingBar.getRating() == 0.0) {
+                Toast.makeText(WriteReview.this,"Please provide rating for this picturebook!", Toast.LENGTH_SHORT).show();
+            } else {
                 inputData();
             }
         });

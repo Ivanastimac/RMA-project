@@ -42,7 +42,7 @@ public class PagesDetailsAdapter extends RecyclerView.Adapter<PagesDetailsAdapte
         ImageView image;
         EditText caption;
         RadioGroup rg;
-        RadioButton[] btns = new RadioButton[7];
+        RadioButton[] btns = new RadioButton[5];
 
         public MyView(@NonNull View view) {
             super(view);
@@ -116,8 +116,8 @@ public class PagesDetailsAdapter extends RecyclerView.Adapter<PagesDetailsAdapte
         if (pages != null) {
             holder.image.setImageBitmap(pages.get(position).getImage());
             holder.caption.setText(pages.get(position).getCaption());
-            // hide buttons if picture book has less than 7 pages
-            for (int i = 0; i <= 6; ++i) {
+            // hide buttons if picture book has less than 5 pages
+            for (int i = 0; i <= 4; ++i) {
                 if (i >= numPages) {
                     holder.btns[i].setVisibility(View.GONE);
                 }

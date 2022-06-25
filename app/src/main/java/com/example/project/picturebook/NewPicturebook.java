@@ -83,6 +83,7 @@ public class NewPicturebook extends AppCompatActivity {
     boolean addedPages;
 
     final long ONE_MEGABYTE = 1024 * 1024;
+    final int MAX_PAGES = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +117,7 @@ public class NewPicturebook extends AppCompatActivity {
         init();
 
         addPageBtn.setOnClickListener(view -> {
-            if (pAdapter.getItemCount() == 7) {
+            if (pAdapter.getItemCount() == MAX_PAGES) {
                 Toast.makeText(NewPicturebook.this, "You've reached maximum number of pages!", Toast.LENGTH_SHORT).show();
             } else {
                 choosePages();

@@ -69,5 +69,6 @@
     <string name="caption">caption:</string>
     <string name="take_picture">Take picture</string>
     <string name="photo">Photo</string>
+    <string name="new_page">new</string>
 
 </resources>

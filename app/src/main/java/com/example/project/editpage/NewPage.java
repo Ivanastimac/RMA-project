@@ -64,7 +64,9 @@ public class NewPage extends AppCompatActivity implements ToolsListener {
     PaintView mPaintView;
     int colorBackground, colorBrush;
     int brushSize, eraserSize;
-    Button takePhoto;
+    Button takePhotoBtn;
+    Button newPageBtn;
+    Button savePageBtn;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -73,17 +75,27 @@ public class NewPage extends AppCompatActivity implements ToolsListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_page);
 
-        takePhoto = findViewById(R.id.takePhoto);
+        takePhotoBtn = findViewById(R.id.buttonTakePhoto);
+        savePageBtn = findViewById(R.id.buttonSavePage);
+        newPageBtn = findViewById(R.id.buttonResetNewPage);
 
         // if camera is not available, hide button for taking profile picture
         if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-            takePhoto.setVisibility(View.GONE);
+            takePhotoBtn.setVisibility(View.GONE);
         }
 
         initTools();
 
-        takePhoto.setOnClickListener(view -> {
+        takePhotoBtn.setOnClickListener(view -> {
             takePhoto();
+        });
+
+        newPageBtn.setOnClickListener(view -> {
+            newFile(view);
+        });
+
+        savePageBtn.setOnClickListener(view -> {
+            saveFile(view);
         });
     }
 

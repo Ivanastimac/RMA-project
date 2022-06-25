@@ -8,34 +8,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.project.archive.MyArchive;
 import com.example.project.model.DatabasePage;
 import com.example.project.model.Page;
 import com.example.project.model.Picturebook;
-import com.example.project.model.Review;
-import com.example.project.model.Status;
 import com.example.project.model.User;
-import com.example.project.picturebook.NewPicturebook;
 import com.example.project.review.WriteReview;
-import com.example.project.showreviews.ReviewAdapter;
 import com.example.project.showreviews.ShowReviews;
 import com.example.project.user_profile.Login;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -57,7 +46,6 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
     TextView status;
     TextView caption;
     Button follow;
-    Button deleteBtn;
     RecyclerView rv;
     ExplorePagesAdapter pAdapter;
     ArrayList<Page> pages;
@@ -98,7 +86,6 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
         summary = findViewById(R.id.textViewSummaryExplore);
         status = findViewById(R.id.textViewStatusExplore);
         caption = findViewById(R.id.textCaption);
-        deleteBtn = findViewById(R.id.buttonDeletePicturebook);
         follow = findViewById(R.id.follow_button);
         rv = findViewById(R.id.recyclerViewPagesExplore);
         reviewBtn = findViewById(R.id.addReviews);
@@ -149,11 +136,6 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
                 intent.putExtra("picturebookId", picturebookId);
                 startActivity(intent);
             }
-        });
-
-
-        deleteBtn.setOnClickListener(view -> {
-            deletePicturebook(view);
         });
 
         loadReviews();
@@ -336,67 +318,5 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
             following = false;
             follow.setText("Follow");
         }
-    }
-
-
-    void deletePicturebook(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.delete_single_picturebook_dialog)
-                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        database = databaseIns.getReference("/pages");
-                        database.orderByChild("picturebookId").equalTo(picturebookId).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()) {
-                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                        dbPage = ds.getValue(DatabasePage.class);
-                                        dbPage.setId(ds.getKey());
-                                        dbPages.add(dbPage);
-                                        ds.getRef().removeValue();
-                                    }
-                                }
-                                removePages(view);
-                                database.removeEventListener(this);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) { }
-                        });
-
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // do nothing
-                    }
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    void removePages(View view) {
-
-        for (DatabasePage page : dbPages) {
-            storageRef = storageIns.getReference().child("images/pages/" + picturebookId + "/" + page.getId());
-            storageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Toast.makeText(ExploreSinglePicturebook.this, "Deleted!", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(ExploreSinglePicturebook.this, "Unsuccessful!", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-
-        database = databaseIns.getReference("/picturebooks");
-        database.child("/" + picturebookId).removeValue();
-        Toast.makeText(ExploreSinglePicturebook.this, "Picturebook is deleted!", Toast.LENGTH_SHORT).show();
-        Intent in = new Intent(view.getContext(), MyArchive.class);
-        view.getContext().startActivity(in);
-
     }
 }
