@@ -38,7 +38,6 @@ public class PendingPicturebooks extends AppCompatActivity {
     RecyclerView rv;
     AdminRow row;
     SearchView searchView;
-    String picturebookId;
     String picturebookAuthorId;
     String authorName;
     User user;

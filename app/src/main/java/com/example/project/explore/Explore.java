@@ -177,11 +177,12 @@ public class Explore extends AppCompatActivity {
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.exists()) {
                                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                                if (ds.getValue().equals(picturebookAuthorId)) {
+                                                if (ds.getValue().equals(userId)) {
                                                     following = true;
                                                 }
                                             }
                                         }
+                                        database.removeEventListener(this);
                                     }
 
                                     @Override

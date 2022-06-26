@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.project.MainMenu;
 import com.example.project.R;
+import com.example.project.explore.Explore;
 import com.example.project.explore.ExplorePagesAdapter;
 import com.example.project.explore.ExploreSinglePicturebook;
 import com.example.project.model.DatabasePage;
@@ -65,10 +66,9 @@ public class PendingSinglePicturebook extends AppCompatActivity {
     String picturebookAuthorId;
     Button btnApprove;
     Button btnReject;
-    Button saveChoice;
     TextView picturebookStatus;
 
-    String followingId;
+    PendingPicturebooksAdapter pendingPicturebooksAdapter;
 
     FirebaseAuth auth;
     FirebaseUser loggedInUser;
@@ -92,7 +92,6 @@ public class PendingSinglePicturebook extends AppCompatActivity {
         caption = findViewById(R.id.textCaption);
         btnApprove = findViewById(R.id.approveButton);
         btnReject = findViewById(R.id.rejectButton);
-        saveChoice = findViewById(R.id.saveChoice);
         rv = findViewById(R.id.recyclerViewPagesAdmin);
         pages = new ArrayList<>();
         dbPages = new ArrayList<>();
@@ -116,29 +115,17 @@ public class PendingSinglePicturebook extends AppCompatActivity {
 
         picturebookId = getIntent().getStringExtra("picturebookId");
 
-        btnApprove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                approvePicturebook();
-
-            }
+        btnApprove.setOnClickListener(view -> {
+            approvePicturebook();
+            /*pendingPicturebooksAdapter.notifyDataSetChanged();
+            Intent in = new Intent(view.getContext(), PendingPicturebooks.class);
+            view.getContext().startActivity(in);*/
         });
 
-        btnReject.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rejectPicturebook();
-            }
-        });
-
-        saveChoice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                Toast.makeText(PendingSinglePicturebook.this, "Saved changes.", Toast.LENGTH_SHORT).show();
-                /*Intent in = new Intent(v.getContext(), MainMenu.class);
-                v.getContext().startActivity(in);*/
-            }
+        btnReject.setOnClickListener(view -> {
+            rejectPicturebook();
+            /*Intent in = new Intent(view.getContext(), PendingPicturebooks.class);
+            view.getContext().startActivity(in);*/
         });
 
     }
@@ -235,39 +222,6 @@ public class PendingSinglePicturebook extends AppCompatActivity {
                     Toast.makeText(PendingSinglePicturebook.this, "Failed to load image.", Toast.LENGTH_SHORT).show();
                 }
             });
-        }
-    }
-
-    void follow() {
-        if (!following) {
-            database = databaseIns.getReference("/users/" + loggedInUser.getUid() + "/following");
-            database.push().setValue(picturebookAuthorId);
-            database.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                    followingId = dataSnapshot.getKey();
-                }
-
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) { }
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot snapshot) {                }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {                }
-
-            });
-            following = true;
-            follow.setText("Unfollow");
-        } else {
-            database = databaseIns.getReference("/users/" + loggedInUser.getUid() + "/following");
-            database.child(followingId).removeValue();
-            following = false;
-            follow.setText("Follow");
         }
     }
 
