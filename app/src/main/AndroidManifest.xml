@@ -33,7 +33,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.project.explore.ExploreSinglePicturebook" />
         </activity>
-        <activity android:name=".archive.EditPages" />
+        <activity
+            android:name=".archive.EditPages"
+            android:parentActivityName=".archive.SinglePicturebook">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.project.archive.SinglePicturebook" />
+        </activity>
         <activity
             android:name=".explore.ExploreSinglePicturebook"
             android:exported="false"
@@ -53,6 +59,7 @@
         </activity>
         <activity
             android:name=".archive.SinglePicturebook"
+            android:launchMode="singleTask"
             android:parentActivityName=".archive.MyArchive">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
