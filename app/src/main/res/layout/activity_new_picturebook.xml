@@ -25,6 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textCapSentences"
+            android:minHeight="100dp"
+            android:gravity="bottom"
             android:hint="@string/summary"
             android:autofillHints="@string/summary"
             android:layout_below="@+id/editTextTitle"/>

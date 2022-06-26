@@ -74,11 +74,11 @@ public class ExploreRow implements Comparable<ExploreRow> {
     @Override
     public int compareTo(ExploreRow exploreRow) {
         if (this.following) {
-            return 1;
-        }
-        if (exploreRow.following) {
             return -1;
         }
-        return 0;
+        if (exploreRow.following) {
+            return 1;
+        }
+        return this.getId().compareTo(exploreRow.getId());
     }
 }

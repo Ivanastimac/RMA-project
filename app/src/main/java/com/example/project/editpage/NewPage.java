@@ -95,7 +95,9 @@ public class NewPage extends AppCompatActivity implements ToolsListener {
         });
 
         savePageBtn.setOnClickListener(view -> {
-            saveFile(view);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                saveFile(view);
+            }
         });
     }
 

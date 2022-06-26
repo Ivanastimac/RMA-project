@@ -1,7 +1,6 @@
-package com.example.project.explore;
+package com.example.project.admin;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,13 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.project.R;
 import com.example.project.model.DatabasePage;
-import com.example.project.model.ExploreRow;
 import com.example.project.model.Picturebook;
 import com.example.project.model.User;
 import com.example.project.user_profile.Login;
@@ -23,7 +20,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,19 +29,15 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
+public class PendingPicturebooks extends AppCompatActivity {
 
-public class Explore extends AppCompatActivity {
-
-    ArrayList<ExploreRow> rows;
+    ArrayList<AdminRow> rows;
     ArrayList<Picturebook> picturebooks;
     RecyclerView rv;
-    ExploreRow row;
+    AdminRow row;
     SearchView searchView;
-    String picturebookId;
     String picturebookAuthorId;
     String authorName;
     User user;
@@ -60,18 +52,17 @@ public class Explore extends AppCompatActivity {
     FirebaseDatabase databaseIns;
     FirebaseStorage storageIns;
     StorageReference storageRef;
-    ExplorePicturebookAdapter pAdapter;
+    PendingPicturebooksAdapter pAdapter;
     Picturebook picturebook;
     final long ONE_MEGABYTE = 1024 * 1024;
-    private static final String TAG = "Explore Activity";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_explore);
+        setContentView(R.layout.activity_pending_picturebooks);
 
-        searchView = findViewById(R.id.search_bar_explore);
+        searchView = findViewById(R.id.search_bar_admin);
         searchView.clearFocus();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -89,7 +80,7 @@ public class Explore extends AppCompatActivity {
 
         rows = new ArrayList<>();
         picturebooks = new ArrayList<>();
-        rv = findViewById(R.id.recyclerViewExplore);
+        rv = findViewById(R.id.recyclerViewAdmin);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -104,12 +95,12 @@ public class Explore extends AppCompatActivity {
         }
 
         rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        pAdapter = new ExplorePicturebookAdapter(this);
+        pAdapter = new PendingPicturebooksAdapter(this);
         rv.setAdapter(pAdapter);
         pAdapter.setPicturebooks(rows);
 
         database = databaseIns.getReference("/picturebooks");
-        database.orderByChild("status").equalTo("PUBLISHED").addValueEventListener(new ValueEventListener() {
+        database.orderByChild("status").equalTo("PENDING").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -125,21 +116,21 @@ public class Explore extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Explore.this, "Failed to read picturebooks." + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PendingPicturebooks.this, "Failed to read picturebooks." + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void filterList(String text) {
-        List<ExploreRow> filteredList = new ArrayList<>();
-        for (ExploreRow pic : rows) {
+        List<AdminRow> filteredList = new ArrayList<>();
+        for (AdminRow pic : rows) {
             if (pic.getTitle().toLowerCase().contains(text.toLowerCase()) || pic.getAuthorName().toLowerCase().contains(text.toLowerCase())){
                 filteredList.add(pic);
             }
         }
 
         if (filteredList.isEmpty()) {
-            Toast.makeText(Explore.this, "No matches found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PendingPicturebooks.this, "No matches found", Toast.LENGTH_SHORT).show();
         } else {
             pAdapter.setFilteredList(filteredList);
         }
@@ -167,7 +158,6 @@ public class Explore extends AppCompatActivity {
                         storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                             @Override
                             public void onSuccess(byte[] bytes) {
-                                Log.i(TAG, "IME u on success: "+ authorName);
                                 String userId = pc.getUserId();
 
                                 following = false;
@@ -177,12 +167,11 @@ public class Explore extends AppCompatActivity {
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.exists()) {
                                             for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                                if (ds.getValue().equals(userId)) {
+                                                if (ds.getValue().equals(picturebookAuthorId)) {
                                                     following = true;
                                                 }
                                             }
                                         }
-                                        database.removeEventListener(this);
                                     }
 
                                     @Override
@@ -198,11 +187,10 @@ public class Explore extends AppCompatActivity {
                                         user = dataSnapshot.getValue(User.class);
                                         authorName = user.getFirstName() + ' ' + user.getLastName();
 
-                                        row = new ExploreRow(pc.getId(), pc.getTitle(), BitmapFactory.decodeByteArray(bytes, 0, bytes.length), authorName, following);
+                                        row = new AdminRow(pc.getId(), pc.getTitle(), BitmapFactory.decodeByteArray(bytes, 0, bytes.length), authorName, pc.getStatus().toString());
                                         rows.add(row);
-                                        Collections.sort(rows);
-                                        pAdapter.notifyDataSetChanged();
-                                        Log.i(TAG, "IME: "+ authorName);
+                                        //pAdapter.notifyDataSetChanged();
+                                        pAdapter.notifyItemRangeChanged(0, rows.size());
                                     }
 
                                     @Override
@@ -215,7 +203,7 @@ public class Explore extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception exception) {
-                                Toast.makeText(Explore.this, "Failed to load page.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PendingPicturebooks.this, "Failed to load page.", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -223,7 +211,7 @@ public class Explore extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(Explore.this, "Failed to load picturebook.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PendingPicturebooks.this, "Failed to load picturebook.", Toast.LENGTH_SHORT).show();
                 }
 
             });

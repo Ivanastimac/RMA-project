@@ -131,11 +131,22 @@ public class SinglePicturebook extends AppCompatActivity {
                 if (picturebook.getStatus().toString().equals("PRIVATE")) {
                     // if picturebook is private, hide button for making it private
                     privateBtn.setVisibility(View.GONE);
-                } else {
+                } else if(picturebook.getStatus().toString().equals("PUBLISHED")){
                     // if picturebook is published, hide buttons for making it public and edit button
+                    privateBtn.setText("Make private");
                     publishBtn.setVisibility(View.GONE);
                     editBtn.setVisibility(View.GONE);
                     deleteBtn.setVisibility(View.GONE);
+                }else if (picturebook.getStatus().toString().equals("PENDING")){
+                    privateBtn.setVisibility(View.VISIBLE);
+                    privateBtn.setText("Pending");
+                    privateBtn.setEnabled(false);
+                    publishBtn.setVisibility(View.GONE);
+                    editBtn.setVisibility(View.GONE);
+                    deleteBtn.setVisibility(View.GONE);
+                }else if (picturebook.getStatus().toString().equals("REJECTED")){
+                    privateBtn.setVisibility(View.VISIBLE);
+                    privateBtn.setText("Make private");
                 }
                 database.removeEventListener(this);
             }
@@ -206,10 +217,19 @@ public class SinglePicturebook extends AppCompatActivity {
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         database = databaseIns.getReference("/picturebooks");
-                        database.child("/" + picturebookId).child("status").setValue(Status.PUBLISHED);
+                        //database.child("/" + picturebookId).child("status").setValue(Status.PUBLISHED);
+                        database.child("/" + picturebookId).child("status").setValue(Status.PENDING);
                         editBtn.setVisibility(View.GONE);
                         publishBtn.setVisibility(View.GONE);
-                        privateBtn.setVisibility(View.VISIBLE);
+                        privateBtn.setText("Pending...");
+                        if(privateBtn.getText().equals("Published")){
+                            privateBtn.setText("Make private");
+                            privateBtn.setVisibility(View.VISIBLE);
+                        }else{
+                            privateBtn.setVisibility(View.VISIBLE);
+                            //privateBtn.setClickable(false);
+                            privateBtn.setEnabled(false);
+                        }
                         deleteBtn.setVisibility(View.GONE);
                     }
                 })
@@ -228,6 +248,7 @@ public class SinglePicturebook extends AppCompatActivity {
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         database = databaseIns.getReference("/picturebooks");
+                        //database.child("/" + picturebookId).child("status").equalTo("PUBLISHED");
                         database.child("/" + picturebookId).child("status").setValue(Status.PRIVATE);
                         editBtn.setVisibility(View.VISIBLE);
                         publishBtn.setVisibility(View.VISIBLE);

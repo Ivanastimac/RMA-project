@@ -4,22 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".explore.ExploreSinglePicturebook">
+    tools:context=".admin.PendingSinglePicturebook">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:orientation="vertical"
         android:layout_margin="10dp">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp">
 
             <TextView
-                android:id="@+id/textViewTitleWord"
+                android:id="@+id/textViewTitleWordAdmin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
@@ -28,66 +27,85 @@
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/textViewTitleExplore"
+                android:id="@+id/textViewTitleAdmin2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/textViewTitleWord"
+                android:layout_toRightOf="@id/textViewTitleWordAdmin"
                 android:padding="5dp" />
 
-            <RatingBar
-                android:id="@+id/ratingBar4"
-                style="@style/Widget.AppCompat.RatingBar.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:numStars="5"
-                android:progressTint="@color/teal_200"
-                android:layout_alignParentRight="true" />
 
             <TextView
-                android:id="@+id/textViewSummaryWord"
+                android:id="@+id/textViewSummaryWordAdmin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textViewTitleWord"
+                android:layout_below="@id/textViewTitleWordAdmin"
                 android:padding="5dp"
                 android:text="@string/summary_single_picturebook"
                 android:textAllCaps="true"
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/textViewSummaryExplore"
+                android:id="@+id/textViewSummaryAdmin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textViewTitleExplore"
-                android:layout_toRightOf="@+id/textViewSummaryWord"
+                android:layout_below="@+id/textViewTitleAdmin2"
+                android:layout_toRightOf="@+id/textViewSummaryWordAdmin"
                 android:padding="5dp" />
 
             <TextView
-                android:id="@+id/textViewStatusWord"
+                android:id="@+id/textViewStatusWordAdmin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textViewSummaryWord"
+                android:layout_below="@+id/textViewSummaryWordAdmin"
                 android:padding="5dp"
                 android:text="@string/author"
                 android:textAllCaps="true"
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/textViewStatusExplore"
+                android:id="@+id/textViewStatusAdmin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textViewSummaryExplore"
-                android:layout_toRightOf="@id/textViewStatusWord"
+                android:layout_below="@id/textViewSummaryAdmin"
+                android:layout_toRightOf="@id/textViewStatusWordAdmin"
+                android:padding="5dp" />
+
+            <TextView
+                android:id="@+id/textStatusWordAdmin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewStatusWordAdmin"
+                android:padding="5dp"
+                android:text="@string/status"
+                android:textAllCaps="true"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/textViewStatusAdmin2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewStatusAdmin"
+                android:layout_toRightOf="@id/textViewStatusWordAdmin"
                 android:padding="5dp" />
 
             <Button
-                android:id="@+id/follow_button"
+                android:id="@+id/approveButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textViewStatusExplore"
-                android:text="@string/follow"
-                android:layout_toRightOf="@id/textViewStatusExplore"
-                android:layout_alignParentRight="true" />
+                android:layout_below="@id/textViewStatusAdmin"
+                android:text="Approve"
+                android:layout_toRightOf="@id/textViewStatusAdmin2"
+                android:backgroundTint="@color/purple_200"
+                android:layout_marginLeft="20dp"/>
+            <Button
+                android:id="@+id/rejectButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewStatusAdmin"
+                android:text="Reject"
+                android:layout_toRightOf="@id/approveButton"
+                android:layout_marginLeft="5dp"
+                android:backgroundTint="@color/purple_700"/>
 
         </RelativeLayout>
 
@@ -101,36 +119,15 @@
             android:layout_margin="10dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewPagesExplore"
+                android:id="@+id/recyclerViewPagesAdmin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:adjustViewBounds="true"
                 android:scrollbars="horizontal"
-                tools:listitem="@layout/picturebook_row_item_explore"
-                android:adjustViewBounds="true"/>
+                tools:listitem="@layout/picturebook_row_item_explore" />
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp">
-
-            <ImageButton
-                android:id="@+id/addReviews"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="right"
-                android:clickable="true"
-                android:src="@drawable/ic_baseline_rate_review_24" />
-
-            <ImageButton
-                android:id="@+id/reviewBtn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_baseline_star_outline_24"/>
-        </RelativeLayout>
     </LinearLayout>
 
 </ScrollView>
