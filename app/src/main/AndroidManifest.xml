@@ -18,6 +18,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
         <activity
+            android:name=".admin.PendingSinglePicturebook"
+            android:exported="false"
+            android:parentActivityName=".admin.PendingPicturebooks">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.project.admin.PendingPicturebooks" />
+        </activity>
+        <activity
+            android:name=".admin.PendingPicturebooks"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:parentActivityName=".MainMenu">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.project.MainMenu" />
+        </activity>
+        <activity
             android:name=".showreviews.ShowReviews"
             android:exported="false"
             android:parentActivityName=".explore.ExploreSinglePicturebook">

@@ -13,124 +13,124 @@
         android:orientation="vertical"
         android:layout_margin="10dp">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
-        <TextView
-            android:id="@+id/textViewTitleWord"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:text="@string/title_single_picturebook"
-            android:textAllCaps="true"
-            android:textColor="@color/black" />
+            android:layout_margin="10dp">
 
-        <TextView
-            android:id="@+id/textViewTitleExplore"
+            <TextView
+                android:id="@+id/textViewTitleWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="@string/title_single_picturebook"
+                android:textAllCaps="true"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/textViewTitleExplore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/textViewTitleWord"
+                android:padding="5dp" />
+
+            <RatingBar
+                android:id="@+id/ratingBar4"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:numStars="5"
+                android:progressTint="@color/teal_200"
+                android:layout_alignParentRight="true" />
+
+            <TextView
+                android:id="@+id/textViewSummaryWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewTitleWord"
+                android:padding="5dp"
+                android:text="@string/summary_single_picturebook"
+                android:textAllCaps="true"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/textViewSummaryExplore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewTitleExplore"
+                android:layout_toRightOf="@+id/textViewSummaryWord"
+                android:padding="5dp" />
+
+            <TextView
+                android:id="@+id/textViewStatusWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewSummaryWord"
+                android:padding="5dp"
+                android:text="@string/author"
+                android:textAllCaps="true"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/textViewStatusExplore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewSummaryExplore"
+                android:layout_toRightOf="@id/textViewStatusWord"
+                android:padding="5dp" />
+
+            <Button
+                android:id="@+id/follow_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewStatusExplore"
+                android:text="@string/follow"
+                android:layout_toRightOf="@id/textViewStatusExplore"
+                android:layout_alignParentRight="true" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/textViewTitleWord"
-            android:padding="5dp" />
+            android:gravity="center"
+            android:background="@color/purple_200"
+            android:adjustViewBounds="true"
+            android:layout_margin="10dp">
 
-        <RatingBar
-            android:id="@+id/ratingBar4"
-            style="@style/Widget.AppCompat.RatingBar.Small"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewPagesExplore"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="horizontal"
+                tools:listitem="@layout/picturebook_row_item_explore"
+                android:adjustViewBounds="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:numStars="5"
-            android:progressTint="@color/teal_200"
-            android:layout_alignParentRight="true" />
+            android:layout_margin="10dp">
 
-        <TextView
-            android:id="@+id/textViewSummaryWord"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textViewTitleWord"
-            android:padding="5dp"
-            android:text="@string/summary_single_picturebook"
-            android:textAllCaps="true"
-            android:textColor="@color/black" />
+            <ImageButton
+                android:id="@+id/addReviews"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:clickable="true"
+                android:src="@drawable/ic_baseline_rate_review_24" />
 
-        <TextView
-            android:id="@+id/textViewSummaryExplore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewTitleExplore"
-            android:layout_toRightOf="@+id/textViewSummaryWord"
-            android:padding="5dp" />
-
-        <TextView
-            android:id="@+id/textViewStatusWord"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewSummaryWord"
-            android:padding="5dp"
-            android:text="@string/author"
-            android:textAllCaps="true"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:id="@+id/textViewStatusExplore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textViewSummaryExplore"
-            android:layout_toRightOf="@id/textViewStatusWord"
-            android:padding="5dp" />
-
-        <Button
-            android:id="@+id/follow_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textViewStatusExplore"
-            android:text="@string/follow"
-            android:layout_toRightOf="@id/textViewStatusExplore"
-            android:layout_alignParentRight="true" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:background="@color/purple_200"
-        android:adjustViewBounds="true"
-        android:layout_margin="10dp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewPagesExplore"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="horizontal"
-            tools:listitem="@layout/picturebook_row_item_explore"
-            android:adjustViewBounds="true"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
-        <ImageButton
-            android:id="@+id/addReviews"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="right"
-            android:clickable="true"
-            android:src="@drawable/ic_baseline_rate_review_24" />
-
-        <ImageButton
-            android:id="@+id/reviewBtn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_baseline_star_outline_24"/>
-    </RelativeLayout>
+            <ImageButton
+                android:id="@+id/reviewBtn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_baseline_star_outline_24"/>
+        </RelativeLayout>
     </LinearLayout>
 
 </ScrollView>
