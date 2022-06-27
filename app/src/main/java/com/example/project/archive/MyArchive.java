@@ -106,7 +106,6 @@ public class MyArchive extends AppCompatActivity {
     void getFirstPage(ArrayList<Picturebook> picturebooks) {
 
         for (Picturebook pc : picturebooks) {
-            // TODO change limitToFirst
             database = databaseIns.getReference("/pages");
             database.orderByChild("picturebookId").equalTo(pc.getId()).addValueEventListener(new ValueEventListener() {
                 @Override
@@ -136,6 +135,7 @@ public class MyArchive extends AppCompatActivity {
                             }
                         });
                     }
+                    database.removeEventListener(this);
                 }
 
                 @Override

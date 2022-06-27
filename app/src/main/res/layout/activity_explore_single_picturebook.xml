@@ -104,9 +104,9 @@
                 android:id="@+id/recyclerViewPagesExplore"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:adjustViewBounds="true"
                 android:scrollbars="horizontal"
-                tools:listitem="@layout/picturebook_row_item_explore"
-                android:adjustViewBounds="true"/>
+                tools:listitem="@layout/picturebook_row_item_explore" />
 
         </RelativeLayout>
 

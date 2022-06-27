@@ -289,7 +289,7 @@ public class PendingSinglePicturebook extends AppCompatActivity {
     private void prepareNotificationMessage(String picturebookId, String message){
 
         String NOTIFICATION_TOPIC = "/topics/" + Constants.FCM_TOPIC;
-        String NOTIFICATION_TITLE = "Your picturebook "+ picturebookId;
+        String NOTIFICATION_TITLE = "Your picturebook "+ picturebook.getTitle();
         String NOTIFICATION_MESSAGE = ""+ message;
         String NOTIFICATION_TYPE = "PicturebookStatusChanged";
 

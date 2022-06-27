@@ -78,7 +78,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         }
 
         Intent intent = null;
-        if(notificationType.equals("NewOrder")){
+        if(notificationType.equals("NewPicturebook")){
             intent = new Intent(this, PendingPicturebooks.class);
             intent.putExtra("picturebookId", picturebookId);
             intent.putExtra("userId", authorId);
