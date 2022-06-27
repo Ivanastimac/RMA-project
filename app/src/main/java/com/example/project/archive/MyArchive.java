@@ -92,6 +92,7 @@ public class MyArchive extends AppCompatActivity {
                     }
                     getFirstPage(picturebooks);
                 }
+                database.removeEventListener(this);
             }
 
             @Override

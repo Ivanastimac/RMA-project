@@ -10,12 +10,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.project.Constants;
 import com.example.project.R;
 import com.example.project.model.DatabasePage;
 import com.example.project.model.Page;
@@ -36,9 +43,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SinglePicturebook extends AppCompatActivity {
 
@@ -54,8 +65,10 @@ public class SinglePicturebook extends AppCompatActivity {
     ArrayList<Page> pages;
     Picturebook picturebook;
     String picturebookId;
+    String adminId = "M3MjW3eo9KTVdkydXxttfYDxSe73";
     DatabasePage dbPage;
     ArrayList<DatabasePage> dbPages;
+    private static final String TAG = "Notifikacije";
 
     FirebaseAuth auth;
     FirebaseUser loggedInUser;
@@ -146,6 +159,7 @@ public class SinglePicturebook extends AppCompatActivity {
                     deleteBtn.setVisibility(View.GONE);
                 }else if (picturebook.getStatus().toString().equals("REJECTED")){
                     privateBtn.setVisibility(View.VISIBLE);
+                    privateBtn.setEnabled(true);
                     privateBtn.setText("Make private");
                 }
                 database.removeEventListener(this);
@@ -222,6 +236,7 @@ public class SinglePicturebook extends AppCompatActivity {
                         editBtn.setVisibility(View.GONE);
                         publishBtn.setVisibility(View.GONE);
                         privateBtn.setText("Pending...");
+
                         if(privateBtn.getText().equals("Published")){
                             privateBtn.setText("Make private");
                             privateBtn.setVisibility(View.VISIBLE);
@@ -230,6 +245,7 @@ public class SinglePicturebook extends AppCompatActivity {
                             //privateBtn.setClickable(false);
                             privateBtn.setEnabled(false);
                         }
+                        prepareNotificationMessage(picturebookId);
                         deleteBtn.setVisibility(View.GONE);
                     }
                 })
@@ -238,6 +254,7 @@ public class SinglePicturebook extends AppCompatActivity {
                         // do nothing
                     }
                 });
+
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -324,6 +341,69 @@ public class SinglePicturebook extends AppCompatActivity {
         Intent in = new Intent(view.getContext(), MyArchive.class);
         view.getContext().startActivity(in);
 
+    }
+
+
+    private void prepareNotificationMessage(String picturebookId){
+
+        String NOTIFICATION_TOPIC = "/topics/" + Constants.FCM_TOPIC;
+        String NOTIFICATION_TITLE = "New picturebook "+ picturebookId;
+        String NOTIFICATION_MESSAGE = "New picturebook is pending";
+        String NOTIFICATION_TYPE = "NewPicturebook";
+
+        JSONObject notificationJo = new JSONObject();
+        JSONObject notificationBodyJo = new JSONObject();
+        try {
+            Log.i(TAG, "SinglePicturebook: tu");
+            notificationBodyJo.put("notificationType", NOTIFICATION_TYPE);
+            notificationBodyJo.put("userId", loggedInUser.getUid());
+            notificationBodyJo.put("adminId", adminId);
+            notificationBodyJo.put("picturebookId", picturebookId);
+            notificationBodyJo.put("notificationTitle", NOTIFICATION_TITLE);
+            notificationBodyJo.put("notificationMessage", NOTIFICATION_MESSAGE);
+
+            notificationJo.put("to", NOTIFICATION_TOPIC);
+            notificationJo.put("data", notificationBodyJo);
+
+
+        }catch (Exception e){
+            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+        }
+
+        sendFcmNotification(notificationJo);
+
+    }
+
+    private void sendFcmNotification(JSONObject notificationJo) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                /*Intent in = new Intent(SinglePicturebook.this, MyArchive.class);
+                startActivity(in);*/
+                Log.i(TAG, "U onResponse sam u Single picturebook");
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                /*Intent in = new Intent(SinglePicturebook.this, MyArchive.class);
+                startActivity(in);*/
+                Log.i(TAG, "U onErrorResponse sam u Single picturebook");
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "key=" + Constants.FCM_KEY);
+
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 
 }

@@ -17,6 +17,8 @@ import com.example.project.archive.MyArchive;
 import com.example.project.editpage.NewPage;
 import com.example.project.explore.Explore;
 import com.example.project.model.User;
+import com.example.project.notifications.Notifications;
+import com.example.project.notificationsettings.NotificationSettings;
 import com.example.project.picturebook.NewPicturebook;
 import com.example.project.user_profile.Login;
 import com.example.project.user_profile.Settings;
@@ -39,9 +41,10 @@ public class MainMenu extends AppCompatActivity {
     Button newPage;
     Button archive;
     Button explore;
+    Button pending;
     ImageView profileBtn;
     Bitmap image;
-    ImageButton notifications;
+    ImageButton settings;
     boolean isAdmin = false;
     String userId;
     User user;
@@ -71,7 +74,8 @@ public class MainMenu extends AppCompatActivity {
         profileBtn = findViewById(R.id.imageButtonProfile);
         archive = findViewById(R.id.buttonArchive);
         explore = findViewById(R.id.buttonExplore);
-        notifications = findViewById(R.id.imageButtonNotifications);
+        pending = findViewById(R.id.buttonPending);
+        settings = findViewById(R.id.imageButtonNotifications);
 
         checkProfilePicture();
 
@@ -101,10 +105,18 @@ public class MainMenu extends AppCompatActivity {
             view.getContext().startActivity(in);
         });
 
+        settings.setOnClickListener(view -> {
+            Intent in = new Intent(view.getContext(), NotificationSettings.class);
+            view.getContext().startActivity(in);
+        });
+
         getIsAdmin(userId);
-        notifications.setOnClickListener(view -> {
+        pending.setOnClickListener(view -> {
             if(isAdmin){
                 Intent in = new Intent(view.getContext(), PendingPicturebooks.class);
+                view.getContext().startActivity(in);
+            }else{
+                Intent in = new Intent(view.getContext(), Notifications.class);
                 view.getContext().startActivity(in);
             }
         });
@@ -118,6 +130,11 @@ public class MainMenu extends AppCompatActivity {
                 user = snapshot.getValue(User.class);
                 if(user.getAdmin() == true){
                     isAdmin = true;
+                    pending.setVisibility(View.VISIBLE);
+                    pending.setText("Pending Picturebooks");
+                }else{
+                    pending.setVisibility(View.VISIBLE);
+                    pending.setText("Notifications");
                 }
             }
 

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -16,8 +17,16 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.project.Constants;
 import com.example.project.MainMenu;
 import com.example.project.R;
+import com.example.project.archive.MyArchive;
+import com.example.project.archive.SinglePicturebook;
 import com.example.project.explore.Explore;
 import com.example.project.explore.ExplorePagesAdapter;
 import com.example.project.explore.ExploreSinglePicturebook;
@@ -43,8 +52,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PendingSinglePicturebook extends AppCompatActivity {
 
@@ -67,8 +80,11 @@ public class PendingSinglePicturebook extends AppCompatActivity {
     Button btnApprove;
     Button btnReject;
     TextView picturebookStatus;
+    boolean isAdmin = false;
+    String adminId;
+    String idUser;
+    private static final String TAG = "Notifikacije";
 
-    PendingPicturebooksAdapter pendingPicturebooksAdapter;
 
     FirebaseAuth auth;
     FirebaseUser loggedInUser;
@@ -101,6 +117,7 @@ public class PendingSinglePicturebook extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         loggedInUser = auth.getCurrentUser();
+        idUser = loggedInUser.getUid();
         databaseIns = FirebaseDatabase.getInstance();
         storageIns = FirebaseStorage.getInstance();
 
@@ -110,6 +127,8 @@ public class PendingSinglePicturebook extends AppCompatActivity {
             Intent in = new Intent(this, Login.class);
             startActivity(in);
         }
+
+        getIsAdmin(idUser);
 
         init();
 
@@ -152,6 +171,7 @@ public class PendingSinglePicturebook extends AppCompatActivity {
                         user = snapshot.getValue(User.class);
                         authorName = user.getFirstName() + ' ' + user.getLastName();
                         status.setText(authorName);
+
                     }
 
                     @Override
@@ -230,6 +250,10 @@ public class PendingSinglePicturebook extends AppCompatActivity {
         database.child("/" + picturebookId).child("status").setValue(Status.PUBLISHED);
         picturebookStatus.setText("Published");
         btnApprove.setEnabled(false);
+
+        String message = "Picturebook is approved and published";
+        Toast.makeText(PendingSinglePicturebook.this, message, Toast.LENGTH_SHORT).show();
+        prepareNotificationMessage(picturebookId, message);
     }
 
     public void rejectPicturebook() {
@@ -237,5 +261,88 @@ public class PendingSinglePicturebook extends AppCompatActivity {
         database.child("/" + picturebookId).child("status").setValue(Status.REJECTED);
         picturebookStatus.setText("Rejected");
         btnReject.setEnabled(false);
+
+        String message = "Picturebook is rejected.";
+        Toast.makeText(PendingSinglePicturebook.this, message, Toast.LENGTH_SHORT).show();
+        prepareNotificationMessage(picturebookId, message);
     }
+
+    private void getIsAdmin(String userId) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/users");
+        ref.child(userId).orderByChild("admin").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                user = snapshot.getValue(User.class);
+                if(user.getAdmin() == true){
+                    isAdmin = true;
+                    adminId = userId;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void prepareNotificationMessage(String picturebookId, String message){
+
+        String NOTIFICATION_TOPIC = "/topics/" + Constants.FCM_TOPIC;
+        String NOTIFICATION_TITLE = "Your picturebook "+ picturebookId;
+        String NOTIFICATION_MESSAGE = ""+ message;
+        String NOTIFICATION_TYPE = "PicturebookStatusChanged";
+
+        JSONObject notificationJo = new JSONObject();
+        JSONObject notificationBodyJo = new JSONObject();
+        try {
+            notificationBodyJo.put("notificationType", NOTIFICATION_TYPE);
+            notificationBodyJo.put("userId", picturebookAuthorId);
+            notificationBodyJo.put("adminId", adminId);
+            notificationBodyJo.put("picturebookId", picturebookId);
+            notificationBodyJo.put("notificationTitle", NOTIFICATION_TITLE);
+            notificationBodyJo.put("notificationMessage", NOTIFICATION_MESSAGE);
+
+            notificationJo.put("to", NOTIFICATION_TOPIC);
+            notificationJo.put("data", notificationBodyJo);
+
+
+        }catch (Exception e){
+            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+        }
+
+        sendFcmNotification(notificationJo);
+
+    }
+
+    private void sendFcmNotification(JSONObject notificationJo) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.i(TAG, "U onResponse sam u Pending Single picturebook");
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i(TAG, "U onErronResponse sam u Pending Single picturebook");
+
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "key=" + Constants.FCM_KEY);
+
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
 }

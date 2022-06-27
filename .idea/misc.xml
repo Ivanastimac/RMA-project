@@ -10,12 +10,14 @@
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_list_files.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_login.xml" value="0.19202898550724637" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_main.xml" value="0.19202898550724637" />
-        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_main_menu.xml" value="0.1" />
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_main_menu.xml" value="0.4" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_my_archive.xml" value="0.1634963768115942" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_new_page.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_new_picturebook.xml" value="0.2" />
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_notification_settings.xml" value="0.1" />
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_notifications.xml" value="0.152" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_password_reset.xml" value="0.2210144927536232" />
-        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_pending_picturebooks.xml" value="0.2" />
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_pending_picturebooks.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_pending_single_picturebook.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_photo_editor_view.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/activity_register.xml" value="0.2210144927536232" />
@@ -28,10 +30,11 @@
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/archive_row_item.xml" value="0.1634963768115942" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/explore_row_item.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/layout_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/notifications_row_item.xml" value="0.536" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/picturebook_row_item.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/picturebook_row_item_explore.xml" value="0.12360688956433637" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/row_file.xml" value="0.1" />
-        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/row_review.xml" value="0.13541666666666666" />
+        <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/row_review.xml" value="0.1" />
         <entry key="..\:/Users/barba/AndroidStudioProjects/RMA-project/app/src/main/res/layout/tools_item.xml" value="0.1" />
       </map>
     </option>

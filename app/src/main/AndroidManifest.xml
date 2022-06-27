@@ -18,6 +18,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
         <activity
+            android:name=".notificationsettings.NotificationSettings"
+            android:exported="false"
+            android:parentActivityName=".MainMenu">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.project.MainMenu" />
+        </activity>
+        <activity
+            android:name=".notifications.Notifications"
+            android:exported="false" />
+        <activity
             android:name=".admin.PendingSinglePicturebook"
             android:exported="false"
             android:parentActivityName=".admin.PendingPicturebooks">
@@ -133,13 +144,21 @@
         <activity android:name=".user_profile.PasswordReset" />
         <activity android:name=".MainMenu" />
         <activity android:name=".user_profile.Register" />
-        <activity android:name=".user_profile.Login">
+        <activity android:name=".user_profile.Login"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".firebasemessaging.MyFirebaseMessaging">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
