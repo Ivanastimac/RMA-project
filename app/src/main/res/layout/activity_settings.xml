@@ -50,8 +50,9 @@
                     android:layout_height="wrap_content"
                     android:text="@string/e_mail_word"
                     android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
+                    android:textColor=" #6a1b76"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textViewEmail"
@@ -83,9 +84,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/first_name_word"
-                    android:textSize="20dp"
                     android:textAllCaps="true"
-                    android:textColor="@color/black"/>
+                    android:textColor=" #6a1b76"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textViewFirstName"
@@ -118,9 +120,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/last_name_word"
-                    android:textSize="20dp"
                     android:textAllCaps="true"
-                    android:textColor="@color/black"/>
+                    android:textColor=" #6a1b76"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textViewLastName"

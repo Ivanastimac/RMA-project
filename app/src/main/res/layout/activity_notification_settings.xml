@@ -32,22 +32,28 @@
             android:id="@+id/fcmSwitch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:background="@color/white"
             android:paddingStart="10dp"
             android:paddingTop="10dp"
             android:paddingEnd="10dp"
-            android:text="Push Notifications" />
+            android:text="Push Notifications"
+            android:textColor=" #6a1b76"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/notficationStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/fcmSwitch"
+            android:layout_marginTop="5dp"
             android:background="@color/white"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:paddingBottom="10dp"
-            android:layout_below="@+id/fcmSwitch"
-            android:text="Notifications are disabled"/>
+            android:text="Notifications are disabled"
+            android:textSize="14sp" />
 
         <View
             android:layout_width="match_parent"

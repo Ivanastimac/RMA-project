@@ -34,14 +34,15 @@
                 android:text="@string/caption"
                 android:textAllCaps="true"
                 android:textColor="#6a1b76"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textStyle="normal|bold" />
 
             <EditText
                 android:id="@+id/editTextCaption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textCapSentences"
-                android:layout_below="@+id/textViewCaptionWord"/>
+                android:layout_below="@+id/textViewCaptionWord"
+                android:inputType="textCapSentences" />
 
             <TextView
                 android:id="@+id/textViewPageNumber"
@@ -51,7 +52,8 @@
                 android:text="Page number:"
                 android:textAllCaps="true"
                 android:textColor="#6a1b76"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <RadioGroup
                 android:id="@+id/radioGroupPages"
@@ -69,6 +71,7 @@
                     android:textColorHighlight="#b74bc2"
                     android:textColorHint="#b74bc2"
                     android:textColorLink="#b74bc2"
+                    android:textStyle="bold"
                     card_view:buttonTint="#b74bc2" />
 
                 <RadioButton
@@ -77,6 +80,7 @@
                     android:layout_height="match_parent"
                     android:text="2"
                     android:textColor="#6a1b76"
+                    android:textStyle="bold"
                     card_view:buttonTint="#b74bc2" />
 
                 <RadioButton
@@ -85,6 +89,7 @@
                     android:layout_height="match_parent"
                     android:text="3"
                     android:textColor="#6a1b76"
+                    android:textStyle="bold"
                     card_view:buttonTint="#b74bc2" />
 
                 <RadioButton
@@ -93,6 +98,7 @@
                     android:layout_height="match_parent"
                     android:text="4"
                     android:textColor="#6a1b76"
+                    android:textStyle="bold"
                     card_view:buttonTint="#b74bc2" />
 
                 <RadioButton
@@ -101,6 +107,7 @@
                     android:layout_height="match_parent"
                     android:text="5"
                     android:textColor="#6a1b76"
+                    android:textStyle="bold"
                     card_view:buttonTint="#b74bc2" />
 
             </RadioGroup>

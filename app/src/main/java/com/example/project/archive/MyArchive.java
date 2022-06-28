@@ -126,7 +126,8 @@ public class MyArchive extends AppCompatActivity {
                             public void onSuccess(byte[] bytes) {
                                 row = new ArchiveRow(pc.getId(), pc.getTitle(), BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
                                 rows.add(row);
-                                pAdapter.notifyDataSetChanged();
+                                //pAdapter.notifyDataSetChanged();
+                                pAdapter.notifyItemRangeChanged(0, rows.size());
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override

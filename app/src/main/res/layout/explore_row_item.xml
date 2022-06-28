@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view_explore"
         android:layout_gravity="center"
         android:layout_width="match_parent"
@@ -33,7 +33,8 @@
                 android:layout_toRightOf="@+id/imageViewExplore"
                 android:paddingLeft="40dp"
                 android:textColor="#6a1b76"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <RatingBar
                 android:id="@+id/ratingBar5"
@@ -55,7 +56,8 @@
                 android:text="Author: "
                 android:textAllCaps="true"
                 android:textColor="#6a1b76"
-                android:textSize="12dp" />
+                android:textSize="12dp"
+                android:textStyle="bold" />
             <TextView
                 android:id="@+id/authorName"
                 android:layout_width="wrap_content"

@@ -375,6 +375,7 @@ public class SinglePicturebook extends AppCompatActivity {
         JSONObject notificationJo = new JSONObject();
         JSONObject notificationBodyJo = new JSONObject();
         try {
+            Log.i(TAG, "SinglePicturebook: tu");
             notificationBodyJo.put("notificationType", NOTIFICATION_TYPE);
             notificationBodyJo.put("userId", loggedInUser.getUid());
             notificationBodyJo.put("adminId", adminId);
@@ -400,14 +401,16 @@ public class SinglePicturebook extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
-                Log.i(TAG, "U onResponse sam u Single picturebook");
+                /*Intent in = new Intent(SinglePicturebook.this, MyArchive.class);
+                startActivity(in);*/
+                //Log.i(TAG, "U onResponse sam u Single picturebook");
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                /*Intent in = new Intent(SinglePicturebook.this, MyArchive.class);
+                startActivity(in);*/
                 Log.i(TAG, "U onErrorResponse sam u Single picturebook");
 
             }
