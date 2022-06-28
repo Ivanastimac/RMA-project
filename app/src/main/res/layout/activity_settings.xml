@@ -147,7 +147,7 @@
                 android:layout_below="@id/rlLastName"
                 android:fontFamily="@font/vast_shadow"
                 android:text="@string/save"
-                android:textColor="#c788e1"
+                android:textColor=" #6a1b76"
                 android:textStyle="bold"
                 app:backgroundTint="#fee157"
                 app:cornerRadius="10dp" />
