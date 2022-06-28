@@ -65,7 +65,7 @@ public class SinglePicturebook extends AppCompatActivity {
     ArrayList<Page> pages;
     Picturebook picturebook;
     String picturebookId;
-    String adminId = "M3MjW3eo9KTVdkydXxttfYDxSe73";
+    String adminId;
     DatabasePage dbPage;
     ArrayList<DatabasePage> dbPages;
     private static final String TAG = "Notifikacije";
@@ -132,6 +132,24 @@ public class SinglePicturebook extends AppCompatActivity {
     void init() {
 
         picturebookId = getIntent().getStringExtra("picturebookId");
+
+        database = databaseIns.getReference("/users");
+        database.orderByChild("admin").equalTo(true).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    String admin = snapshot.getValue().toString();
+                    String[] splited = admin.split("=");
+                    adminId = splited[0].substring(1);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         database = databaseIns.getReference("/picturebooks");
         database.child(picturebookId).addValueEventListener(new ValueEventListener() {
