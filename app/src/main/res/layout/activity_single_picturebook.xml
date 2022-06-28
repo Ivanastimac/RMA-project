@@ -86,21 +86,31 @@
                 android:id="@+id/buttonPublish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/publish"
-                android:layout_alignParentRight="true"
                 android:layout_below="@+id/textViewStatusWord"
                 android:layout_alignParentEnd="true"
-                android:padding="5dp"/>
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/vast_shadow"
+                android:padding="5dp"
+                android:text="@string/publish"
+                android:textColor="#fee157"
+                app:backgroundTint="#b74bc2"
+                app:cornerRadius="10dp" />
 
             <Button
                 android:id="@+id/buttonPrivate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/make_private"
-                android:layout_alignParentRight="true"
                 android:layout_below="@+id/textViewStatusWord"
                 android:layout_alignParentEnd="true"
-                android:padding="5dp"/>
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/vast_shadow"
+                android:padding="5dp"
+                android:text="@string/make_private"
+                android:textColor="#fee157"
+                app:backgroundTint="#c788e1"
+                app:cornerRadius="10dp" />
 
         </RelativeLayout>
 
@@ -125,10 +135,14 @@
                 android:id="@+id/buttonDeletePicturebook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/delete_picture_book"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:padding="5dp"/>
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/vast_shadow"
+                android:padding="5dp"
+                android:text="@string/delete_picture_book"
+                android:textColor="#fee157"
+                app:backgroundTint="#BF0154"
+                app:cornerRadius="10dp" />
 
         </RelativeLayout>
 

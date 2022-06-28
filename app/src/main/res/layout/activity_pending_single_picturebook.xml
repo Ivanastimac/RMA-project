@@ -90,22 +90,31 @@
 
             <Button
                 android:id="@+id/approveButton"
-                android:layout_width="wrap_content"
+                android:layout_width="@android:dimen/thumbnail_height"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textViewStatusAdmin"
+                android:layout_below="@id/textViewStatusAdmin2"
+                android:fontFamily="@font/vast_shadow"
                 android:text="Approve"
-                android:layout_toRightOf="@id/textViewStatusAdmin2"
-                android:backgroundTint="@color/purple_200"
-                android:layout_marginLeft="20dp"/>
+                android:textColor=" #6a1b76"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:backgroundTint="#fee157"
+                app:cornerRadius="10dp" />
+
             <Button
                 android:id="@+id/rejectButton"
-                android:layout_width="wrap_content"
+                android:layout_width="@android:dimen/thumbnail_height"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textViewStatusAdmin"
-                android:text="Reject"
-                android:layout_toRightOf="@id/approveButton"
+                android:layout_below="@id/textViewStatusAdmin2"
                 android:layout_marginLeft="5dp"
-                android:backgroundTint="@color/purple_700"/>
+                android:layout_toRightOf="@id/approveButton"
+                android:fontFamily="@font/vast_shadow"
+                android:text="Reject"
+                android:textColor="#fee157"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:backgroundTint="#6a1b76"
+                app:cornerRadius="10dp" />
 
         </RelativeLayout>
 

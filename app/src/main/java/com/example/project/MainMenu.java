@@ -37,11 +37,11 @@ import com.google.firebase.storage.StorageReference;
 public class MainMenu extends AppCompatActivity {
 
 
-    Button newPicturebook;
-    Button newPage;
-    Button archive;
-    Button explore;
-    Button pending;
+    ImageButton newPicturebook;
+    ImageButton newPage;
+    ImageButton archive;
+    ImageButton explore;
+    ImageButton pending;
     ImageView profileBtn;
     Bitmap image;
     ImageButton settings;
@@ -115,9 +115,6 @@ public class MainMenu extends AppCompatActivity {
             if(isAdmin){
                 Intent in = new Intent(view.getContext(), PendingPicturebooks.class);
                 view.getContext().startActivity(in);
-            }else{
-                Intent in = new Intent(view.getContext(), Notifications.class);
-                view.getContext().startActivity(in);
             }
         });
     }
@@ -131,10 +128,8 @@ public class MainMenu extends AppCompatActivity {
                 if(user.getAdmin() == true){
                     isAdmin = true;
                     pending.setVisibility(View.VISIBLE);
-                    pending.setText("Pending Picturebooks");
                 }else{
-                    pending.setVisibility(View.VISIBLE);
-                    pending.setText("Notifications");
+                    pending.setVisibility(View.GONE);
                 }
             }
 

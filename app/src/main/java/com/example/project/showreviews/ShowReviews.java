@@ -96,10 +96,17 @@ public class ShowReviews extends AppCompatActivity {
                 reviewRV.setAdapter(reviewAdapter);
 
                 long numberOfReviews = snapshot.getChildrenCount();
-                float avgRating = ratingsSum/numberOfReviews;
 
-                ratingScore.setText(String.format("%.2f", avgRating) + " (" + numberOfReviews + ")");
-                ratingBar.setRating(avgRating);
+                if(numberOfReviews != 0){
+                    float avgRating = ratingsSum/numberOfReviews;
+                    ratingScore.setText(String.format("%.2f", avgRating) + " (" + numberOfReviews + ")");
+                    ratingBar.setRating(avgRating);
+                }else{
+                    ratingScore.setText("No reviews" + " (" + numberOfReviews + ")");
+                    ratingBar.setRating(0);
+                }
+
+
 
             }
 

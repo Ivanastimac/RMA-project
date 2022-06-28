@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name"
-                android:textColor="@color/colorPrimary"
+                android:textColor="#6a1b76"
                 android:textSize="20dp"/>
         </LinearLayout>
 
@@ -46,10 +46,11 @@
             style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numStars="5"
             android:layout_below="@+id/profileLL"
             android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:numStars="5"
+            android:progressTint="@color/titanum_yellow" />
 
         <TextView
             android:id="@+id/dateTV"
@@ -57,9 +58,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/profileLL"
             android:layout_toEndOf="@+id/ratingBar3"
+            android:layout_toRightOf="@+id/ratingBar3"
             android:text="dd/MM/yyyy"
-            android:textSize="12sp"
-            android:layout_toRightOf="@+id/ratingBar3" />
+            android:textColor="#6a1b76"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/reviewText"

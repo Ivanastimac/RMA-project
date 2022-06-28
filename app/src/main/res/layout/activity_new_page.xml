@@ -14,10 +14,10 @@ tools:context=".editpage.NewPage">
         android:id="@+id/paint_view"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/purple_500"
-        android:id="@+id/recycler_view_tools"/>
+        android:background="#b74bc2" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,22 +29,38 @@ tools:context=".editpage.NewPage">
             android:id="@+id/buttonResetNewPage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/vast_shadow"
             android:text="@string/reset"
-            android:layout_margin="5dp"/>
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:backgroundTint="#6a1b76"
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/buttonSavePage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/vast_shadow"
             android:text="@string/save"
-            android:layout_margin="5dp"/>
+            android:textColor="#6a1b76"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:backgroundTint="#fee157"
+            app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/buttonTakePhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/vast_shadow"
             android:text="@string/take_picture"
-            android:layout_margin="5dp"/>
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:backgroundTint="#c788e1"
+            app:cornerRadius="10dp" />
 
     </LinearLayout>
 

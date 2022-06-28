@@ -21,9 +21,10 @@
 
             <ImageView
                 android:id="@+id/imageViewAdmin"
-                android:scaleType="centerCrop"
                 android:layout_width="90dp"
-                android:layout_height="90dp"/>
+                android:layout_height="90dp"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="10dp"/>
 
             <TextView
                 android:id="@+id/textViewTitleAdmin"
@@ -31,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_toRightOf="@+id/imageViewAdmin"
-                android:paddingLeft="50dp"
+                android:paddingLeft="40dp"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
 
@@ -42,10 +43,10 @@
                 android:layout_below="@+id/textViewTitleAdmin"
                 android:layout_marginTop="20dp"
                 android:layout_toRightOf="@id/imageViewAdmin"
-                android:paddingLeft="50dp"
+                android:paddingLeft="40dp"
                 android:text="Author: "
                 android:textAllCaps="true"
-                android:textColor="@color/black"
+                android:textColor="#6a1b76"
                 android:textSize="12dp" />
 
             <TextView
@@ -58,19 +59,19 @@
                 android:layout_marginTop="20dp"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
-                android:textSize="12dp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/statusTextAdmin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewTitleAdmin"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="55dp"
                 android:layout_toRightOf="@id/imageViewAdmin"
-                android:paddingLeft="50dp"
+                android:paddingLeft="40dp"
                 android:text="Status: "
                 android:textAllCaps="true"
-                android:textColor="@color/black"
+                android:textColor="#6a1b76"
                 android:textSize="12dp" />
 
             <TextView
@@ -78,12 +79,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewTitleAdmin"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="55dp"
                 android:layout_toRightOf="@id/authorNameTextAdmin"
                 android:paddingLeft="5dp"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
-                android:textSize="12dp" />
+                android:textSize="12sp" />
 
         </RelativeLayout>
 

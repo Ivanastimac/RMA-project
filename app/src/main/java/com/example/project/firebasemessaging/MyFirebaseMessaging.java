@@ -19,6 +19,7 @@ import androidx.core.app.NotificationCompat;
 import com.example.project.R;
 import com.example.project.admin.PendingPicturebooks;
 import com.example.project.archive.MyArchive;
+import com.example.project.explore.Explore;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -53,6 +54,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
             }
 
         }
+
         if(notificationType.equals("PicturebookStatusChanged")){
             String authorId = message.getData().get("userId");
             String adminId = message.getData().get("adminId");
@@ -62,6 +64,19 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
             if(firebaseUser != null && firebaseAuth.getUid().equals(authorId)){
                 showNotification(picturebookId,adminId,authorId,notificationTitle,notificationMessage, notificationType);
+
+            }
+        }
+
+        if(notificationType.equals("NewFollow")){
+            String userId = message.getData().get("userId");
+            String authorId = message.getData().get("authorId");
+            String picturebookId = message.getData().get("picturebookId");
+            String notificationTitle = message.getData().get("notificationTitle");
+            String notificationMessage = message.getData().get("notificationMessage");
+
+            if(firebaseUser != null && firebaseAuth.getUid().equals(authorId)){
+                showNotification(picturebookId,authorId,userId,notificationTitle,notificationMessage, notificationType);
 
             }
         }
@@ -90,6 +105,13 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
             intent = new Intent(this, MyArchive.class);
             intent.putExtra("picturebookId", picturebookId);
             intent.putExtra("userId", authorId);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        }else if(notificationType.equals("NewFollow")){
+            intent = new Intent(this, Explore.class);
+            //intent.putExtra("authorId", adminId);
+            intent.putExtra("userId", adminId);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         }

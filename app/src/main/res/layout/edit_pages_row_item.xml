@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cardViewPage"
         android:layout_gravity="center"
         android:layout_width="match_parent"
@@ -30,11 +30,11 @@
                 android:id="@+id/textViewCaptionWord"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/imageViewSinglePage"
                 android:text="@string/caption"
-                android:textColor="@color/black"
                 android:textAllCaps="true"
-                android:textSize="20dp"
-                android:layout_below="@+id/imageViewSinglePage"/>
+                android:textColor="#6a1b76"
+                android:textSize="20dp" />
 
             <EditText
                 android:id="@+id/editTextCaption"
@@ -47,11 +47,11 @@
                 android:id="@+id/textViewPageNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/editTextCaption"
                 android:text="Page number:"
                 android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textSize="20dp"
-                android:layout_below="@+id/editTextCaption"/>
+                android:textColor="#6a1b76"
+                android:textSize="20dp" />
 
             <RadioGroup
                 android:id="@+id/radioGroupPages"
@@ -64,31 +64,44 @@
                     android:id="@+id/radio_button_1"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="1"/>
+                    android:text="1"
+                    android:textColor="#6a1b76"
+                    android:textColorHighlight="#b74bc2"
+                    android:textColorHint="#b74bc2"
+                    android:textColorLink="#b74bc2"
+                    card_view:buttonTint="#b74bc2" />
 
                 <RadioButton
                     android:id="@+id/radio_button_2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="2"/>
+                    android:text="2"
+                    android:textColor="#6a1b76"
+                    card_view:buttonTint="#b74bc2" />
 
                 <RadioButton
                     android:id="@+id/radio_button_3"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="3"/>
+                    android:text="3"
+                    android:textColor="#6a1b76"
+                    card_view:buttonTint="#b74bc2" />
 
                 <RadioButton
                     android:id="@+id/radio_button_4"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="4"/>
+                    android:text="4"
+                    android:textColor="#6a1b76"
+                    card_view:buttonTint="#b74bc2" />
 
                 <RadioButton
                     android:id="@+id/radio_button_5"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="5"/>
+                    android:text="5"
+                    android:textColor="#6a1b76"
+                    card_view:buttonTint="#b74bc2" />
 
             </RadioGroup>
 

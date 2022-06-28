@@ -2,6 +2,13 @@ package com.example.project.explore;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.project.Constants;
 import com.example.project.R;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -10,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -36,8 +44,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ExploreSinglePicturebook extends AppCompatActivity {
 
@@ -61,6 +73,7 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
     ImageButton reviewBtn;
     ImageButton viewReviewsBtn;
     RatingBar ratingBar;
+    String fullUserName;
 
     String followingId;
 
@@ -109,12 +122,15 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
             startActivity(in);
         }
 
+        getUserFullName(loggedInUser.getUid());
+
         init();
 
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 follow();
+
             }
         });
 
@@ -139,6 +155,23 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
         });
 
         loadReviews();
+
+    }
+
+    private void getUserFullName(String uid) {
+        database = databaseIns.getReference("/users");
+        database.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                user = snapshot.getValue(User.class);
+                fullUserName = user.getFirstName() + ' ' + user.getLastName();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ExploreSinglePicturebook.this, "Failed to read value." + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -312,11 +345,74 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
                 });
             following = true;
             follow.setText("Unfollow");
+            prepareNotificationMessage(picturebookAuthorId);
         } else {
             database = databaseIns.getReference("/users/" + loggedInUser.getUid() + "/following");
             database.child(followingId).removeValue();
             following = false;
             follow.setText("Follow");
         }
+    }
+
+    private void prepareNotificationMessage(String authorId){
+
+        String NOTIFICATION_TOPIC = "/topics/" + Constants.FCM_TOPIC;
+        String NOTIFICATION_TITLE = "New follow ";
+        String NOTIFICATION_MESSAGE = "User " + fullUserName + " started following you!";
+        String NOTIFICATION_TYPE = "NewFollow";
+
+        JSONObject notificationJo = new JSONObject();
+        JSONObject notificationBodyJo = new JSONObject();
+        try {
+            Log.i(TAG, "SinglePicturebook: tu");
+            notificationBodyJo.put("notificationType", NOTIFICATION_TYPE);
+            notificationBodyJo.put("userId", loggedInUser.getUid());
+            notificationBodyJo.put("authorId", picturebookAuthorId);
+            //notificationBodyJo.put("picturebookId", picturebookId);
+            notificationBodyJo.put("notificationTitle", NOTIFICATION_TITLE);
+            notificationBodyJo.put("notificationMessage", NOTIFICATION_MESSAGE);
+
+            notificationJo.put("to", NOTIFICATION_TOPIC);
+            notificationJo.put("data", notificationBodyJo);
+
+
+        }catch (Exception e){
+            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+        }
+
+        sendFcmNotification(notificationJo);
+
+    }
+
+    private void sendFcmNotification(JSONObject notificationJo) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                /*Intent in = new Intent(SinglePicturebook.this, MyArchive.class);
+                startActivity(in);*/
+                Log.i(TAG, "U onResponse sam u Explore Single picturebook");
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                /*Intent in = new Intent(SinglePicturebook.this, MyArchive.class);
+                startActivity(in);*/
+                Log.i(TAG, "U onErrorResponse sam u Explore Single picturebook");
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "key=" + Constants.FCM_KEY);
+
+                return headers;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 }

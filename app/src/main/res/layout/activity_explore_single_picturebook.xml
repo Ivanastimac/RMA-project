@@ -9,9 +9,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="10dp"
         android:gravity="center"
-        android:orientation="vertical"
-        android:layout_margin="10dp">
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -40,9 +40,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:numStars="5"
-                android:progressTint="@color/teal_200"
-                android:layout_alignParentRight="true" />
+                android:progressTint="@color/titanum_yellow" />
 
             <TextView
                 android:id="@+id/textViewSummaryWord"
@@ -85,20 +85,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textViewStatusExplore"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/vast_shadow"
+                android:padding="10dp"
                 android:text="@string/follow"
-                android:layout_toRightOf="@id/textViewStatusExplore"
-                android:layout_alignParentRight="true" />
+                android:textColor="#fee157"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:backgroundTint="#c788e1"
+                app:cornerRadius="10dp" />
 
         </RelativeLayout>
 
-        <RelativeLayout
-            xmlns:tools="http://schemas.android.com/tools"
+        <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@color/purple_200"
+            android:layout_margin="10dp"
             android:adjustViewBounds="true"
-            android:layout_margin="10dp">
+            android:background="@color/purple_200"
+            android:gravity="center">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewPagesExplore"
@@ -117,19 +122,22 @@
 
             <ImageButton
                 android:id="@+id/addReviews"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
                 android:clickable="true"
-                android:src="@drawable/ic_baseline_rate_review_24" />
+                android:src="@drawable/comment" />
 
             <ImageButton
                 android:id="@+id/reviewBtn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_baseline_star_outline_24"/>
+                android:src="@drawable/reviews" />
         </RelativeLayout>
     </LinearLayout>
 

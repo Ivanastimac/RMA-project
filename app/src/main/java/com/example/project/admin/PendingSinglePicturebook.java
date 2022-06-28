@@ -250,6 +250,7 @@ public class PendingSinglePicturebook extends AppCompatActivity {
         database.child("/" + picturebookId).child("status").setValue(Status.PUBLISHED);
         picturebookStatus.setText("Published");
         btnApprove.setEnabled(false);
+        btnReject.setEnabled(false);
 
         String message = "Picturebook is approved and published";
         Toast.makeText(PendingSinglePicturebook.this, message, Toast.LENGTH_SHORT).show();
@@ -261,6 +262,7 @@ public class PendingSinglePicturebook extends AppCompatActivity {
         database.child("/" + picturebookId).child("status").setValue(Status.REJECTED);
         picturebookStatus.setText("Rejected");
         btnReject.setEnabled(false);
+        btnApprove.setEnabled(false);
 
         String message = "Picturebook is rejected.";
         Toast.makeText(PendingSinglePicturebook.this, message, Toast.LENGTH_SHORT).show();

@@ -31,8 +31,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_toRightOf="@+id/imageViewExplore"
-                android:paddingLeft="50dp"
-                android:textColor="@color/black"
+                android:paddingLeft="40dp"
+                android:textColor="#6a1b76"
                 android:textSize="20dp" />
 
             <RatingBar
@@ -42,19 +42,19 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:numStars="5"
-                android:progressTint="@color/teal_200"/>
+                android:progressTint="@color/titanum_yellow"/>
 
             <TextView
                 android:id="@+id/authorNameText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewTitleExplore"
-                android:layout_toRightOf="@id/imageViewExplore"
-                android:paddingLeft="50dp"
                 android:layout_marginTop="20dp"
+                android:layout_toRightOf="@id/imageViewExplore"
+                android:paddingLeft="40dp"
                 android:text="Author: "
                 android:textAllCaps="true"
-                android:textColor="@color/black"
+                android:textColor="#6a1b76"
                 android:textSize="12dp" />
             <TextView
                 android:id="@+id/authorName"

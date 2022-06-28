@@ -32,7 +32,7 @@
                 android:layout_centerVertical="true"
                 android:paddingLeft="50dp"
                 android:textSize="20dp"
-                android:textColor="@color/black"
+                android:textColor="#6a1b76"
                 android:layout_toRightOf="@+id/imageViewArhive"/>
 
         </RelativeLayout>

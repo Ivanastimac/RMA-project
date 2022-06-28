@@ -12,14 +12,16 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:id="@+id/reviewRl">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Write review"
-            android:textColor="@color/black"
             android:layout_centerHorizontal="true"
+            android:fontFamily="@font/vast_shadow"
+            android:text="Write review"
+            android:textColor="#6a1b76"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <ImageView
@@ -35,15 +37,15 @@
 
     <TextView
         android:id="@+id/picturebookName"
-        android:layout_below="@+id/picturebookCover"
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/picturebookCover"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:text="Picturebook name"
-        android:textColor="@color/colorPrimary"
+        android:textColor="#6a1b76"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
     <TextView
         android:id="@+id/textLabel"
         android:layout_below="@+id/picturebookName"
@@ -56,13 +58,15 @@
 
     <RatingBar
         android:id="@+id/ratingBar"
-        android:layout_below="@+id/textLabel"
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textLabel"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
         android:numStars="5"
-        android:layout_marginTop="10dp"/>
+        android:progressTint="@color/titanum_yellow"/>
+
     <EditText
         android:id="@+id/reviewEt"
         android:layout_below="@+id/ratingBar"
@@ -77,11 +81,15 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/submitReview"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:src="@drawable/ic_baseline_done_24"
-        android:layout_margin="20dp"
-        android:layout_alignParentRight="true" />
+        app:backgroundTint="#fee157" />
 </RelativeLayout>

@@ -14,14 +14,16 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:id="@+id/reviewRl">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Picturebook reviews"
-            android:textColor="@color/black"
             android:layout_centerHorizontal="true"
+            android:fontFamily="@font/vast_shadow"
+            android:text=" Picturebook reviews"
+            android:textColor="#6a1b76"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <LinearLayout
@@ -45,12 +47,14 @@
             android:id="@+id/namePicturebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Picturebook name"/>
+            android:text="Picturebook name"
+            android:textColor="#6a1b76" />
         <RatingBar
             android:id="@+id/ratingBar2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.RatingBar.Small"/>
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:progressTint="@color/titanum_yellow"/>
 
         <TextView
             android:id="@+id/ratingScore"
