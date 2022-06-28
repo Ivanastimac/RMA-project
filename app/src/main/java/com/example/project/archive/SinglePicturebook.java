@@ -68,6 +68,7 @@ public class SinglePicturebook extends AppCompatActivity {
     String adminId;
     DatabasePage dbPage;
     ArrayList<DatabasePage> dbPages;
+    private static final String TAG = "Notifikacije";
 
     FirebaseAuth auth;
     FirebaseUser loggedInUser;
@@ -400,10 +401,14 @@ public class SinglePicturebook extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
 
+                Log.i(TAG, "U onResponse sam u Single picturebook");
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                Log.i(TAG, "U onErrorResponse sam u Single picturebook");
 
             }
         }){
