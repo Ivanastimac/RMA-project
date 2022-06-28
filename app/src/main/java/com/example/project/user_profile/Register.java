@@ -37,7 +37,6 @@ public class Register extends AppCompatActivity {
 
     // No whitespaces, minimum eight characters, at least one uppercase letter, one lowercase letter and one number
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
-    private static final Pattern NAME_PATTERN = Pattern.compile("[a-zA-Z]\\d");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,13 +98,13 @@ public class Register extends AppCompatActivity {
         if (firstName == null || firstName.getText().toString().isEmpty()) {
             Toast.makeText(this, "Please enter your first name.", Toast.LENGTH_SHORT).show();
             valid = false;
-        } else if (firstName.getText().length() < 3 || firstName.getText().length() > 20  /*|| !NAME_PATTERN.matcher(firstName.getText().toString()).matches()*/) {
+        } else if (firstName.getText().length() < 3 || firstName.getText().length() > 20) {
             Toast.makeText(this, "Please enter valid first name.", Toast.LENGTH_SHORT).show();
             valid = false;
         } else if (lastName == null || lastName.getText().toString().isEmpty()) {
             Toast.makeText(this, "Please enter your last name.", Toast.LENGTH_SHORT).show();
             valid = false;
-        } else if (lastName.getText().length() < 3 || firstName.getText().length() > 20 /*|| !NAME_PATTERN.matcher(lastName.getText().toString()).matches()*/) {
+        } else if (lastName.getText().length() < 3 || firstName.getText().length() > 20) {
             Toast.makeText(this, "Please enter valid last name.", Toast.LENGTH_SHORT).show();
             valid = false;
         } else if (email == null || email.getText().toString().isEmpty()) {

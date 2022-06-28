@@ -8,9 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -182,13 +180,13 @@ public class Settings extends AppCompatActivity {
         if (firstNameEdit == null || firstNameEdit.getText().toString().isEmpty()) {
             Toast.makeText(this, "Please enter your first name.", Toast.LENGTH_SHORT).show();
             valid = false;
-        } else if (firstNameEdit.getText().length() < 3 || firstNameEdit.getText().length() > 20  /*|| !NAME_PATTERN.matcher(firstName.getText().toString()).matches()*/) {
+        } else if (firstNameEdit.getText().length() < 3 || firstNameEdit.getText().length() > 20) {
             Toast.makeText(this, "Please enter valid first name.", Toast.LENGTH_SHORT).show();
             valid = false;
         } else if (lastNameEdit == null || lastNameEdit.getText().toString().isEmpty()) {
             Toast.makeText(this, "Please enter your last name.", Toast.LENGTH_SHORT).show();
             valid = false;
-        } else if (lastNameEdit.getText().length() < 3 || firstNameEdit.getText().length() > 20 /*|| !NAME_PATTERN.matcher(lastName.getText().toString()).matches()*/) {
+        } else if (lastNameEdit.getText().length() < 3 || firstNameEdit.getText().length() > 20) {
             Toast.makeText(this, "Please enter valid last name.", Toast.LENGTH_SHORT).show();
             valid = false;
         } else if (emailEdit == null || emailEdit.getText().toString().isEmpty()) {
