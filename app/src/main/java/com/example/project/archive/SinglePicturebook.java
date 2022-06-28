@@ -68,7 +68,6 @@ public class SinglePicturebook extends AppCompatActivity {
     String adminId;
     DatabasePage dbPage;
     ArrayList<DatabasePage> dbPages;
-    private static final String TAG = "Notifikacije";
 
     FirebaseAuth auth;
     FirebaseUser loggedInUser;
@@ -179,6 +178,9 @@ public class SinglePicturebook extends AppCompatActivity {
                     privateBtn.setVisibility(View.VISIBLE);
                     privateBtn.setEnabled(true);
                     privateBtn.setText("Make private");
+                    publishBtn.setVisibility(View.GONE);
+                    editBtn.setVisibility(View.GONE);
+                    deleteBtn.setVisibility(View.GONE);
                 }
                 database.removeEventListener(this);
             }
@@ -361,7 +363,7 @@ public class SinglePicturebook extends AppCompatActivity {
 
     }
 
-
+    //function for preparing push notification's message
     private void prepareNotificationMessage(String picturebookId){
 
         String NOTIFICATION_TOPIC = "/topics/" + Constants.FCM_TOPIC;
@@ -372,7 +374,6 @@ public class SinglePicturebook extends AppCompatActivity {
         JSONObject notificationJo = new JSONObject();
         JSONObject notificationBodyJo = new JSONObject();
         try {
-            Log.i(TAG, "SinglePicturebook: tu");
             notificationBodyJo.put("notificationType", NOTIFICATION_TYPE);
             notificationBodyJo.put("userId", loggedInUser.getUid());
             notificationBodyJo.put("adminId", adminId);
@@ -393,21 +394,17 @@ public class SinglePicturebook extends AppCompatActivity {
 
     }
 
+    //function for sending push notification messages
     private void sendFcmNotification(JSONObject notificationJo) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                /*Intent in = new Intent(SinglePicturebook.this, MyArchive.class);
-                startActivity(in);*/
-                Log.i(TAG, "U onResponse sam u Single picturebook");
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                /*Intent in = new Intent(SinglePicturebook.this, MyArchive.class);
-                startActivity(in);*/
-                Log.i(TAG, "U onErrorResponse sam u Single picturebook");
+
             }
         }){
             @Override
@@ -421,6 +418,7 @@ public class SinglePicturebook extends AppCompatActivity {
             }
         };
 
+        //setting up and starting a request queue
         Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 

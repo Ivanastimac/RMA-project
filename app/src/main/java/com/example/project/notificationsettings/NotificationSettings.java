@@ -15,11 +15,10 @@ import com.example.project.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.util.PrimitiveIterator;
 
+//Activity for enabling/disabling push notifications
 public class NotificationSettings extends AppCompatActivity {
 
     SwitchCompat fcmSwitch;

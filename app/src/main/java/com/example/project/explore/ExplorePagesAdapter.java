@@ -37,7 +37,7 @@ public class ExplorePagesAdapter extends RecyclerView.Adapter<ExplorePagesAdapte
 
         public MyView(View view) {
             super(view);
-            image = (ImageView) view.findViewById(R.id.imageViewPage);
+            image = view.findViewById(R.id.imageViewPage);
             cv = view.findViewById(R.id.card_view);
             textView = view.findViewById(R.id.textCaption);
         }

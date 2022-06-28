@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -17,7 +16,6 @@ import com.example.project.archive.MyArchive;
 import com.example.project.editpage.NewPage;
 import com.example.project.explore.Explore;
 import com.example.project.model.User;
-import com.example.project.notifications.Notifications;
 import com.example.project.notificationsettings.NotificationSettings;
 import com.example.project.picturebook.NewPicturebook;
 import com.example.project.user_profile.Login;
@@ -143,7 +141,6 @@ public class MainMenu extends AppCompatActivity {
     void checkProfilePicture() {
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference().child("images/profile_pictures/" + loggedInUser.getUid());
-        //Toast.makeText(MainMenu.this, storageRef.toString(), Toast.LENGTH_LONG).show();
 
         final long ONE_MEGABYTE = 1024 * 1024;
         storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
