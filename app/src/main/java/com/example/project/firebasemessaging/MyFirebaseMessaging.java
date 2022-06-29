@@ -121,10 +121,10 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         //look of notification
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.profile);
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.picturebook_not);
         Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-        notificationBuilder.setSmallIcon(R.drawable.profile)
+        notificationBuilder.setSmallIcon(R.drawable.icona)
                 .setLargeIcon(largeIcon)
                 .setContentTitle(notificationTitle)
                 .setContentText(notificationMessage)
