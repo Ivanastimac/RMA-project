@@ -27,12 +27,14 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Random;
 
+//firebase cloud messaging
 public class MyFirebaseMessaging extends FirebaseMessagingService {
 
     private static final String NOTIFICATION_CHANNEL_ID = "MY_NOTIFICATION_CHANNEL_ID";
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
 
+    //receive data and prepare notification data to be shown
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
         super.onMessageReceived(message);
@@ -83,6 +85,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
     }
 
+    //depending on type of notification show it and on click open different activity
     private void showNotification(String picturebookId, String adminId, String authorId, String notificationTitle, String notificationMessage, String notificationType){
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -110,7 +113,6 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
         }else if(notificationType.equals("NewFollow")){
             intent = new Intent(this, Explore.class);
-            //intent.putExtra("authorId", adminId);
             intent.putExtra("userId", adminId);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -118,10 +120,11 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.profile);
+        //look of notification
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.picturebook_not);
         Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-        notificationBuilder.setSmallIcon(R.drawable.profile)
+        notificationBuilder.setSmallIcon(R.drawable.icona)
                 .setLargeIcon(largeIcon)
                 .setContentTitle(notificationTitle)
                 .setContentText(notificationMessage)
@@ -132,6 +135,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         notificationManager.notify(notificationID, notificationBuilder.build());
     }
 
+    //setting up notification channel and options
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setupNotificationChannel(NotificationManager notificationManager) {
         CharSequence channelName = "Some Sample Text";

@@ -48,7 +48,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Picturebook name"
-            android:textColor="#6a1b76" />
+            android:textColor="#6a1b76"
+            android:textStyle="bold" />
         <RatingBar
             android:id="@+id/ratingBar2"
             android:layout_width="wrap_content"

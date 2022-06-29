@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view_arhive"
         android:layout_gravity="center"
         android:layout_width="match_parent"
@@ -30,10 +30,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/imageViewArhive"
                 android:paddingLeft="50dp"
-                android:textSize="20dp"
                 android:textColor="#6a1b76"
-                android:layout_toRightOf="@+id/imageViewArhive"/>
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 

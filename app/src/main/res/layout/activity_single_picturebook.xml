@@ -32,11 +32,12 @@
                 android:id="@+id/textViewTitleWord"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_single_picturebook"
-                android:textColor="@color/black"
                 android:layout_below="@id/imageButtonEditPicturebook"
+                android:padding="5dp"
+                android:text="@string/title_single_picturebook"
                 android:textAllCaps="true"
-                android:padding="5dp"/>
+                android:textColor=" #6a1b76"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textViewTitleArchive"
@@ -50,11 +51,12 @@
                 android:id="@+id/textViewSummaryWord"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/summary_single_picturebook"
-                android:textColor="@color/black"
                 android:layout_below="@id/textViewTitleWord"
+                android:padding="5dp"
+                android:text="@string/summary_single_picturebook"
                 android:textAllCaps="true"
-                android:padding="5dp"/>
+                android:textColor=" #6a1b76"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textViewSummaryArchive"
@@ -68,11 +70,12 @@
                 android:id="@+id/textViewStatusWord"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewSummaryWord"
+                android:padding="5dp"
                 android:text="@string/status"
                 android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:layout_below="@+id/textViewSummaryWord"
-                android:padding="5dp"/>
+                android:textColor=" #6a1b76"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textViewStatus"

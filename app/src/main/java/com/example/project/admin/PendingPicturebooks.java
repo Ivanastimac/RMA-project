@@ -31,6 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
+//activity for picture books that are in status pending and need to be approved/rejected by admin
 public class PendingPicturebooks extends AppCompatActivity {
 
     ArrayList<AdminRow> rows;
@@ -60,11 +61,13 @@ public class PendingPicturebooks extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_Project);
         setContentView(R.layout.activity_pending_picturebooks);
 
         searchView = findViewById(R.id.search_bar_admin);
         searchView.clearFocus();
 
+        //setting listener for searchView
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -99,6 +102,7 @@ public class PendingPicturebooks extends AppCompatActivity {
         rv.setAdapter(pAdapter);
         pAdapter.setPicturebooks(rows);
 
+        //getting picture books from database
         database = databaseIns.getReference("/picturebooks");
         database.orderByChild("status").equalTo("PENDING").addValueEventListener(new ValueEventListener() {
             @Override
@@ -121,6 +125,7 @@ public class PendingPicturebooks extends AppCompatActivity {
         });
     }
 
+    //filter for searchView (filtering by title and authorName)
     private void filterList(String text) {
         List<AdminRow> filteredList = new ArrayList<>();
         for (AdminRow pic : rows) {
@@ -136,8 +141,8 @@ public class PendingPicturebooks extends AppCompatActivity {
         }
     }
 
+    //get first page of picture book to display it
     void getFirstPage(ArrayList<Picturebook> picturebooks) {
-
         for (Picturebook pc : picturebooks) {
             database = databaseIns.getReference("/pages");
             database.orderByChild("picturebookId").equalTo(pc.getId()).addValueEventListener(new ValueEventListener() {
@@ -178,9 +183,8 @@ public class PendingPicturebooks extends AppCompatActivity {
                                     public void onCancelled(@NonNull DatabaseError error) { }
                                 });
 
+                                //get author's full name to display it
                                 database2 = FirebaseDatabase.getInstance().getReference("/users");
-
-                                //database = FirebaseDatabase.getInstance().getReference("/picturebooks");
                                 database2.child(userId).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -189,7 +193,6 @@ public class PendingPicturebooks extends AppCompatActivity {
 
                                         row = new AdminRow(pc.getId(), pc.getTitle(), BitmapFactory.decodeByteArray(bytes, 0, bytes.length), authorName, pc.getStatus().toString());
                                         rows.add(row);
-                                        //pAdapter.notifyDataSetChanged();
                                         pAdapter.notifyItemRangeChanged(0, rows.size());
                                     }
 

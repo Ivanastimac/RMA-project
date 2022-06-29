@@ -25,7 +25,8 @@
                 android:padding="5dp"
                 android:text="@string/title_single_picturebook"
                 android:textAllCaps="true"
-                android:textColor="@color/black" />
+                android:textColor=" #6a1b76"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textViewTitleExplore"
@@ -52,7 +53,8 @@
                 android:padding="5dp"
                 android:text="@string/summary_single_picturebook"
                 android:textAllCaps="true"
-                android:textColor="@color/black" />
+                android:textColor=" #6a1b76"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textViewSummaryExplore"
@@ -70,7 +72,8 @@
                 android:padding="5dp"
                 android:text="@string/author"
                 android:textAllCaps="true"
-                android:textColor="@color/black" />
+                android:textColor=" #6a1b76"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textViewStatusExplore"

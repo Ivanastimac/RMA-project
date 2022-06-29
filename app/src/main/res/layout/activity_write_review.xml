@@ -46,15 +46,17 @@
         android:textColor="#6a1b76"
         android:textSize="20sp"
         android:textStyle="bold" />
+
     <TextView
         android:id="@+id/textLabel"
-        android:layout_below="@+id/picturebookName"
-        android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/picturebookName"
         android:layout_marginTop="20dp"
+        android:text="How was your experience with this picturebook? \nYour feedback is important to us."
+        android:textAlignment="center"
         android:textColor="@color/black"
-        android:text="How was your experience with this picturebook? \nYour feedback is important to us."/>
+        android:textSize="17sp" />
 
     <RatingBar
         android:id="@+id/ratingBar"

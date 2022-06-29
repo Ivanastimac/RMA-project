@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -69,7 +68,6 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
     boolean following;
     String authorName;
     String picturebookAuthorId;
-    private static final String TAG = "Explore Activity";
     ImageButton reviewBtn;
     ImageButton viewReviewsBtn;
     RatingBar ratingBar;
@@ -82,17 +80,15 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
     DatabaseReference database;
     DatabaseReference database2;
     FirebaseDatabase databaseIns;
-    FirebaseDatabase databaseIns2;
     FirebaseStorage storageIns;
-    FirebaseStorage storageIns2;
     StorageReference storageRef;
-    StorageReference storageRef2;
 
     final long ONE_MEGABYTE = 1024 * 1024;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_Project);
         setContentView(R.layout.activity_explore_single_picturebook);
 
         title = findViewById(R.id.textViewTitleExplore);
@@ -158,6 +154,7 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
 
     }
 
+    //get logged in user's full name from database
     private void getUserFullName(String uid) {
         database = databaseIns.getReference("/users");
         database.child(uid).addValueEventListener(new ValueEventListener() {
@@ -175,9 +172,9 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
 
     }
 
+    //get average ratings and load it in rating bar
     private float ratingsSum = 0;
     private void loadReviews() {
-
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/picturebooks");
         ref.child(picturebookId).child("/ratings").addValueEventListener(new ValueEventListener() {
             @Override
@@ -206,7 +203,7 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
     }
 
     void init() {
-
+        //get author's full name
         picturebookId = getIntent().getStringExtra("picturebookId");
         database2 = databaseIns.getReference("/users");
 
@@ -251,6 +248,7 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
         rv.setAdapter(pAdapter);
         pAdapter.setImages(pages);
 
+        //get picture book's pages
         database = databaseIns.getReference("/pages");
         database.orderByChild("picturebookId").equalTo(picturebookId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -273,6 +271,7 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
             }
         });
 
+        //follow/unfollow user
         database = databaseIns.getReference("/users/" + loggedInUser.getUid() + "/following");
         database.addValueEventListener(new ValueEventListener() {
             @Override
@@ -297,6 +296,7 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
         });
     }
 
+    //get picturebook pages from firebase storage database
     void getPages() {
         for (DatabasePage page : dbPages) {
             storageRef = storageIns.getReference().child("images/pages/" + picturebookId + "/" + page.getId());
@@ -320,6 +320,7 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
         }
     }
 
+    //put in database if user is followinf another user/remove if it unfollowed that user (who it was following)
     void follow() {
         if (!following) {
             database = databaseIns.getReference("/users/" + loggedInUser.getUid() + "/following");
@@ -354,6 +355,7 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
         }
     }
 
+    //prepare notification message for when someone start's following you (it is send to author)
     private void prepareNotificationMessage(String authorId){
 
         String NOTIFICATION_TOPIC = "/topics/" + Constants.FCM_TOPIC;
@@ -364,11 +366,9 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
         JSONObject notificationJo = new JSONObject();
         JSONObject notificationBodyJo = new JSONObject();
         try {
-            Log.i(TAG, "SinglePicturebook: tu");
             notificationBodyJo.put("notificationType", NOTIFICATION_TYPE);
             notificationBodyJo.put("userId", loggedInUser.getUid());
             notificationBodyJo.put("authorId", picturebookAuthorId);
-            //notificationBodyJo.put("picturebookId", picturebookId);
             notificationBodyJo.put("notificationTitle", NOTIFICATION_TITLE);
             notificationBodyJo.put("notificationMessage", NOTIFICATION_MESSAGE);
 
@@ -389,17 +389,12 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                /*Intent in = new Intent(SinglePicturebook.this, MyArchive.class);
-                startActivity(in);*/
-                Log.i(TAG, "U onResponse sam u Explore Single picturebook");
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                /*Intent in = new Intent(SinglePicturebook.this, MyArchive.class);
-                startActivity(in);*/
-                Log.i(TAG, "U onErrorResponse sam u Explore Single picturebook");
+
             }
         }){
             @Override

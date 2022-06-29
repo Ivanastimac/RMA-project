@@ -16,7 +16,7 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Project">
+        android:theme="@style/splashScreenTheme">
         <activity
             android:name=".notificationsettings.NotificationSettings"
             android:exported="false"
@@ -25,9 +25,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.project.MainMenu" />
         </activity>
-        <activity
-            android:name=".notifications.Notifications"
-            android:exported="false" />
         <activity
             android:name=".admin.PendingSinglePicturebook"
             android:exported="false"
@@ -99,12 +96,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.project.MainMenu" />
         </activity>
-        <activity
-            android:name=".editpage.ViewFileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".editpage.ListFilesActivity"
-            android:exported="false" />
         <activity
             android:name=".editpage.NewPage"
             android:exported="false"

@@ -1,7 +1,6 @@
 package com.example.project.explore;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -23,7 +21,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,9 +32,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
-
+//activity for exploring published picture books
 public class Explore extends AppCompatActivity {
 
     ArrayList<ExploreRow> rows;
@@ -45,8 +41,6 @@ public class Explore extends AppCompatActivity {
     RecyclerView rv;
     ExploreRow row;
     SearchView searchView;
-    String picturebookId;
-    String picturebookAuthorId;
     String authorName;
     User user;
     boolean following;
@@ -63,17 +57,18 @@ public class Explore extends AppCompatActivity {
     ExplorePicturebookAdapter pAdapter;
     Picturebook picturebook;
     final long ONE_MEGABYTE = 1024 * 1024;
-    private static final String TAG = "Explore Activity";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_Project);
         setContentView(R.layout.activity_explore);
 
         searchView = findViewById(R.id.search_bar_explore);
         searchView.clearFocus();
 
+        //setting listener for searchView
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -108,6 +103,7 @@ public class Explore extends AppCompatActivity {
         rv.setAdapter(pAdapter);
         pAdapter.setPicturebooks(rows);
 
+        //get all picture books from database which status = PUBLISHED
         database = databaseIns.getReference("/picturebooks");
         database.orderByChild("status").equalTo("PUBLISHED").addValueEventListener(new ValueEventListener() {
             @Override
@@ -130,6 +126,7 @@ public class Explore extends AppCompatActivity {
         });
     }
 
+    //filter for searchBar -> by title and by author
     private void filterList(String text) {
         List<ExploreRow> filteredList = new ArrayList<>();
         for (ExploreRow pic : rows) {
@@ -145,6 +142,7 @@ public class Explore extends AppCompatActivity {
         }
     }
 
+    //function to get the first page of picture book to display it
     void getFirstPage(ArrayList<Picturebook> picturebooks) {
 
         for (Picturebook pc : picturebooks) {
@@ -167,9 +165,9 @@ public class Explore extends AppCompatActivity {
                         storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                             @Override
                             public void onSuccess(byte[] bytes) {
-                                Log.i(TAG, "IME u on success: "+ authorName);
                                 String userId = pc.getUserId();
 
+                                //get if user is following other user
                                 following = false;
                                 database = databaseIns.getReference("/users/" + loggedInUser.getUid() + "/following");
                                 database.addValueEventListener(new ValueEventListener() {
@@ -189,9 +187,8 @@ public class Explore extends AppCompatActivity {
                                     public void onCancelled(@NonNull DatabaseError error) { }
                                 });
 
+                                //get author's name
                                 database2 = FirebaseDatabase.getInstance().getReference("/users");
-
-                                //database = FirebaseDatabase.getInstance().getReference("/picturebooks");
                                 database2.child(userId).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -202,7 +199,6 @@ public class Explore extends AppCompatActivity {
                                         rows.add(row);
                                         Collections.sort(rows);
                                         pAdapter.notifyDataSetChanged();
-                                        Log.i(TAG, "IME: "+ authorName);
                                     }
 
                                     @Override

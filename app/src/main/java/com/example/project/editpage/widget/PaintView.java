@@ -18,7 +18,6 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import com.example.project.R;
-import com.example.project.editpage.NewPage;
 
 import java.util.ArrayList;
 
@@ -29,7 +28,7 @@ public class PaintView extends View {
     private int colorBackgroud, sizeBrush, sizeEraser;
     private float mX, mY;
     private Canvas mCanvas;
-    private final int DEFFERENCE_SPACE = 4;
+    private final int DIFFERENCE_SPACE = 4;
     private ArrayList<Bitmap> listAction = new ArrayList<>();
     private int leftImage = 50, topImage = 50;
     public static boolean toMove = false;
@@ -59,11 +58,11 @@ public class PaintView extends View {
         mPaint.setStrokeWidth(toPx(sizeBrush));
 
         Drawable drawable = getResources().getDrawable(R.drawable.ic_baseline_rotate_right_24);
-        rotateImage = darawableToBitmap(drawable);
+        rotateImage = drawableToBitmap(drawable);
         captureImage = BitmapFactory.decodeResource(getResources(), R.drawable.copy_icon);
     }
 
-    private Bitmap darawableToBitmap(Drawable drawable) {
+    private Bitmap drawableToBitmap(Drawable drawable) {
         if(drawable instanceof BitmapDrawable){
             return ((BitmapDrawable)drawable).getBitmap();
         }
@@ -164,6 +163,7 @@ public class PaintView extends View {
         }
     }
 
+    //gets coordinates of where we are on screen and where we finished and draws new canvas accordingly
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -266,7 +266,7 @@ public class PaintView extends View {
         float dx = Math.abs(x-mX);
         float dy = Math.abs(y-mY);
 
-        if(dx >= DEFFERENCE_SPACE || dy >= DEFFERENCE_SPACE){
+        if(dx >= DIFFERENCE_SPACE || dy >= DIFFERENCE_SPACE){
             mPath.quadTo(x,y,(x+mX)/2, (y+mY)/2);
 
             mY = y;

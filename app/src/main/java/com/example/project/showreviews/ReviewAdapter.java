@@ -71,6 +71,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.HolderRevi
 
     }
 
+    //get review's details to display them with its review
     private void loadUserDetail(Review reviewModel, HolderReview holder) {
         String uid = reviewModel.getUid();
 

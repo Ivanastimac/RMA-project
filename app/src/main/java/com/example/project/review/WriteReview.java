@@ -21,7 +21,6 @@ import com.google.firebase.storage.StorageReference;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -30,6 +29,7 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
+//activity for writing reviews
 public class WriteReview extends AppCompatActivity {
 
     private String picturebooksId;
@@ -42,15 +42,14 @@ public class WriteReview extends AppCompatActivity {
 
     DatabasePage dbPage;
     String pageId;
-    FirebaseStorage storageIns;
     StorageReference storageRef;
-    private static final String TAG = "WriteReview";
 
     final long ONE_MEGABYTE = 1024 * 1024;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_Project);
         setContentView(R.layout.activity_write_review);
 
         picturebookCover = findViewById(R.id.picturebookCover);
@@ -65,6 +64,7 @@ public class WriteReview extends AppCompatActivity {
         loadPicturebookInfo();
         loadMyReview();
 
+        //check if user at least input a star rating (at least 0.5 stars)
         submitReview.setOnClickListener(v -> {
             if (ratingBar.getRating() == 0.0) {
                 Toast.makeText(WriteReview.this,"Please provide rating for this picturebook!", Toast.LENGTH_SHORT).show();
@@ -75,6 +75,7 @@ public class WriteReview extends AppCompatActivity {
 
     }
 
+    //function that loads picture book's information
     private void loadPicturebookInfo() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/users");
         DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("/picturebooks");
@@ -88,7 +89,6 @@ public class WriteReview extends AppCompatActivity {
                         String picturebookNames = ""+snapshot.child("title").getValue();
                         picturebookName.setText(picturebookNames);
 
-                        //TODO get first page (cover page to display)
                         ref3.orderByChild("picturebookId").equalTo(picturebooksId).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -103,10 +103,7 @@ public class WriteReview extends AppCompatActivity {
                                         }
                                         pageId = pc.getKey();
                                     }
-                                    Log.i(TAG, "index=" + picturebooksId);
-                                    Log.i(TAG, "Page id = " + pageId);
                                     storageRef = FirebaseStorage.getInstance().getReference().child("images/pages/" + picturebooksId + "/" + pageId);
-                                    Log.i(TAG, "index=" + storageRef);
                                     storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                         @Override
                                         public void onSuccess(byte[] bytes) {
@@ -136,12 +133,6 @@ public class WriteReview extends AppCompatActivity {
                     }
                 });
 
-
-                /*try {
-                    Picasso.get().load(picturebookImage).placeholder(R.drawable.ic_baseline_menu_book_24).into(picturebookCover);
-                }catch (Exception e){
-                    picturebookCover.setImageResource(R.drawable.ic_baseline_menu_book_24);
-                }*/
             }
 
             @Override
@@ -151,6 +142,7 @@ public class WriteReview extends AppCompatActivity {
         });
     }
 
+    //if user already made a review for that picture book, display it (it is editable)
     private void loadMyReview() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/picturebooks");
         ref.child(picturebooksId).child("/ratings").child(firebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
@@ -175,6 +167,7 @@ public class WriteReview extends AppCompatActivity {
         });
     }
 
+    //save review to database
     private void inputData() {
         String ratings = ""+ratingBar.getRating();
         String review = reviewText.getText().toString().trim();

@@ -95,6 +95,7 @@ public class ExplorePicturebookAdapter extends RecyclerView.Adapter<ExplorePictu
         }
     }
 
+    //get average ratings and load it in rating bar
     private float ratingsSum = 0;
     private void loadReviews(ExploreRow row, MyView holder) {
 

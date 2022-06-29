@@ -44,9 +44,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import com.example.project.R;
 import com.example.project.editpage.adapters.ToolsAdabters;
 import com.example.project.editpage.common.Common;
 import com.example.project.editpage.interfaces.ToolsListener;
@@ -56,6 +54,7 @@ import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
+//activity for creating a new picture book page
 public class NewPage extends AppCompatActivity implements ToolsListener {
 
     private static final int REQUEST_PERMISSION = 1001;
@@ -73,6 +72,7 @@ public class NewPage extends AppCompatActivity implements ToolsListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_Project);
         setContentView(R.layout.activity_new_page);
 
         takePhotoBtn = findViewById(R.id.buttonTakePhoto);
@@ -140,25 +140,8 @@ public class NewPage extends AppCompatActivity implements ToolsListener {
         return result;
     }
 
-    public void finishPaint(View view) {
-        finish();
-    }
 
-    public void shareApp(View view) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        String bodyText = "http://play.google.com/store/apps/details?id=" + getPackageName();
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-        intent.putExtra(Intent.EXTRA_TEXT, bodyText);
-        startActivity(Intent.createChooser(intent, "Share this app"));
-    }
-
-    public void showFiles(View view) {
-
-        startActivity(new Intent(this, ListFilesActivity.class));
-
-    }
-
+    //save created page
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void saveFile(View view) {
 
@@ -176,13 +159,14 @@ public class NewPage extends AppCompatActivity implements ToolsListener {
         }
     }
 
+    //create a new blank page
     public void newFile(View view){
         Intent intent = getIntent();
         finish();
         startActivity(intent);
     }
 
-
+    //save image
     private void saveBitmap() throws IOException {
         Bitmap bitmap = mPaintView.getBitmap();
         String file_name = UUID.randomUUID() + ".png";

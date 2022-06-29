@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -17,7 +15,6 @@ import com.example.project.R;
 import com.example.project.model.DatabasePage;
 import com.example.project.model.PicturebookCoverImage;
 import com.example.project.model.Review;
-import com.example.project.review.WriteReview;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +28,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+//activity for displaying reviews
 public class ShowReviews extends AppCompatActivity {
 
     private String picturebooksId;
@@ -43,7 +41,6 @@ public class ShowReviews extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     DatabasePage dbPage;
     String pageId;
-    FirebaseStorage storageIns;
     StorageReference storageRef;
     final long ONE_MEGABYTE = 1024 * 1024;
     private ArrayList<Review> reviewArrayList;
@@ -53,6 +50,7 @@ public class ShowReviews extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_Project);
         setContentView(R.layout.activity_show_reviews);
 
         coverPicture = findViewById(R.id.coverPicture);
@@ -69,11 +67,11 @@ public class ShowReviews extends AppCompatActivity {
         loadReviews();
     }
 
+    //load all reviews with ratings for that picture book
     private float ratingsSum = 0;
     private void loadReviews() {
 
         reviewArrayList = new ArrayList<>();
-
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/picturebooks");
         ref.child(picturebooksId).child("/ratings").addValueEventListener(new ValueEventListener() {
@@ -106,8 +104,6 @@ public class ShowReviews extends AppCompatActivity {
                     ratingBar.setRating(0);
                 }
 
-
-
             }
 
             @Override
@@ -118,6 +114,7 @@ public class ShowReviews extends AppCompatActivity {
 
     }
 
+    //load picture book details to display them above reviews
     private void loadPicturebookDetails() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/users");
         DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference("/picturebooks");
@@ -131,7 +128,6 @@ public class ShowReviews extends AppCompatActivity {
                         String picturebookNames = "" + snapshot.child("title").getValue();
                         namePicturebook.setText(picturebookNames);
 
-                        //TODO get first page (cover page to display)
                         ref3.orderByChild("picturebookId").equalTo(picturebooksId).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {

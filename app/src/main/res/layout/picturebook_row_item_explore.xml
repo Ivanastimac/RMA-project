@@ -31,15 +31,16 @@
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY" />
 
-                <TextView
-                    android:id="@+id/textCaption"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/imageViewPage"
-                    android:layout_gravity="bottom"
-                    android:textSize="20sp"
-                    android:background="@color/white"
-                    android:textAlignment="center" />
+            <TextView
+                android:id="@+id/textCaption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageViewPage"
+                android:layout_gravity="bottom"
+                android:background="@color/white"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
 
 
