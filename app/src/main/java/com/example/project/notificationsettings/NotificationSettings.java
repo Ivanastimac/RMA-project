@@ -37,6 +37,7 @@ public class NotificationSettings extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_Project);
         setContentView(R.layout.activity_notification_settings);
 
         fcmSwitch = findViewById(R.id.fcmSwitch);

@@ -60,6 +60,7 @@ public class ChangeProfilePicture extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_Project);
         setContentView(R.layout.activity_change_profile_picture);
 
         choosePictureBtn = findViewById(R.id.buttonChoosePicture);

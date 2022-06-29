@@ -61,6 +61,7 @@ public class PendingPicturebooks extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_Project);
         setContentView(R.layout.activity_pending_picturebooks);
 
         searchView = findViewById(R.id.search_bar_admin);

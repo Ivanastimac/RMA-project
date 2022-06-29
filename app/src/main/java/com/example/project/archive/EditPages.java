@@ -53,6 +53,7 @@ public class EditPages extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_Project);
         setContentView(R.layout.activity_edit_pages);
 
         rv = findViewById(R.id.recyclerViewEditPages);

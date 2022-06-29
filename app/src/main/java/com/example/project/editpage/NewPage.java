@@ -72,6 +72,7 @@ public class NewPage extends AppCompatActivity implements ToolsListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_Project);
         setContentView(R.layout.activity_new_page);
 
         takePhotoBtn = findViewById(R.id.buttonTakePhoto);

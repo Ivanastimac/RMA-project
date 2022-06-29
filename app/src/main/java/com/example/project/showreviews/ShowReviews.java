@@ -50,6 +50,7 @@ public class ShowReviews extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_Project);
         setContentView(R.layout.activity_show_reviews);
 
         coverPicture = findViewById(R.id.coverPicture);

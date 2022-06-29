@@ -88,6 +88,7 @@ public class ExploreSinglePicturebook extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_Project);
         setContentView(R.layout.activity_explore_single_picturebook);
 
         title = findViewById(R.id.textViewTitleExplore);

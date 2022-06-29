@@ -16,7 +16,7 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Project">
+        android:theme="@style/splashScreenTheme">
         <activity
             android:name=".notificationsettings.NotificationSettings"
             android:exported="false"
